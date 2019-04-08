@@ -11,7 +11,26 @@ var minLeeftijd = 18;
 var erroMsg;
 var oData;
 
+// (function haalAlleDataOp() {
+//     let url = rooturl + '/profiel/read.php';
+
+//     fetch(url)
+//         .then(function (resp) {
+//             return resp.json();
+//         })
+//         .then(function (data) {
+//             oData = data;
+//             console.log(oData);
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//         });
+
+// })();
+
 window.onload = function () {
+
+
     // alert("hello");
 
     /*
@@ -20,21 +39,27 @@ window.onload = function () {
     --------------------------------------
     */
 
-    (function haalAlleDataOp() {
-        let url = rooturl + '/profiel/read.php';
+    // functie voor random 10 profielen op te halen
+
+    // function get10prof(){
+    // var oaData[0]
+    for (var i = 0; i < 5; i++) {
+        var profielId = Math.floor(Math.random() * 5000)
+              let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
         fetch(url)
             .then(function (resp) {
                 return resp.json();
             })
             .then(function (data) {
-                oData = data;
+                console.log(data.nickname);
             })
             .catch(function (error) {
                 console.log(error);
             });
+    }
 
-    })();
+    // }
 
 
 
@@ -651,5 +676,7 @@ window.onload = function () {
     //             console.log(error);
     //         });
     // });
+
+
 
 }
