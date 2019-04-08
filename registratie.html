@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Registratie</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="familienaam">Familienaam</label>
+                <input type="text" name="familienaam" id="familienaam" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="groep 1" maxlength="1000" required="true">
+            </div>
+            <div class="form-group">
+                <label for="voornaam">Voornaam</label>
+                <input type="text" name="voornaam" id="voornaam" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="groep 1 voornaam" maxlength="1000" required>
+            </div>
+            <div class="form-group">
+                <label for="geboortedatum">Geboortedatum</label>
+                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="1990-12-12" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mailadres</label>
+                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelpId"
+                    placeholder="" value="test@getnada.com" maxlength="1000" required>
+            </div>
+            <div class="form-group">
+                <label for="nickname">Nickname</label>
+                <input type="text" name="nickname" id="nickname" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="Groep 1 nickname" maxlength="100" required>
+            </div>
+            <div class="form-group">
+                <label for="foto">Foto</label>
+                <input type="text" name="foto" id="foto" class="form-control" placeholder="" aria-describedby="helpId"
+                    value="no_picture.jpg" readonly maxlength="1000">
+            </div>
+            <div class="form-group">
+                <label for="beroep">Beroep</label>
+                <input type="text" name="beroep" id="beroep" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="Dev" maxlength="1000">
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="sexe" id="sexe-m" value="M">
+                    M
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="sexe" id="sexe-v" value="V">
+                    V
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="sexe" id="sexe-x" value="X" checked>
+                    X
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="haarkleur">Haarkleur</label>
+                <input type="text" name="haarkleur" id="haarkleur" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="Bruin" maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="oogkleur">Oogkleur</label>
+                <input type="text" name="oogkleur" id="oogkleur" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="Blauw" maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="grootte">Grootte</label>
+                <input type="number" name="grootte" id="grootte" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="180" maxlength="5">
+            </div>
+            <div class="form-group">
+                <label for="gewicht">Gewicht</label>
+                <input type="number" name="gewicht" id="gewicht" class="form-control" placeholder=""
+                    aria-describedby="helpId" value="80" maxlength="5">
+            </div>
+            <div class="form-group">
+                <label for="wachtwoord">Wachtwoord</label>
+                <input type="password" class="form-control" name="wachwoord" id="wachtwoord" placeholder="" value="vdab"
+                    maxlength="1000" required>
+            </div>
+            <div class="form-group">
+                <label for="wachtwoord2">Herhalen</label>
+                <input type="password" class="form-control" name="wachwoord2" id="wachtwoord2" placeholder=""
+                    value="vdab" maxlength="1000" required>
+            </div>
+            <div class="form-group">
+                <label for="lovecoins">Lovecoins</label>
+                <input type="number" class="form-control" name="lovecoins" id="lovecoins" placeholder="" readonly
+                    value="20" maxlength="1000">
+            </div>
+
+
+            <button type="submit" id="knop8" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script src="assets/main.js"> </script>
+
+</body>
+
+</html>
