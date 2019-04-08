@@ -254,7 +254,6 @@ window.onload = function () {
             if (sexe[i].checked) {
                 sexe = sexe[i].value;
             }
-
         }
 
         let haarkleur = document.getElementById('haarkleur').value;
@@ -280,6 +279,12 @@ window.onload = function () {
         }
         // Nickname is uniek
         console.log(oData);
+        for (let i = 0; i < oData.length; i++) {
+            if (nickname == oData[i].nickname) {
+                valid = false;
+                erroMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>"
+            }
+        }
 
 
 
