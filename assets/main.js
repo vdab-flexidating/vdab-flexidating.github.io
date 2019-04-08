@@ -335,11 +335,22 @@ window.onload = function () {
             document.getElementById('wachtwoord').
             classList.add("is-invalid");
         }
+        let alleWaarden = document.getElementsByName('registratie');
+        for (let i = 0; i < alleWaarden.length; i++) {
+            if (!alleWaarden[i].value.length) {
+                valid = false;
+                errorMsg += "Niet alle velden werden ingevuld";
+                console.log("Niet alle waarden werden ingevuld");
+            }
+
+        }
+
 
         // Toon de error
         if (errorMsg != "") {
             toonerrorMsg(errorMsg);
         }
+
 
 
 
