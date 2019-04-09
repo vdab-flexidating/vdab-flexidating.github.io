@@ -11,6 +11,23 @@ var minLeeftijd = 18;
 var minLengtePass = 6;
 var errorMsg = "";
 var oData;
+var oaProf10 = [];
+// (function haalAlleDataOp() {
+//     let url = rooturl + '/profiel/read.php';
+
+//     fetch(url)
+//         .then(function (resp) {
+//             return resp.json();
+//         })
+//         .then(function (data) {
+//             oData = data;
+//             console.log(oData);
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//         });
+
+// })();
 
 var gebruikersId;
 var gebruiker;
@@ -35,6 +52,8 @@ var gebruiker;
 // })();
 
 window.onload = function () {
+
+
     // alert("hello");
 
     /*
@@ -43,7 +62,30 @@ window.onload = function () {
     --------------------------------------
     */
 
+    //  random 10 profielen op te halen
 
+
+    // var oaProf10 = []
+    for (var i = 0; i < 5; i++) {
+        var profielId = Math.floor(Math.random() * 5000)
+        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+
+        fetch(url)
+            .then(function (resp) {
+                return resp.json();
+            })
+            .then(function (data) {
+                oaProf10.push(data);
+                console.log(oaProf10.length);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    console.log(oaProf10);
+    set10prof(oaProf10);
+    console.log("na functie");
+    // }
 
 
 
@@ -741,5 +783,22 @@ window.onload = function () {
     //             console.log(error);
     //         });
     // });
+
+
+
+}
+
+function set10prof(oaProf10) 
+{
+    
+    console.log("start functie");
+    console.log(oaProf10.length);
+    //console.log(oaProf10[0].id);
+    for (i = 0; i < oaProf10.length; i++) {
+        var placeId = document.getElementById("prof" + i);
+        var eImg = document.createElement('img');
+        eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + oaProf10[i].foto);
+        placeId.appendChild(eImg);
+    }
 
 }
