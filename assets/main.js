@@ -29,23 +29,27 @@ var oaProf10 = [];
 
 // })();
 
+var gebruikersId;
+var gebruiker;
 
-(function haalAlleDataOp() {
-    // TODO: plaats alle data een localStorage, en pas pas aan bij nieuwe id's 
-    let url = rooturl + '/profiel/read.php';
 
-    fetch(url)
-        .then(function (resp) {
-            return resp.json();
-        })
-        .then(function (data) {
-            oData = data;
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+// (function haalAlleDataOp() {
+//     // TODO: plaats alle data een localStorage, en pas pas aan bij nieuwe id's 
+//     let url = rooturl + '/profiel/read.php';
 
-})();
+//     fetch(url)
+//         .then(function (resp) {
+//             return resp.json();
+//         })
+//         .then(function (data) {
+//             oData = data;
+//             console.log(oData);
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//         });
+
+// })();
 
 window.onload = function () {
 
@@ -112,6 +116,7 @@ window.onload = function () {
 
     // document.getElementById('knop2').addEventListener('click', function (e) {
     //     let profielId = document.getElementById('input2_1').value;
+
 
     //     let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
@@ -377,24 +382,18 @@ window.onload = function () {
             document.getElementById('wachtwoord').
             classList.add("is-invalid");
         }
-        let alleWaarden = document.getElementsByName('registratie');
+
+        let allesIngevuld = true;
+        let alleWaarden = document.querySelectorAll('#registratie input:not([type="radio"])');
         for (let i = 0; i < alleWaarden.length; i++) {
-            if (!alleWaarden[i].value.length) {
+            if (!alleWaarden[i].value.length && allesIngevuld) {
                 valid = false;
-                errorMsg += "Niet alle velden werden ingevuld";
+                allesIngevuld = false;
+                errorMsg += "Niet alle velden werden ingevuld.<br>";
                 console.log("Niet alle waarden werden ingevuld");
             }
 
         }
-
-
-        // Toon de error
-        if (errorMsg != "") {
-            toonerrorMsg(errorMsg);
-        }
-
-
-
 
         if (valid) {
             let data = {
@@ -428,12 +427,34 @@ window.onload = function () {
                 })
                 .then(function (data) {
                     console.log(data);
+                    gebruikersId = parseInt(data.id);
+
                 })
                 .catch(function (error) {
                     console.log(error);
+                    // 400 of 503 error tonen
+                    let konNietAanmaken = "Kon profiel niet aanmaken.";
+                    let dataOnvolledig = "Kon profiel niet aanmaken. Data is onvolledig.";
+
+                    if (dataOnvolledig == error) {
+                        errorMsg += "Niet alle velden werden ingevuld.<br>";
+                    }
+                    if (konNietAanmaken == error) {
+                        // De enigste error die we niet opvangen is de controle op uniekheid nickname
+                        errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
+                        document.getElementById('nickname').
+                        classList.add("is-invalid");
+
+                    }
                 });
 
 
+        }
+
+
+        // Toon de error
+        if (errorMsg != "") {
+            toonerrorMsg(errorMsg);
         }
 
     });
