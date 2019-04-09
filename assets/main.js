@@ -10,7 +10,7 @@ function changeURL(sNewRoot) {
 var minLeeftijd = 18;
 var erroMsg;
 var oData;
-
+var oaProf10 = []
 // (function haalAlleDataOp() {
 //     let url = rooturl + '/profiel/read.php';
 
@@ -39,26 +39,29 @@ window.onload = function () {
     --------------------------------------
     */
 
-    // functie voor random 10 profielen op te halen
+    //  random 10 profielen op te halen
 
-    // function get10prof(){
-    // var oaData[0]
+
+    // var oaProf10 = []
     for (var i = 0; i < 5; i++) {
         var profielId = Math.floor(Math.random() * 5000)
-              let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
         fetch(url)
             .then(function (resp) {
                 return resp.json();
             })
             .then(function (data) {
-                console.log(data.nickname);
+                oaProf10.push(data)
+                // console.log(oaProf10);
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
-
+    console.log(oaProf10);
+    set10prof(oaProf10);
+    console.log("na functie");
     // }
 
 
@@ -678,5 +681,22 @@ window.onload = function () {
     // });
 
 
+
+}
+
+function set10prof(oaProf10) 
+{
+    
+    console.log("start functie");
+    console.log(oaProf10.length);
+    //console.log(oaProf10[0].id);
+    for (i = 0; i < oaProf10.length; i++) {
+        console.log(i);
+        var placeId = document.getElementById("prof" + i);
+        console.log("prof" + i);
+        var eImg = document.createElement('img');
+        eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + oaProf10[i].foto);
+        placeId.appendChild(eImg);
+    }
 
 }
