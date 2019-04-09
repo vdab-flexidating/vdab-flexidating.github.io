@@ -32,6 +32,7 @@ var oaProf10 = [];
 
 var gebruikersId;
 var gebruiker;
+var sStorage;
 
 
 // (function haalAlleDataOp() {
@@ -60,41 +61,20 @@ window.onload = function () {
 
     var sStorage = cookieOfLokaal();
 
-    if (localStorage.id || (sStorage == "sCookie" && getCookie('klantnaam'))) {
-        //gekende klant
+    if (localStorage.gebruiker || (sStorage == "sCookie" && getCookie('gebruiker'))) {
+        // ingelogd
         if (sStorage == "sCookie") {
-            var sNaam = getCookie('klantnaam');
-            var nSaldo = parseFloat(getCookie('saldo')).toFixed(2);
+            var gebruiker = getCookie('gebruiker');
         } else {
-            var sNaam = localStorage.klantnaam;
-            var nSaldo = parseFloat(localStorage.saldo);
+            var gebruiker = localStorage.gebruiker;
         }
-        //bericht
-        sMsg += "Welkom " + sNaam + ", ";
-        sMsg += "uw saldo bedraagt " + nSaldo + " Euro";
-        //knop
-        var eKnop = maakKnop('Sluit rekening');
-        eKnop.addEventListener('click', function () {
-            rekeningSluiten()
-        });
     } else if (sStorage) {
-        //nieuwe klant, eerste bezoek
-        sMsg += "Welkom beste bezoeker. ";
-        sMsg += "Als u bij ons een nieuwe rekening opent, ontvangt u een startsaldo van 100 Euro!";
-        //knop
-        var eKnop = maakKnop('Open rekening');
-        //eKnop.addEventListener('click', rekeningOpenen());
-        eKnop.addEventListener('click', function () {
-            rekeningOpenen()
-        });
+        console.log(sStorage + " is de gekozen storage.");
     } else {
-        sMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
-        sMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
-        var eKnop = maakKnop('Cookies inschakelen')
-        eKnop.addEventListener('click', function () {
-            window.open("https://support.norton.com/sp/nl/nl/home/current/solutions/v57840314_NortonM_Retail_1_nl_nl", "_blank");
+        errorMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
+        errorMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
 
-        })
+        return toonerrorMsg(errorMsg);
     }
 
     function toonerrorMsg(errorMsg) {
@@ -107,7 +87,6 @@ window.onload = function () {
     document.getElementById('login').addEventListener('click', function (e) {
         let profielId = document.getElementById('persoonId').value;
 
-
         let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
         fetch(url)
@@ -118,42 +97,48 @@ window.onload = function () {
                 console.log(data);
                 gebruiker = data;
                 gebruikersId = gebruiker.id;
-                console.log(gebruiker);
+                plaatsInStorage("gebruiker", gebruiker);
 
             })
             .catch(function (error) {
                 console.log(error);
             });
-
-
     });
-
-
-
-
-
-
-
 }
+
+function plaatsInStorage(key, data) {
+    var sStorage = cookieOfLokaal();
+    if (sStorage == "sCookie") {
+        var nAantalDagen = 100;
+        setCookie(key, JSON.stringify(data), nAantalDagen);
+        console.log("toegevoegd als cookie " + data);
+    } else if (sStorage == "sLocal") {
+        localStorage.setItem(key, JSON.stringify(data));
+        console.log("toegevoegd als localStorage " + data);
+    }
+    // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
+    // Bij 0 update de huidige pagina
+    window.history.go(0);
+}
+
 
 function cookieOfLokaal() {
     if (localStorage) {
-        //console.log('localStorage OK');
         return "sLocal"
     } else if (navigator.cookieEnabled) {
+        return "sCookie";
         console.log('cookies OK');
-        //return "sCookie"
     } else {
         return false;
     }
 }
 
 (function () {
-    if (cookieOfLokaal() == 'sCookie') {
+    if (cookieOfLokaal() != 'sLocal') {
         var ref = window.document.getElementsByTagName('script')[0];
         var script = window.document.createElement('script');
-        script.src = 'nuttig_lib.js';
+        script.src = 'assets/nuttig_lib.js';
         ref.parentNode.insertBefore(script, ref);
+        console.log("Cookiefile geladen");
     }
-    console.log("Cookiefile geladen");
 })();
