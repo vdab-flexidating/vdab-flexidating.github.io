@@ -8,7 +8,8 @@ function changeURL(sNewRoot) {
 /* Global vars
  ****************/
 var minLeeftijd = 18;
-var erroMsg;
+var minLengtePass = 6;
+var errorMsg = "";
 var oData;
 var oaProf10 = [];
 // (function haalAlleDataOp() {
@@ -27,6 +28,24 @@ var oaProf10 = [];
 //         });
 
 // })();
+
+
+(function haalAlleDataOp() {
+    // TODO: plaats alle data een localStorage, en pas pas aan bij nieuwe id's 
+    let url = rooturl + '/profiel/read.php';
+
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            oData = data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+})();
 
 window.onload = function () {
 
@@ -66,6 +85,12 @@ window.onload = function () {
 
 
 
+
+    function toonerrorMsg(errorMsg) {
+        let eError = document.getElementById("errorMsg");
+        eError.classList.remove("d-none");
+        eError.innerHTML = errorMsg;
+    }
 
     // document.getElementById('knop12').addEventListener('click', function (e) {
     //     let page = document.getElementById('input12_1').value;
@@ -300,58 +325,116 @@ window.onload = function () {
         let vandaag = new Date();
         // Ouder dan 18
         let verschil = vandaag.getTime() - oGeboortedatum.getTime();
-        let verschilInJaar = Math.ceil(verschil / (1000 * 60 * 60 * 24 * 365));
+        let verschilInJaar = Math.ceil(verschil / (1000 * 60 * 60 * 24 * 365.25));
         if (verschilInJaar < minLeeftijd) {
             valid = false;
-            erroMsg += "je bent nog te jong<br>";
+            errorMsg += "je bent nog te jong<br>";
+            document.getElementById('geboortedatum').
+            classList.add("is-invalid");
         }
         // Nickname is uniek
         console.log(oData);
         for (let i = 0; i < oData.length; i++) {
             if (nickname == oData[i].nickname) {
                 valid = false;
-                erroMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>"
+                errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
+                document.getElementById('nickname').
+                classList.add("is-invalid");
             }
         }
 
-
-
-
-        let data = {
-            familienaam: familienaam,
-            voornaam: voornaam,
-            geboortedatum: geboortedatum,
-            email: email,
-            nickname: nickname,
-            foto: foto,
-            beroep: beroep,
-            sexe: sexe,
-            haarkleur: haarkleur,
-            oogkleur: oogkleur,
-            grootte: grootte,
-            gewicht: gewicht,
-            wachtwoord: wachtwoord,
-            lovecoins: lovecoins
+        // Lengte groter dan nul
+        if (grootte <= 0) {
+            valid = false;
+            errorMsg += "Lengte moet groter zijn dan nul.<br>";
+            document.getElementById('grootte').
+            classList.add("is-invalid");
         }
 
-        var request = new Request(url, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        });
+        // Gewicht groter dan nul
+        if (gewicht <= 0) {
+            valid = false;
+            errorMsg += "Gewicht moet groter zijn dan nul.<br>";
+            document.getElementById('gewicht').
+            classList.add("is-invalid");
+        }
 
-        fetch(request)
-            .then(function (resp) {
-                return resp.json();
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
+        // Wachtwoorden komen overeen en > 6
+        if (wachtwoord.length >= minLengtePass) {
+            if (wachtwoord != wachtwoord2) {
+                valid = false;
+                errorMsg += "Wachtwoorden komen niet overeen<br>";
+
+                document.getElementById('wachtwoord').
+                classList.add("is-invalid");
+                document.getElementById('wachtwoord2').
+                classList.add("is-invalid");
+            }
+        } else {
+            valid = false;
+            errorMsg += "Je wachtwoord is te klein, minimum " + minLengtePass + " karakters<br>";
+
+            document.getElementById('wachtwoord').
+            classList.add("is-invalid");
+        }
+        let alleWaarden = document.getElementsByName('registratie');
+        for (let i = 0; i < alleWaarden.length; i++) {
+            if (!alleWaarden[i].value.length) {
+                valid = false;
+                errorMsg += "Niet alle velden werden ingevuld";
+                console.log("Niet alle waarden werden ingevuld");
+            }
+
+        }
+
+
+        // Toon de error
+        if (errorMsg != "") {
+            toonerrorMsg(errorMsg);
+        }
+
+
+
+
+        if (valid) {
+            let data = {
+                familienaam: familienaam,
+                voornaam: voornaam,
+                geboortedatum: geboortedatum,
+                email: email,
+                nickname: nickname,
+                foto: foto,
+                beroep: beroep,
+                sexe: sexe,
+                haarkleur: haarkleur,
+                oogkleur: oogkleur,
+                grootte: grootte,
+                gewicht: gewicht,
+                wachtwoord: wachtwoord,
+                lovecoins: lovecoins
+            }
+
+            var request = new Request(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
             });
+
+            fetch(request)
+                .then(function (resp) {
+                    return resp.json();
+                })
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
+        }
 
     });
 
