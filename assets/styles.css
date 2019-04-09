@@ -1,0 +1,79 @@
+#mainNav {
+    background-color: #212529;
+}
+
+header.masthead {
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../assets/img/banner.jpg);
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    min-height: 500px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header.masthead.small {
+    min-height: 300px;
+}
+
+.banner-title {
+    font-size: 2em;
+    text-transform: capitalize;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.banner-title>span {
+    display: block;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.card-wrap {
+    display: -webkit-flex;
+    -webkit-flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+
+}
+
+.card-wrap>* {
+    margin: 15px;
+}
+
+h2.card-title {
+    margin: 20px 15px;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #333;
+}
+
+.card {
+    width: 245px;
+}
+
+@media (min-width: 576px) {}
+
+@media (min-width: 768px) {}
+
+@media (min-width: 992px) {
+
+    #mainNav {
+        -webkit-transition: padding-top .3s, padding-bottom .3s;
+        transition: padding-top .3s, padding-bottom .3s;
+        border: none;
+        opacity: 0.9;
+    }
+
+}
+
+@media (min-width: 1200px) {}
