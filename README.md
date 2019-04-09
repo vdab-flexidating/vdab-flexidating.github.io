@@ -1,2 +1,12 @@
 # FlexiDating
 
+FlexiDating is een project voor de VDAB.
+Op de eerste plaats een project om Scrum toe te passen.
+
+De opdracht luid:
+<blockquote>Een datingbureau wil een website waarop de gebruiker zich kan inschrijven. Hij kan een eigen profiel aanmaken met bepaalde kenmerken en voorkeuren. Sommige kenmerken zijn publiek (p), andere verborgen (v). Eenmaal ingeschreven kan hij ander gebruikers zoeken op kenmerken en afspreken met een kandidaat-partner. <br>
+De klant wil ook dat volgende specificaties geïmplementeerd worden:
+
+* Het sterrenbeeld van een gebruiker moet er in opgenomen worden
+</blockquote>
+
