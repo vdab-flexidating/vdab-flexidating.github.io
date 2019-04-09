@@ -123,7 +123,7 @@ function plaatsInStorage(key, data) {
 
 
 function cookieOfLokaal() {
-    if (!localStorage) {
+    if (localStorage) {
         return "sLocal"
     } else if (navigator.cookieEnabled) {
         return "sCookie";
