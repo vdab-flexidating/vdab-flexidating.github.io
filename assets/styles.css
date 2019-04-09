@@ -50,6 +50,11 @@ h2.card-title{
     width:245px;
 }
 
+/* profielpagina */
+.profiel div.foto {
+    max-width: 315px;
+}
+
 @media (min-width: 576px) { 
     
 }
