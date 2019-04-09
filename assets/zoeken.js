@@ -83,13 +83,64 @@ function voegPersoonToe(peroon) {
     oGebruikers.push(peroon);
 }
 
-function plaatsPersoon(peroon) {
+function plaatsPersoon(persoon) {
 
-    var placeId = document.getElementById("prof" + iPers);
+    // var placeId = document.getElementById("prof" + iPers);
+    var placeId = document.getElementById("persoon");
+    var eDiv = document.createElement('div');
+    eDiv.setAttribute('class', 'card');
+    eDiv.setAttribute('id', 'prof' + iPers);
+    placeId.appendChild(eDiv);
+    placeId = document.getElementById('prof' + iPers);
+    eA = document.createElement('a');
+    eA.setAttribute('href', '?gebruiker=' + persoon.id);
+    eA.setAttribute('id', 'a' + iPers);
+    placeId.appendChild(eA);
+    placeId = document.getElementById('a' + iPers);
     var eImg = document.createElement('img');
-    eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + peroon.foto);
+    eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + persoon.foto);
     eImg.setAttribute('class', 'img-thumbnail')
     placeId.appendChild(eImg);
+    eDiv = document.createElement('div');
+    eDiv.setAttribute('class', 'card-body');
+    eDiv.setAttribute('id', 'bodyprof' + iPers)
+    placeId.appendChild(eDiv);
+    placeId = document.getElementById('bodyprof' + iPers);
+    var eP = document.createElement('p');
+    eP.innerHTML = persoon.nickname;
+    placeId.appendChild(eP);
+
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.id;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.voornaam;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.familienaam;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.geboortedatum;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.email;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.nickname;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.beroep;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.sexe;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.haarkleur;
+    // placeId.appendChild(eP);
+    // var eP = document.createElement('p');
+    // eP.innerHTML = persoon.groote;
+    // placeId.appendChild(eP);
+
     iPers++;
     if (iPers === 4) {
         iPers = 0;
