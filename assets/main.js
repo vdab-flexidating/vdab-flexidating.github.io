@@ -10,7 +10,7 @@ function changeURL(sNewRoot) {
 var minLeeftijd = 18;
 var erroMsg;
 var oData;
-var oaProf10 = []
+var oaProf10 = [];
 // (function haalAlleDataOp() {
 //     let url = rooturl + '/profiel/read.php';
 
@@ -52,8 +52,8 @@ window.onload = function () {
                 return resp.json();
             })
             .then(function (data) {
-                oaProf10.push(data)
-                // console.log(oaProf10);
+                oaProf10.push(data);
+                console.log(oaProf10.length);
             })
             .catch(function (error) {
                 console.log(error);
@@ -691,9 +691,7 @@ function set10prof(oaProf10)
     console.log(oaProf10.length);
     //console.log(oaProf10[0].id);
     for (i = 0; i < oaProf10.length; i++) {
-        console.log(i);
         var placeId = document.getElementById("prof" + i);
-        console.log("prof" + i);
         var eImg = document.createElement('img');
         eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + oaProf10[i].foto);
         placeId.appendChild(eImg);
