@@ -30,10 +30,28 @@
                         <a class="nav-link" href="zoeken.html">Zoeken</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
+                <form class="form-inline my-2 my-lg-0 d-none">
                     <button class="btn btn-outline-light" type="submit" data-toggle="modal"
                         data-target="#loginModal">Aanmelden</button>
                 </form>
+                <div class=" form-inline my-2 mr-2 ">
+                    <div class="form-group d-none">
+                        <input type="number" class="form-control" id="persoonId" value="7" readonly>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="sr-only">Wachtwoord</label>
+                        <input type="password" class="form-control" id="wachtwoord" placeholder="wachtwoord">
+                    </div>
+                    <button type="submit" class=" btn btn-outline-light" id="login">Login</button>
+                </div>
+
+                <div class="form-inline my-2">
+                    <a href="registratie.html"> <button class="btn btn-outline-light" type="submit">Maak een
+                            account</button></a>
+                </div>
             </div>
         </div>
     </nav>
@@ -80,51 +98,6 @@
 
     </div>
 
-    <button type="button" class="btn btn-primary" id="knop8">Voeg aldo toe</button>
-
-    <div class="d-none">
-        <button type="button" class="btn btn-primary" id="knop1"></button>
-        <button type="button" class="btn btn-primary" id="knop3"></button>
-        <button type="button" class="btn btn-primary" id="knop4"></button>
-        <button type="button" class="btn btn-primary" id="knop5"></button>
-        <button type="button" class="btn btn-primary" id="knop6"></button>
-        <button type="button" class="btn btn-primary" id="knop7"></button>
-        <button type="button" class="btn btn-primary" id="knop8"></button>
-        <button type="button" class="btn btn-primary" id="knop9"></button>
-        <button type="button" class="btn btn-primary" id="knop10"></button>
-        <button type="button" class="btn btn-primary" id="knop11"></button>
-        <button type="button" class="btn btn-primary" id="knop12"></button>
-        <button type="button" class="btn btn-primary" id="knop13"></button>
-        <button type="button" class="btn btn-primary" id="knop14"></button>
-        <button type="button" class="btn btn-primary" id="knop15"></button>
-        <button type="button" class="btn btn-primary" id="knop16"></button>
-        <button type="button" class="btn btn-primary" id="knop17"></button>
-        <button type="button" class="btn btn-primary" id="knop18"></button>
-        <button type="button" class="btn btn-primary" id="knop20"></button>
-        <button type="button" class="btn btn-primary" id="knop21"></button>
-        <button type="button" class="btn btn-primary" id="knop22"></button>
-        <button type="button" class="btn btn-primary" id="knop23"></button>
-        <button type="button" class="btn btn-primary" id="knop24"></button>
-        <button type="button" class="btn btn-primary" id="knop25"></button>
-        <button type="button" class="btn btn-primary" id="knop26"></button>
-        <button type="button" class="btn btn-primary" id="knop27"></button>
-        <button type="button" class="btn btn-primary" id="knop28"></button>
-        <button type="button" class="btn btn-primary" id="knop29"></button>
-        <button type="button" class="btn btn-primary" id="knop30"></button>
-        <button type="button" class="btn btn-primary" id="knop31"></button>
-        <button type="button" class="btn btn-primary" id="knop32"></button>
-        <button type="button" class="btn btn-primary" id="knop33"></button>
-        <button type="button" class="btn btn-primary" id="knop34"></button>
-        <button type="button" class="btn btn-primary" id="knop35"></button>
-        <button type="button" class="btn btn-primary" id="knop36"></button>
-        <button type="button" class="btn btn-primary" id="knop37"></button>
-        <button type="button" class="btn btn-primary" id="knop38"></button>
-        <button type="button" class="btn btn-primary" id="knop39"></button>
-        <button type="button" class="btn btn-primary" id="knop40"></button>
-    </div>
-
-
-
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
         aria-hidden="true">
@@ -150,14 +123,14 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
     <script src="assets/main.js"></script>
 
 </body>
