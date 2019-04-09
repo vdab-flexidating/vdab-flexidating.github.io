@@ -31,11 +31,11 @@ window.onload = function () {
 
 function haalPersonenOp(aantal) {
     for (var i = 0; i < aantal; i++) {
-        // var i = 0;
-        // do {
+        //var i = 0;
+        //do {
         //var profielId = 5;
         //var profielId = Math.floor(Math.random() * 100);
-        var profielId = i + 1
+        var profielId = i + 1;
         let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
 
@@ -46,10 +46,12 @@ function haalPersonenOp(aantal) {
                 return resp.json();
             })
             .then(function (data) {
-
-                console.log(data);
-                // voegPersoonToe(data);
-                plaatsPersoon(data);
+                if (data.id != null) {
+                    i++;
+                    console.log(data);
+                    // voegPersoonToe(data);
+                    plaatsPersoon(data);
+                }
             })
             .catch(function (error) {
                 console.log(error);
@@ -74,6 +76,7 @@ function haalPersonenOp(aantal) {
         //         console.log(error);
         //     });
     }
+    //while (i < aantal)
 }
 
 function voegPersoonToe(peroon) {
