@@ -128,6 +128,7 @@ window.onload = function () {
             .then(function (data) {
                 console.log(data);
                 gebruiker = data;
+                gebruikersId = gebruiker.id;
                 console.log(gebruiker);
 
             })
