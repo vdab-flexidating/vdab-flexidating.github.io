@@ -14,9 +14,9 @@ window.onload = function () {
 }
 
 document.getElementById('knop12').addEventListener('click', function (e) {
-    let page = document.getElementById('input12_1').value;
+    // let page = document.getElementById('input12_1').value;
+    let page = 1;
     let pageSize = document.getElementById('input12_2').value;
-
     let url = rooturl + '/profiel/read.php?page=' + page + '&pageSize=' + pageSize;;
     //DEBUG 
     // pageSize = 10;
@@ -93,11 +93,19 @@ function haalDataOp(url) {
         })
         .then(function (data) {
             console.log(data);
-            plaatsPersonen(data);
+            // plaatsPersonen(data);
+            splitsData(data)
         })
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function splitsData(oaData) {
+    let pageSize = document.getElementById('input12_2').value;
+    var iPages = oaData.length / pageSize;
+    console.log(iPages);
+
 }
 
 function plaatsPersonen(oaData) {
@@ -108,16 +116,21 @@ function plaatsPersonen(oaData) {
     }
 
 
-    // let page = document.getElementById('input12_1').value;
+
     let pageSize = document.getElementById('input12_2').value;
 
-    console.log(Paginator(oaData, 1, pageSize))
-    console.log(Paginator(oaData, 2, pageSize))
-    console.log(Paginator(oaData, 3, pageSize))
-
-    for (var i = 0; i < oaData.length; i++) {
-        plaatsPersoon(oaData[i], i)
+    console.log(Paginator(oaData, 1, pageSize));
+    console.log(Paginator(oaData, 2, pageSize));
+    console.log(Paginator(oaData, 3, pageSize));
+    oPageData = Paginator(oaData, 1, pageSize);
+    console.log(oPageData.data);
+    for (var i = 0; i < oPageData.data.length; i++) {
+        plaatsPersoon(oPageData.data[i], i);
     }
+
+    // for (var i = 0; i < oaData.length; i++) {
+    //     plaatsPersoon(oaData[i], i)
+    // }
 }
 
 function plaatsPersoon(persoon, i) {
