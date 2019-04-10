@@ -14,14 +14,15 @@ var gebruiker;
 var sStorage;
 
 
+
 window.onload = function () {
 
     if (cookieOfLokaal() == false) {
         console.log("Geen cookies of localStorage");
     }
 
-    sGebruiker = haalUitStorage("gebruiker");
-    oGebruiker = JSON.parse(sGebruiker); // Voor objecten 
+    // sGebruiker = haalUitStorage("gebruiker");
+    // oGebruiker = JSON.parse(sGebruiker); // Voor objecten 
 
     /* DEBUG 
      ***********************/
@@ -42,7 +43,7 @@ window.onload = function () {
 }
 
 function isIngelogd() {
-    if (!oGebruiker) {
+    if (!gebruiker) {
         // Indien geen gebruiker 
         console.log("Niet ingelogd");
         toonerrorMsg("Niet ingelogd.<br>");
@@ -102,7 +103,7 @@ function login() {
                     console.log("Gebruiker met id " + data.id + " heeft zich ingelogd.")
                     plaatsInStorage("gebruikerId", data.id);
 
-                    Number.isInteger(gebruikersId) && !oGebruiker ? gebruiker = haalGebruikersInfoOp(gebruikersId, true) : false;
+                    Number.isInteger(gebruikersId) && !gebruiker ? gebruiker = haalGebruikersInfoOp(gebruikersId, true) : false;
 
                     plaatsInStorage("gebruiker", gebruiker);
                     isIngelogd();
