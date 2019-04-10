@@ -1,8 +1,10 @@
-window.onload = function () {
+$(function () {
 
     var minLeeftijd = 18;
     var minLengtePass = 6;
-    gebruikersId = 5112;
+
+    gebruiker = haalUitStorage("gebruiker");
+    gebruikersId = gebruiker.id;
 
     /* DOM-elementen */
     let eFamilienaam = document.getElementById('familienaam');
@@ -24,32 +26,33 @@ window.onload = function () {
     //getIngevuldProfiel(gebruiker);
 
     //tijdelijk voor testing
-    getIngevuldProfielById(gebruikersId);
+    getIngevuldProfielById();
+
     function getIngevuldProfielById(id) {
-    /* haalt profiel op o.b.v. id en vult profiel in */
-    let profielId = id;
-    let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+        /* haalt profiel op o.b.v. id en vult profiel in */
+        let profielId = id;
+        rooturl = getRootUrl();
+        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
-    fetch(url)
-        .then(function (resp) {
-            return resp.json();
-        })
-        .then(function (data) {
-            profiel = data;
+        fetch(url)
+            .then(function (resp) {
+                return resp.json();
+            })
+            .then(function (data) {
+                profiel = data;
 
-            if (profiel.id) {
-                getIngevuldProfiel(profiel);
-            }
-            else {
-                console.log('niet gevonden')
-                //nog bekijken
-                
-            }
-            
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+                if (profiel.id) {
+                    getIngevuldProfiel(profiel);
+                } else {
+                    console.log('niet gevonden')
+                    //nog bekijken
+
+                }
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     function getIngevuldProfiel(profiel) {
@@ -81,17 +84,17 @@ window.onload = function () {
 
     document.querySelector('button.update').addEventListener('click', function (e) {
         e.preventDefault();
-        let profielId =  gebruikersId;
+        let profielId = gebruikersId;
 
         //reset error meldingen
         errorMsg = "";
         let registratieVelden = document.querySelectorAll('form#registratie input');
-        registratieVelden.forEach(function(input) {
-            input.addEventListener('focus', function() {
+        registratieVelden.forEach(function (input) {
+            input.addEventListener('focus', function () {
                 input.classList.remove("is-invalid");
             })
         })
-             
+
         // Data ophalen uit id
         let familienaam = eFamilienaam.value;
         let voornaam = eVoornaam.value;
@@ -176,33 +179,33 @@ window.onload = function () {
                     errorMsg += "Niet alle velden werden ingevuld.<br>";
                     console.log("Niet alle waarden werden ingevuld");
                 }
-                
+
             }
         }
 
-        let url=rooturl+'/profiel/read_one.php?id='+profielId;
+        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
         if (valid) {
             fetch(url)
                 .then(function (resp) {
                     return resp.json();
-                })                         
-                .then(function (data) {                        
-                    let urlUpdate=rooturl+'/profiel/update.php';
+                })
+                .then(function (data) {
+                    let urlUpdate = rooturl + '/profiel/update.php';
 
-                    data['familienaam']=familienaam;
-                    data['voornaam']=voornaam;
-                    data['geboortedatum']=geboortedatum;
-                    data['email']=email;
-                    data['nickname']=nickname;
-                    data['foto']=foto;
-                    data['beroep']=beroep;
-                    data['sexe']=sexe;
-                    data['haarkleur']=haarkleur;
-                    data['oogkleur']=oogkleur;
-                    data['grootte']=grootte;
-                    data['gewicht']=gewicht;
-                    data['wachtwoord']=wachtwoord;
-                    data['lovecoins']=lovecoins;
+                    data['familienaam'] = familienaam;
+                    data['voornaam'] = voornaam;
+                    data['geboortedatum'] = geboortedatum;
+                    data['email'] = email;
+                    data['nickname'] = nickname;
+                    data['foto'] = foto;
+                    data['beroep'] = beroep;
+                    data['sexe'] = sexe;
+                    data['haarkleur'] = haarkleur;
+                    data['oogkleur'] = oogkleur;
+                    data['grootte'] = grootte;
+                    data['gewicht'] = gewicht;
+                    data['wachtwoord'] = wachtwoord;
+                    data['lovecoins'] = lovecoins;
 
                     console.log(JSON.stringify(data));
 
@@ -238,4 +241,4 @@ window.onload = function () {
             toonerrorMsg(errorMsg);
         }
     });
-}
+});

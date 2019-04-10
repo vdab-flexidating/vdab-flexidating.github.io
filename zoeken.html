@@ -19,18 +19,21 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="#">FlexiDating</a>
+            <a class="navbar-brand" href="index.html">FlexiDating</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
+                <ul class="navbar-nav mr-auto py-2  mt-lg-0">
+                    <li class="nav-item">
                         <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="zoeken.html">Zoeken</a>
+                        <a class="nav-link active" href="">Zoeken</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="berichten.html">Berichten</a>
                     </li>
                 </ul>
                 <div class="d-none niet-ingelogd form-inline my-2  ">
@@ -54,8 +57,9 @@
                             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Hoi single
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/profiel.html">Mijn account</a>
+                            <a class="dropdown-item" href="/profielbewerken.html">Profiel bewerken</a>
                             <a class="dropdown-item" href="/berichten.html">Berichten</a>
                             <a id="logout" class="dropdown-item" href="#">Logout</a>
                         </div>
@@ -70,6 +74,10 @@
         <div class=""></div>
         <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
     </header>
+    <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+    </div>
+    <div class="alert alert-success d-none" role="alert" id="succesMsg">
+    </div>
     <div class="container">
         <h2 class="h2 card-title">Laten we kennismaken &#x1F495;</h2>
     </div>
@@ -278,7 +286,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
-    
+
     <script src="assets/nuttig_lib.js"></script>
     <script src="assets/main.js"> </script>
     <script src="assets/zoeken.js"> </script>
