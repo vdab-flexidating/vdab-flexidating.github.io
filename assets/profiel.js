@@ -3,7 +3,7 @@ var eError = document.querySelector("h1.error");
 var eProfiel = document.querySelector("div.profiel");
 var eNickname = document.querySelector(".profiel .nickname");
 var eFoto = document.querySelector(".profiel .profielfoto img");
-var eProfielVelden = document.querySelector(".profiel .gegevens dl").childNodes;
+var eProfielVelden = document.querySelectorAll(".profiel .gegevens dl div");
 var eFamilienaam = document.querySelector(".profiel .familienaam dd");
 var eVoornaam = document.querySelector(".profiel .voornaam dd");
 var eGeboortedatum = document.querySelector(".profiel .geboortedatum dd");
@@ -74,7 +74,7 @@ if (zoekId) {
 
 	//	toon alle velden behalve lovecoins + verberg button
 		for (var i = 0; i < eProfielVelden.length; i++) {
-			if (eProfielVelden[i].classList && !profielVelden[i].classList.contains('lovecoins')) {
+			if (eProfielVelden[i].classList && !eProfielVelden[i].classList.contains('lovecoins')) {
 				eProfielVelden[i].classList.remove('d-none');
 			}		
 		}
@@ -125,7 +125,7 @@ else if (eigenProfiel) {
 }
 
 //voorlopig vast id
-getIngevuldProfielById(5071);
+getIngevuldProfielById(5112);
 
 function getIngevuldProfielById(id) {
 	/* haalt profiel op o.b.v. id en vult profiel in */
@@ -145,7 +145,6 @@ function getIngevuldProfielById(id) {
 	        	eError.classList.add('d-none');
 	        }
 	        else {
-	        	console.log('niet');
 	        	eError.innerHTML = "De gevraagde gebruiker werd niet gevonden";
 	        	
 	        }

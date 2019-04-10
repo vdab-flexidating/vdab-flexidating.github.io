@@ -65,10 +65,6 @@ div.profiel div.profielfoto {
     max-width: 315px;
 }
 
-div.profiel div.gegevens {
-    max-width: 315px;
-}
-
 @media (min-width: 576px) {}
 
 @media (min-width: 768px) {}

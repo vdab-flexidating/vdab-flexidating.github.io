@@ -87,6 +87,11 @@ function toonerrorMsg(errorMsg) {
     eError.innerHTML = errorMsg;
 }
 
+function verbergErrorMsg() {
+    let eError = document.getElementById("errorMsg");
+    eError.classList.add("d-none");
+}
+
 function cookieOfLokaal() {
     if (localStorage) {
         return "sLocal"

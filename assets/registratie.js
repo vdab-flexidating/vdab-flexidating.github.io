@@ -1,9 +1,22 @@
 window.onload = function () {
 
+    var minLeeftijd = 18;
+    var minLengtePass = 6;
+
     document.getElementById('knop8').addEventListener('click', function (e) {
         e.preventDefault();
         let url = rooturl + '/profiel/create.php';
 
+        //reset error meldingen
+        errorMsg = "";
+        verbergErrorMsg();
+        let registratieVelden = document.querySelectorAll('form#registratie input');
+        registratieVelden.forEach(function(input) {
+            input.addEventListener('focus', function() {
+                input.classList.remove("is-invalid");
+            })
+        })
+             
         // Data ophalen uit id
         let familienaam = document.getElementById('familienaam').value;
         let voornaam = document.getElementById('voornaam').value;
@@ -39,12 +52,12 @@ window.onload = function () {
         let verschilInJaar = Math.ceil(verschil / (1000 * 60 * 60 * 24 * 365.25));
         if (verschilInJaar < minLeeftijd) {
             valid = false;
-            errorMsg += "je bent nog te jong<br>";
+            errorMsg += "Gebruikers moeten ouder zijn dan 18.<br>";
             document.getElementById('geboortedatum').
             classList.add("is-invalid");
         }
 
-        // Lengte groter dan nul
+        // Lengte > 0
         if (grootte <= 0) {
             valid = false;
             errorMsg += "Lengte moet groter zijn dan nul.<br>";
@@ -52,7 +65,7 @@ window.onload = function () {
             classList.add("is-invalid");
         }
 
-        // Gewicht groter dan nul
+        // Gewicht > 0
         if (gewicht <= 0) {
             valid = false;
             errorMsg += "Gewicht moet groter zijn dan nul.<br>";
@@ -60,7 +73,7 @@ window.onload = function () {
             classList.add("is-invalid");
         }
 
-        // Wachtwoorden komen overeen en > 6
+        // Wachtwoorden komen overeen en > minLengtePass
         if (wachtwoord1.length >= minLengtePass) {
             if (wachtwoord1 != wachtwoord2) {
                 valid = false;
@@ -82,13 +95,16 @@ window.onload = function () {
         let allesIngevuld = true;
         let alleWaarden = document.querySelectorAll('#registratie input:not([type="radio"])');
         for (let i = 0; i < alleWaarden.length; i++) {
-            if (!alleWaarden[i].value.length && allesIngevuld) {
+            if (!alleWaarden[i].value.length) {
                 valid = false;
-                allesIngevuld = false;
-                errorMsg += "Niet alle velden werden ingevuld.<br>";
-                console.log("Niet alle waarden werden ingevuld");
+                alleWaarden[i].classList.add("is-invalid");
+                if (allesIngevuld) {
+                    allesIngevuld = false;
+                    errorMsg += "Niet alle velden werden ingevuld.<br>";
+                    console.log("Niet alle waarden werden ingevuld");
+                }
+                
             }
-
         }
 
         if (valid) {
@@ -125,38 +141,32 @@ window.onload = function () {
                     console.log(data);
                     gebruikersId = parseInt(data.id);
 
-                })
-                .catch(function (error) {
-                    console.log(error);
                     // 400 of 503 error tonen
                     let konNietAanmaken = "Kon profiel niet aanmaken.";
                     let dataOnvolledig = "Kon profiel niet aanmaken. Data is onvolledig.";
 
-                    if (dataOnvolledig == error) {
+                    if (dataOnvolledig == data.message) {
                         errorMsg += "Niet alle velden werden ingevuld.<br>";
                     }
-                    if (konNietAanmaken == error) {
+                    if (konNietAanmaken == data.message) {
                         // De enigste error die we niet opvangen is de controle op uniekheid nickname
                         errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
                         document.getElementById('nickname').
                         classList.add("is-invalid");
-
                     }
+                    // Toon de error
+                    if (errorMsg != "") {
+                        toonerrorMsg(errorMsg);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-
-
         }
 
         // Toon de error
         if (errorMsg != "") {
             toonerrorMsg(errorMsg);
         }
-
     });
-}
-
-function toonerrorMsg(errorMsg) {
-    let eError = document.getElementById("errorMsg");
-    eError.classList.remove("d-none");
-    eError.innerHTML = errorMsg;
 }
