@@ -25,36 +25,47 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
+                <ul class="navbar-nav mr-auto py-2  mt-lg-0">
+                    <li class="nav-item">
                         <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="zoeken.html">Zoeken</a>
+                        <a class="nav-link active" href="">Zoeken</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="berichten.html">Berichten</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0 d-none">
-                    <button class="btn btn-outline-light" type="submit" data-toggle="modal"
-                        data-target="#loginModal">Aanmelden</button>
-                </form>
-                <div class=" form-inline my-2 mr-2 ">
-                    <div class="form-group d-none">
-                        <input type="number" class="form-control" id="persoonId" value="7" readonly>
+                <div class="d-none niet-ingelogd form-inline my-2  ">
+                    <div class="form-group form-inline">
+                        <input type="email" class="nput-sm form-control" id="loginNickname" placeholder="Fluffy Bunny">
                     </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group form-inline">
                         <label for="" class="sr-only">Wachtwoord</label>
-                        <input type="password" class="form-control" id="wachtwoord" placeholder="wachtwoord">
+                        <input type="password" class=" form-control" id="LoginWachtwoord" placeholder="wachtwoord">
                     </div>
-                    <button type="submit" class=" btn btn-outline-light" id="login">Login</button>
-                </div>
+                    <button type="submit" class="form-inline btn btn-outline-light" id="login">Login</button>
 
-                <div class="form-inline my-2">
-                    <a href="registratie.html"> <button class="btn btn-outline-light" type="submit">Maak een
-                            account</button></a>
+                    <div class=" form-inline ">
+                        <a href="registratie.html"> <button class="btn btn-outline-light"
+                                type="submit">Registreer</button></a>
+                    </div>
                 </div>
+                <ul class="d-none ingelogd navbar-nav mt-2 mt-lg-0">
+                    <li class=" nav-item dropdown">
+                        <a class="nav-link dropdown-toggle loginNickname" href="#" id="navbarDropdownMenuLink"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hoi single
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/profiel.html">Mijn account</a>
+                            <a class="dropdown-item" href="/profielbewerken.html">Profiel bewerken</a>
+                            <a class="dropdown-item" href="/berichten.html">Berichten</a>
+                            <a id="logout" class="dropdown-item" href="#">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </nav>
@@ -63,31 +74,207 @@
         <div class=""></div>
         <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
     </header>
+    <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+    </div>
+    <div class="alert alert-success d-none" role="alert" id="succesMsg">
+    </div>
+    <div class="container">
+        <h2 class="h2 card-title">Laten we kennismaken &#x1F495;</h2>
+    </div>
     <div class="container">
         <div class="row">
-            <div class="col-1">
-
+            <div class="col-md-3">
+                <div class="form-row">
+                    <label>Haal pagina met alle profielen</label>
+                </div>
+                <div class="form-row">
+                    <!-- <div class="form-group col-md-4"> -->
+                    <!-- <label>Pagina</label> -->
+                    <!-- <input type="text" class="form-control" id="input12_1" value="1" placeholder="Pagina"> -->
+                    <!-- </div> -->
+                    <!-- </div>
+                <div class="form-row"> -->
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">Aantal per pagina</label>
+                    <div class="form-group col-md-4">
+                        <select class="form-control" id="input12_2">
+                            <!-- <option selected>Kies aantal...</option> -->
+                            <option value="12" selected>12</option>
+                            <option value="24">24</option>
+                            <option value="36">36</option>
+                            <option value="48">48</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="knop12">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Zoek profielen volgens grootte</label>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">Groote</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input3_1" value="170">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">GrooteOperator</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input3_2" value="gr">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">OrderBy</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input3_3" value="grootte">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="knop3">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Zoek profielen met asterix</label>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">Voornaam</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input4_1" value="Dar%">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="knop4">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Fuzzy zoeken naar profielen</label>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">Voornaam</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input13_1" value="Dar">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <input type="checkbox" class="form-check-input" id="input13_2">
+                        <label class="form-check-label">Fuzzy</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="knop13">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Zoek profielen volgens geslacht</label>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">Geslacht</label>
+                    <div class="form-group col-md-4">
+                        <select class="form-control" id="input5_1">
+                            <option value="%" selected="">alle geslachten</option>
+                            <option value="v">v</option>
+                            <option value="m">m</option>
+                            <option value="x">x</option>
+                            <option value="%">%</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="knop5">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Zoek profielen (met range)</label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <div class="form-group">
+                            <label for="">Minimum geboorteDatum</label>
+                            <input type="date" class="form-control" value="1990-01-01" name="" id="input11_1"
+                                aria-describedby="helpId" placeholder="">
+                            <!-- <small id="helpId" class="form-text text-muted">Help text</small> -->
+                        </div>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <div class="form-group">
+                            <label for="">Maximum geboorteDatum</label>
+                            <input type="date" class="form-control" value="1990-02-01" name="" id="input11_2"
+                                aria-describedby="helpId" placeholder="">
+                            <!-- <small id="helpId" class="form-text text-muted">Help text</small> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-5 col-form-label">Minimum grootte</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input11_3" value="160">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-5 col-form-label">Maximum grootte</label>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="input11_4" value="195">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-secondary" id="knop11">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Zoek profielen geboren vanaf</label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <div class="form-group">
+                            <label for="">GeboorteDatum</label>
+                            <input type="date" class="form-control" value="1980-01-01" name="" id="input6_1"
+                                aria-describedby="helpId" placeholder="">
+                            <!-- <small id="helpId" class="form-text text-muted">Help text</small> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">Operator</label>
+                    <div class="form-group col-md-4">
+                        <select class="form-control" id="input6_2">
+                            <option value="st" selected="">ouder</option>
+                            <option value="gt">jonger</option>
+                            <option value="eq">even oud</option>
+                            <option value="steq">ouder of even oud</option>
+                            <option value="gteq">jonger of even oud</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-secondary" id="knop6">
+                            Zoeken
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="col-2" id="prof0">
-                2 of 2
-            </div>
-            <div class="col-2" id="prof1">
-                2 of 2
-            </div>
-            <div class="col-2" id="prof2">
-                2 of 2
-            </div>
-            <div class="col-2" id="prof3">
-                2 of 2
-            </div>
-            <div class="col-2" id="prof4">
-                2 of 2
-            </div>
-            <div class="col-1">
-
+            <div class="col-md-8">
+                <div class="card-wrap" id="persoon">
+                </div>
+                <nav aria-label="Page navigation" class="d-block" id="pagenavigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -99,6 +286,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+
+    <script src="assets/nuttig_lib.js"></script>
     <script src="assets/main.js"> </script>
     <script src="assets/zoeken.js"> </script>
 </body>

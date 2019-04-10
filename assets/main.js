@@ -1,773 +1,365 @@
+/* Global vars
+ ****************/
+var errorMsg = "";
+var gebruikersId;
+var gebruiker;
+var sStorage;
 var rooturl = "https://scrumserver.tenobe.org/scrum/api";
+
+$(function () {
+
+    if (sStorage == false) {
+        console.log("Geen cookies of localStorage");
+    }
+
+    gebruiker = haalUitStorage("gebruiker");
+
+    /* DEBUG 
+     ***********************/
+    // plaatsInStorage("iLike", "trains");
+    // let ikHouVan = haalUitStorage("iLike"); //zowel strings als 
+    // console.log("i like " + ikHouVan);
+    /* END DEBUG */
+
+    isIngelogd();
+
+
+    document.getElementById('login').addEventListener('click', function (e) {
+        gebruikersId = login();
+        // Number.isInteger(data.id) && !oGebruiker ? haalGebruikersInfoOp(gebruikersId) : false;
+    });
+
+    document.getElementById('logout').addEventListener('click', function (e) {
+        logout();
+    });
+
+
+});
+
+function getRootUrl() {
+    return rooturl;
+}
 
 function changeURL(sNewRoot) {
     rooturl = sNewRoot;
     console.log('root set to : ' + rooturl)
 }
 
-/* Global vars
- ****************/
-var minLeeftijd = 18;
-var minLengtePass = 6;
-var errorMsg = "";
-var oData;
-var oaProf10 = [];
-// (function haalAlleDataOp() {
-//     let url = rooturl + '/profiel/read.php';
+/****** 
+ * Alles over inloggen 
+ ****/
+/****
+ * @returns:
+ * - object van ingelogde gebruiker
+ * - of false
+ *****/
+function isIngelogd() {
+    // Toon juiste menu
+    let eUitgelogd = document.querySelectorAll(".niet-ingelogd");
+    let eIngelogd = document.querySelectorAll(".ingelogd");
 
-//     fetch(url)
-//         .then(function (resp) {
-//             return resp.json();
-//         })
-//         .then(function (data) {
-//             oData = data;
-//             console.log(oData);
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
+    if (!gebruiker) {
+        // Indien geen gebruiker 
+        console.log("Niet ingelogd");
+        toonerrorMsg("Niet ingelogd.<br>");
 
-// })();
-// })();
+        for (const element of eUitgelogd) {
+            element.classList.remove("d-none");
+        }
+        for (const element of eIngelogd) {
+            element.classList.add("d-none");
+        }
+        return false;
+    } else {
+        // Ingelogd
+        // plaats nickname
+        let eNickname = document.querySelector(".loginNickname");
+        eNickname.innerHTML = gebruiker.nickname;
 
-var gebruikersId;
-var gebruiker;
+        // toon menu
+        for (const element of eUitgelogd) {
+            element.classList.add("d-none");
+        }
+        for (const element of eIngelogd) {
+            element.classList.remove("d-none");
+        }
+        return gebruiker;
+    }
+}
 
+/*****
+ * @TODO nickname controle niet hoofdlettergevoelig maken
+ */
+function login() {
 
-// (function haalAlleDataOp() {
-//     // TODO: plaats alle data een localStorage, en pas pas aan bij nieuwe id's 
-//     let url = rooturl + '/profiel/read.php';
+    let nickname = document.getElementById('loginNickname').value;
+    let wachtwoord = document.getElementById('LoginWachtwoord').value;
 
-//     fetch(url)
-//         .then(function (resp) {
-//             return resp.json();
-//         })
-//         .then(function (data) {
-//             oData = data;
-//             console.log(oData);
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
+    url = rooturl + '/profiel/authenticate.php';
+    //let url = 'http://scrumserver.tenobe.org/scrum/api/profiel/authenticate.php"'
 
-// })();
-
-window.onload = function () {
-
-
-    // alert("hello");
-
-    /*
-    --------------------------------------
-    -- knoppen voor profielen
-    --------------------------------------
-    */
-
-
-
-
-
-    function toonerrorMsg(errorMsg) {
-        let eError = document.getElementById("errorMsg");
-        eError.classList.remove("d-none");
-        eError.innerHTML = errorMsg;
+    let data = {
+        nickname: nickname,
+        wachtwoord: wachtwoord
     }
 
-    // document.getElementById('knop12').addEventListener('click', function (e) {
-    //     let page = document.getElementById('input12_1').value;
-    //     let pageSize = document.getElementById('input12_2').value;
-
-    //     let url = rooturl + '/profiel/read.php?page=' + page + '&pageSize=' + pageSize;;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    document.getElementById('login').addEventListener('click', function (e) {
-        let profielId = document.getElementById('persoonId').value;
-
-
-        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
-
-        fetch(url)
-            .then(function (resp) {
-                return resp.json();
-            })
-            .then(function (data) {
-                console.log(data);
-                gebruiker = data;
-                gebruikersId = gebruiker.id;
-                console.log(gebruiker);
-
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
     });
 
-
-
-    // document.getElementById('knop3').addEventListener('click', function (e) {
-    //     let grootte = document.getElementById('input3_1').value;
-    //     let grootteOperator = document.getElementById('input3_2').value;
-    //     let orderby = document.getElementById('input3_3').value;
-
-    //     let url = rooturl + '/profiel/search.php?grootte=' + grootte + '&grootteOperator=' + grootteOperator + '&orderBy=' + orderby;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop4').addEventListener('click', function (e) {
-    //     let voornaam = document.getElementById('input4_1').value;
-
-    //     let url = rooturl + '/profiel/search.php?voornaam=' + voornaam;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop13').addEventListener('click', function (e) {
-    //     let nickname = document.getElementById('input13_1').value;
-    //     let fuzzy = document.getElementById('input13_2').checked;
-
-    //     let url = rooturl + '/profiel/search.php?voornaam=' + nickname;
-
-    //     if (fuzzy) {
-    //         url += '&voornaamFuzzy=1';
-    //     }
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop5').addEventListener('click', function (e) {
-    //     let geslacht = document.getElementById('input5_1').value;
-
-    //     let url = rooturl + '/profiel/search.php?sexe=' + geslacht;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop11').addEventListener('click', function (e) {
-    //     let rangeMinGeboortedatum = document.getElementById('input11_1').value;
-    //     let rangeMaxGeboortedatum = document.getElementById('input11_2').value;
-
-    //     let rangeMinGrootte = document.getElementById('input11_3').value;
-    //     let rangeMaxGrootte = document.getElementById('input11_4').value;
-
-    //     let url = rooturl + '/profiel/search.php'
-    //     url += '?geboortedatumOperator=range&rangeMinGeboortedatum=' + rangeMinGeboortedatum + '&rangeMaxGeboortedatum=' + rangeMaxGeboortedatum;
-    //     url += '&grootteOperator=range&rangeMinGrootte=' + rangeMinGrootte + '&rangeMaxGrootte=' + rangeMaxGrootte;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop6').addEventListener('click', function (e) {
-    //     let geboortedatum = document.getElementById('input6_1').value;
-    //     let geboortedatumOperator = document.getElementById('input6_2').value;
-
-    //     let url = rooturl + '/profiel/search.php?geboortedatum=' + geboortedatum + '&geboortedatumOperator=' + geboortedatumOperator;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop7').addEventListener('click', function (e) {
-    //     let profielId = document.getElementById('input7_1').value;
-    //     let nieuweVoornaam = document.getElementById('input7_2').value;
-
-    //     let url = rooturl + '/profiel/read_one.php?id=' + profielId;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         }) //haal de JSON op en stuur die als resultaat van je promise                         
-    //         .then(function (data) {
-    //             //nadat de vorige promise opgelost werd kwamen we in deze procedure tercht
-    //             //hier kunnen we nu , met het resultat (data) van de vorige promise, aan de slag
-    //             //we passen de voornaam aan en sturen ook dit terug zodat deze promise afgesloten kan worden                        
-    //             let urlUpdate = rooturl + '/profiel/update.php';
-
-    //             data['voornaam'] = nieuweVoornaam;
-
-    //             var request = new Request(urlUpdate, {
-    //                 method: 'PUT',
-    //                 body: JSON.stringify(data),
-    //                 headers: new Headers({
-    //                     'Content-Type': 'application/json'
-    //                 })
-    //             });
-    //             fetch(request)
-    //                 .then(function (resp) {
-    //                     return resp.json();
-    //                 })
-    //                 .then(function (data) {
-    //                     console.log(data);
-    //                 })
-    //                 .catch(function (error) {
-    //                     console.log(error);
-    //                 });
-
-
-
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop8').addEventListener('click', function (e) {
-    //     e.preventDefault();
-    //     let url = rooturl + '/profiel/create.php';
-
-    //     // Data ophalen uit id
-    //     let familienaam = document.getElementById('familienaam').value;
-    //     let voornaam = document.getElementById('voornaam').value;
-    //     let geboortedatum = document.getElementById('geboortedatum').value;
-    //     let email = document.getElementById('email').value;
-    //     let nickname = document.getElementById('nickname').value;
-    //     let foto = document.getElementById('foto').value;
-    //     let beroep = document.getElementById('beroep').value;
-
-    //     let sexe = document.getElementsByName('sexe');
-    //     for (let i = 0; i < sexe.length; i++) {
-    //         if (sexe[i].checked) {
-    //             sexe = sexe[i].value;
-    //         }
-    //     }
-
-    //     let haarkleur = document.getElementById('haarkleur').value;
-    //     let oogkleur = document.getElementById('oogkleur').value;
-    //     let grootte = document.getElementById('grootte').value;
-    //     let gewicht = document.getElementById('gewicht').value;
-    //     let wachtwoord = document.getElementById('wachtwoord').value;
-    //     let wachtwoord2 = document.getElementById('wachtwoord2').value;
-    //     let lovecoins = document.getElementById('lovecoins').value;
-
-    //     /* Validatie
-    //      *********************/
-    //     var valid = true;
-    //     // Geboortejaar
-    //     let oGeboortedatum = new Date(geboortedatum);
-    //     let vandaag = new Date();
-    //     // Ouder dan 18
-    //     let verschil = vandaag.getTime() - oGeboortedatum.getTime();
-    //     let verschilInJaar = Math.ceil(verschil / (1000 * 60 * 60 * 24 * 365.25));
-    //     if (verschilInJaar < minLeeftijd) {
-    //         valid = false;
-    //         errorMsg += "je bent nog te jong<br>";
-    //         document.getElementById('geboortedatum').
-    //         classList.add("is-invalid");
-    //     }
-    //     // Nickname is uniek
-    //     console.log(oData);
-    //     for (let i = 0; i < oData.length; i++) {
-    //         if (nickname == oData[i].nickname) {
-    //             valid = false;
-    //             errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
-    //             document.getElementById('nickname').
-    //             classList.add("is-invalid");
-    //         }
-    //     }
-
-    //     // Lengte groter dan nul
-    //     if (grootte <= 0) {
-    //         valid = false;
-    //         errorMsg += "Lengte moet groter zijn dan nul.<br>";
-    //         document.getElementById('grootte').
-    //         classList.add("is-invalid");
-    //     }
-
-    //     // Gewicht groter dan nul
-    //     if (gewicht <= 0) {
-    //         valid = false;
-    //         errorMsg += "Gewicht moet groter zijn dan nul.<br>";
-    //         document.getElementById('gewicht').
-    //         classList.add("is-invalid");
-    //     }
-
-    //     // Wachtwoorden komen overeen en > 6
-    //     if (wachtwoord.length >= minLengtePass) {
-    //         if (wachtwoord != wachtwoord2) {
-    //             valid = false;
-    //             errorMsg += "Wachtwoorden komen niet overeen<br>";
-
-    //             document.getElementById('wachtwoord').
-    //             classList.add("is-invalid");
-    //             document.getElementById('wachtwoord2').
-    //             classList.add("is-invalid");
-    //         }
-    //     } else {
-    //         valid = false;
-    //         errorMsg += "Je wachtwoord is te klein, minimum " + minLengtePass + " karakters<br>";
-
-    //         document.getElementById('wachtwoord').
-    //         classList.add("is-invalid");
-    //     }
-
-    //     let allesIngevuld = true;
-    //     let alleWaarden = document.querySelectorAll('#registratie input:not([type="radio"])');
-    //     for (let i = 0; i < alleWaarden.length; i++) {
-    //         if (!alleWaarden[i].value.length && allesIngevuld) {
-    //             valid = false;
-    //             allesIngevuld = false;
-    //             errorMsg += "Niet alle velden werden ingevuld.<br>";
-    //             console.log("Niet alle waarden werden ingevuld");
-    //         }
-
-    //     }
-
-    //     if (valid) {
-    //         let data = {
-    //             familienaam: familienaam,
-    //             voornaam: voornaam,
-    //             geboortedatum: geboortedatum,
-    //             email: email,
-    //             nickname: nickname,
-    //             foto: foto,
-    //             beroep: beroep,
-    //             sexe: sexe,
-    //             haarkleur: haarkleur,
-    //             oogkleur: oogkleur,
-    //             grootte: grootte,
-    //             gewicht: gewicht,
-    //             wachtwoord: wachtwoord,
-    //             lovecoins: lovecoins
-    //         }
-
-    //         var request = new Request(url, {
-    //             method: 'POST',
-    //             body: JSON.stringify(data),
-    //             headers: new Headers({
-    //                 'Content-Type': 'application/json'
-    //             })
-    //         });
-
-    //         fetch(request)
-    //             .then(function (resp) {
-    //                 return resp.json();
-    //             })
-    //             .then(function (data) {
-    //                 console.log(data);
-    //                 gebruikersId = parseInt(data.id);
-
-    //             })
-    //             .catch(function (error) {
-    //                 console.log(error);
-    //                 // 400 of 503 error tonen
-    //                 let konNietAanmaken = "Kon profiel niet aanmaken.";
-    //                 let dataOnvolledig = "Kon profiel niet aanmaken. Data is onvolledig.";
-
-    //                 if (dataOnvolledig == error) {
-    //                     errorMsg += "Niet alle velden werden ingevuld.<br>";
-    //                 }
-    //                 if (konNietAanmaken == error) {
-    //                     // De enigste error die we niet opvangen is de controle op uniekheid nickname
-    //                     errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
-    //                     document.getElementById('nickname').
-    //                     classList.add("is-invalid");
-
-    //                 }
-    //             });
-
-
-    //     }
-
-
-    //     // Toon de error
-    //     if (errorMsg != "") {
-    //         toonerrorMsg(errorMsg);
-    //     }
-
-    // });
-
-    // document.getElementById('knop9').addEventListener('click', function (e) {
-    //     let profielId = document.getElementById('input9_1').value;
-
-    //     let url = rooturl + '/profiel/delete.php';
-
-    //     let data = {
-    //         id: profielId
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'DELETE',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop10').addEventListener('click', function (e) {
-    //     let nickname = document.getElementById('input10_1').value;
-    //     let wachtwoord = document.getElementById('input10_2').value;
-
-    //     let url = rooturl + '/profiel/authenticate.php';
-    //     //let url = 'http://scrumserver.tenobe.org/scrum/api/profiel/authenticate.php"'
-
-    //     let data = {
-    //         nickname: nickname,
-    //         wachtwoord: wachtwoord
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'POST',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // /*
-    // --------------------------------------
-    // -- knoppen voor berichten
-    // --------------------------------------
-    // */
-    // document.getElementById('knop20').addEventListener('click', function (e) {
-    //     let profielId = document.getElementById('input20_1').value;
-
-    //     let url = rooturl + '/bericht/read.php?profielId=' + profielId;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop21').addEventListener('click', function (e) {
-    //     let berichtId = document.getElementById('input21_1').value;
-
-    //     let url = rooturl + '/bericht/read_one.php?berichtId=' + berichtId;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop22').addEventListener('click', function (e) {
-    //     let vanId = document.getElementById('input22_1').value;
-    //     let naarId = document.getElementById('input22_2').value;
-    //     let bericht = document.getElementById('input22_3').value;
-
-    //     let url = rooturl + '/bericht/post.php';
-
-    //     let data = {
-    //         vanId: vanId,
-    //         naarId: naarId,
-    //         bericht: bericht,
-    //         status: "verzonden"
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'POST',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop23').addEventListener('click', function (e) {
-    //     let id = document.getElementById('input23_1').value;
-
-    //     let url = rooturl + '/bericht/delete.php';
-
-    //     let data = {
-    //         id: id
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'DELETE',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop24').addEventListener('click', function (e) {
-    //     let id = document.getElementById('input24_1').value;
-    //     let status = document.getElementById('input24_2').value;
-
-    //     let url = rooturl + '/bericht/zet_status.php';
-
-    //     let data = {
-    //         id: id,
-    //         status: status
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'PUT',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // /*
-    // --------------------------------------
-    // -- knoppen voor favorieten
-    // --------------------------------------
-    // */
-    // document.getElementById('knop30').addEventListener('click', function (e) {
-    //     let profielId = document.getElementById('input30_1').value;
-
-    //     let url = rooturl + '/favoriet/read.php?profielId=' + profielId;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop31').addEventListener('click', function (e) {
-    //     let id = document.getElementById('input31_1').value;
-
-    //     let url = rooturl + '/favoriet/read_one.php?id=' + id;
-
-    //     fetch(url)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop32').addEventListener('click', function (e) {
-    //     let mijnId = document.getElementById('input32_1').value;
-    //     let anderId = document.getElementById('input32_2').value;
-
-    //     let url = rooturl + '/favoriet/like.php';
-
-    //     let data = {
-    //         mijnId: mijnId,
-    //         anderId: anderId
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'POST',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-
-    // });
-
-    // document.getElementById('knop33').addEventListener('click', function (e) {
-    //     let id = document.getElementById('input33_1').value;
-
-    //     let url = rooturl + '/favoriet/delete.php';
-
-    //     let data = {
-    //         id: id
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'DELETE',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
-    // document.getElementById('knop40').addEventListener('click', function (e) {
-    //     let naam = document.getElementById('input40_1').value;
-    //     let afbeelding = document.getElementById('input40_2').value;
-
-    //     let url = rooturl + '/image/upload.php';
-
-    //     let data = {
-    //         naam: naam,
-    //         afbeelding: afbeelding
-    //     }
-
-    //     var request = new Request(url, {
-    //         method: 'POST',
-    //         body: JSON.stringify(data),
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json'
-    //         })
-    //     });
-
-    //     fetch(request)
-    //         .then(function (resp) {
-    //             return resp.json();
-    //         })
-    //         .then(function (data) {
-    //             console.log(data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // });
-
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+
+            if (data.message) {
+                if (data.id) {
+                    gebruikersId = parseInt(data.id);
+                    console.log("Gebruiker met id " + data.id + " heeft zich ingelogd.")
+                    plaatsInStorage("gebruikerId", data.id);
+
+                    Number.isInteger(gebruikersId) && !gebruiker ? haalGebruikersInfoOp(gebruikersId, true) : false;
+                    plaatsInStorage("gebruiker", gebruiker);
+
+                } else if (data.message == "Unauthorized") {
+                    toonerrorMsg("Verkeerde logingegevens");
+                } else {
+                    toonerrorMsg(data.message);
+                }
+            } else {
+                toonerrorMsg("Er kwam een onbekende fout voor.");
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
 
 }
 
+/**
+ * Logout dient op volgende momenten aagesproken te worden:
+ * - delete (evenals : verwijderVanStorage("alles"); )
+ * - logout button
+ */
+function logout() {
+    // haal alles uit storage
+    verwijderVanStorage("gebruiker");
+
+    // remove gebruikersinfo
+    gebruiker = "";
+
+    // controleer status
+    isIngelogd();
+}
+
+/**
+ * Haalt alle info op van een id
+ * @param {*} profielId haalt alle info op dmv id
+ * @param {*} inStoragePlaatsen indien true plaatst dit de de response in storage
+ */
+function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
+
+    let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            if (inStoragePlaatsen) {
+                plaatsInStorage("gebruiker", data);
+                gebruiker = data;
+            }
+            isIngelogd();
+
+            // Verwelkom gebruiker:
+            toonsuccesMsg("Dag " + gebruiker.nickname + ", je bent succesvol ingelogd. :) ");
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    return data;
+
+}
+
+
+/*********************** 
+ * Alles over storage
+ ***********************/
+/*** 
+ * @key is waar naar gezocht wordt, 
+ * @returnt value of een error
+ * @returnt false indien key niet aanwezig in storage
+ ***/
+function haalUitStorage(key) {
+
+    // var sStorage = cookieOfLokaal();
+
+    if (localStorage[key] || (sStorage == "sCookie" && getCookie(key))) {
+        // ingelogd
+        if (sStorage == "sCookie") {
+            return getCookie(key);
+        } else {
+            return JSON.parse(localStorage[key]);
+        }
+    } else if (sStorage) {
+        console.log(sStorage + " is de gekozen storage.");
+        console.log("Maar er zit niets in.");
+        return false;
+    } else {
+        errorMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
+        errorMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
+        return toonerrorMsg(errorMsg);
+    }
+
+}
+
+function plaatsInStorage(key, data) {
+    // var sStorage = cookieOfLokaal();
+    if (sStorage == "sCookie") {
+        var nAantalDagen = 100;
+        setCookie(key, JSON.stringify(data), nAantalDagen);
+        console.log("toegevoegd als cookie " + data);
+    } else if (sStorage == "sLocal") {
+        localStorage.setItem(key, JSON.stringify(data));
+        console.log("toegevoegd als localStorage " + data);
+    }
+    // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
+    // Bij 0 update de huidige pagina
+    // window.history.go(0);
+}
+
+/**
+ * @keys zijn alle keys welke je wilt verwijderen
+ * @keys = "alles" gaat alles uit de storage
+ */
+function verwijderVanStorage(...keys) {
+    if (keys != "alles") {
+        // verwijderd elke key
+        if (sStorage == "sCookie") {
+            keys.forEach(element => {
+                clearCookie(element);
+            });
+        } else if (sStorage == "sLocal") {
+            keys.forEach(element => {
+                localStorage.removeItem(element);
+            });
+
+        } else {
+            console.log("Er is geen storage");
+        }
+    } else {
+        // Verwijderd alle storage
+        if (sStorage == "sCookie") {
+            window.postMessage({
+                type: "CLEAR_COOKIES_EXTENSION_API"
+            }, "*");
+        } else if (sStorage == "sLocal") {
+            localStorage.clear();
+        }
+    }
+}
+
+/**
+ * Controleerd of er met localStorage moet gewerkt worden of met cookies
+ **/
+function cookieOfLokaal() {
+    if (localStorage) {
+        sStorage = "sLocal";
+    } else if (navigator.cookieEnabled) {
+        sStorage = "sCookie";
+        console.log('cookies OK');
+    } else {
+        return false;
+    }
+}
+
+/*
+ * Plaatst indien nodig het cookie bestand
+ */
+(function () {
+    if (cookieOfLokaal() != 'sLocal') {
+        var ref = window.document.getElementsByTagName('script')[0];
+        var script = window.document.createElement('script');
+        script.src = 'assets/nuttig_lib.js';
+        ref.parentNode.insertBefore(script, ref);
+        console.log("Cookiefile geladen");
+    }
+})();
+
+/************************* 
+ * Alles over alerts
+ ************************/
+function verbergMsg() {
+    // verberg en verwijder inhoud
+    let eError = document.getElementById("errorMsg");
+    if (eError) {
+        eError.classList.add("d-none");
+        eError = "";
+    }
+
+    let eSucces = document.getElementById("succesMsg");
+    if (eSucces) {
+        eSucces.classList.add("d-none");
+        eSucces.innerHTML = "";
+    }
+}
+
+function toonerrorMsg(msg) {
+    verbergMsg();
+    let eError = document.getElementById("errorMsg");
+    eError.classList.remove("d-none");
+    eError.innerHTML = msg;
+}
+
+function toonsuccesMsg(msg) {
+    verbergMsg();
+    let eSucces = document.getElementById("succesMsg");
+    eSucces.classList.remove("d-none");
+    eSucces.innerHTML = msg;
+}
+
+
+function getSterrenbeeld(geboortedatum) {
+    /* return sterrenbeeld op basis van geboortedatum */
+    let sterrenbeelden = ["Steenbok", "Waterman", "Vissen", "Ram", "Stier", "Tweelingen", "Kreeft", "Leeuw", "Maagd", "Weegschaal", "Schorpioen", "Boogschutter"]
+    let maand = geboortedatum.split('-')[1];
+    let dag = geboortedatum.split('-')[2];
+
+    if ((maand == 1 && dag <= 20) || (maand == 12 && dag >= 23)) {
+        return sterrenbeelden[0];
+    } else if ((maand == 1 && dag >= 21) || (maand == 2 && dag <= 18)) {
+        return sterrenbeelden[1];
+    } else if ((maand == 2 && dag >= 19) || (maand == 3 && dag <= 20)) {
+        return sterrenbeelden[2];
+    } else if ((maand == 3 && dag >= 21) || (maand == 4 && dag <= 20)) {
+        return sterrenbeelden[3];
+    } else if ((maand == 4 && dag >= 21) || (maand == 5 && dag <= 21)) {
+        return sterrenbeelden[4];
+    } else if ((maand == 5 && dag >= 22) || (maand == 6 && dag <= 21)) {
+        return sterrenbeelden[5];
+    } else if ((maand == 6 && dag >= 22) || (maand == 7 && dag <= 23)) {
+        return sterrenbeelden[6];
+    } else if ((maand == 7 && dag >= 24) || (maand == 8 && dag <= 23)) {
+        return sterrenbeelden[7];
+    } else if ((maand == 8 && dag >= 24) || (maand == 9 && dag <= 23)) {
+        return sterrenbeelden[8];
+    } else if ((maand == 9 && dag >= 24) || (maand == 10 && dag <= 23)) {
+        return sterrenbeelden[9];
+    } else if ((maand == 10 && dag >= 24) || (maand == 11 && dag <= 22)) {
+        return sterrenbeelden[10];
+    } else if ((maand == 11 && dag >= 23) || (maand == 12 && dag <= 21)) {
+        return sterrenbeelden[11];
+    }
+}
