@@ -20,28 +20,37 @@ window.onload = function () {
         console.log("Geen cookies of localStorage");
     }
 
-    gebruiker = haalUitStorage("gebruiker");
+    sGebruiker = haalUitStorage("gebruiker");
+    oGebruiker = JSON.parse(sGebruiker); // Voor objecten 
+
+    /* DEBUG 
+     ***********************/
+    plaatsInStorage("iLike", "trains");
+    let ikHouVan = haalUitStorage("iLike");
+    console.log("i like " + ikHouVan);
+    /* END DEBUG */
+
+    isIngelogd();
+
 
     document.getElementById('login').addEventListener('click', function (e) {
-        let profielId = document.getElementById('persoonId').value;
-
-        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
-
-        fetch(url)
-            .then(function (resp) {
-                return resp.json();
-            })
-            .then(function (data) {
-                console.log(data);
-                gebruiker = data;
-                gebruikersId = gebruiker.id;
-                plaatsInStorage("gebruiker", gebruiker);
-
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        gebruikersId = login();
+        // Number.isInteger(data.id) && !oGebruiker ? haalGebruikersInfoOp(gebruikersId) : false;
     });
+
+
+}
+
+function isIngelogd() {
+    if (!oGebruiker) {
+        // Indien geen gebruiker 
+        console.log("Niet ingelogd");
+        toonerrorMsg("Niet ingelogd.<br>");
+    } else {
+        // Ingelogd
+
+    }
+
 }
 
 function plaatsInStorage(key, data) {
@@ -56,37 +65,130 @@ function plaatsInStorage(key, data) {
     }
     // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
     // Bij 0 update de huidige pagina
-    window.history.go(0);
+    // window.history.go(0);
+}
+
+function login() {
+
+    let nickname = document.getElementById('loginNickname').value;
+    let wachtwoord = document.getElementById('LoginWachtwoord').value;
+
+    url = rooturl + '/profiel/authenticate.php';
+    //let url = 'http://scrumserver.tenobe.org/scrum/api/profiel/authenticate.php"'
+
+    let data = {
+        nickname: nickname,
+        wachtwoord: wachtwoord
+    }
+
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+
+            if (data.message) {
+                if (data.id) {
+                    gebruikersId = parseInt(data.id);
+                    console.log("Gebruiker met id " + data.id + " heeft zich ingelogd.")
+                    plaatsInStorage("gebruikerId", data.id);
+
+                    Number.isInteger(gebruikersId) && !oGebruiker ? gebruiker = haalGebruikersInfoOp(gebruikersId, true) : false;
+
+                    plaatsInStorage("gebruiker", gebruiker);
+                    isIngelogd();
+
+                    // return gebruikersId;
+
+                } else if (data.message == "Unauthorized") {
+                    toonerrorMsg("Verkeerde logingegevens");
+                } else {
+                    toonerrorMsg(data.message);
+                }
+            } else {
+                toonerrorMsg("Er kwam een onbekende fout voor.");
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
 }
 
 
-function haalUitStorage(key) {
 
+function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
+
+    let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            if (inStoragePlaatsen) {
+                plaatsInStorage("gebruiker", data);
+            }
+            return data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    return data;
+
+}
+
+/*** 
+ * @key is waar naar gezocht wordt, 
+ * @return value of een error
+ * @return false indien @key niet aanwezig in storage
+ ***/
+function haalUitStorage(key) {
 
     var sStorage = cookieOfLokaal();
 
-    if (localStorage.gebruiker || (sStorage == "sCookie" && getCookie(key))) {
+    if (localStorage[key] || (sStorage == "sCookie" && getCookie(key))) {
         // ingelogd
         if (sStorage == "sCookie") {
             return getCookie(key);
         } else {
-            return localStorage.key;
+            return localStorage[key];
         }
     } else if (sStorage) {
         console.log(sStorage + " is de gekozen storage.");
+        console.log("Maar er zit niets in.");
+        return false;
     } else {
         errorMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
         errorMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
-
         return toonerrorMsg(errorMsg);
     }
 
 }
 
-function toonerrorMsg(errorMsg) {
+function toonerrorMsg(msg) {
     let eError = document.getElementById("errorMsg");
     eError.classList.remove("d-none");
-    eError.innerHTML = errorMsg;
+    eError.innerHTML = msg;
+}
+
+function toonsuccesMsg(msg) {
+    let eSucces = document.getElementById("succesMsg");
+    eSucces.classList.remove("d-none");
+    eSucces.innerHTML = msg;
 }
 
 function cookieOfLokaal() {
