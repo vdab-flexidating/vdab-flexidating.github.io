@@ -85,7 +85,6 @@ window.onload = function () {
 
         //reset error meldingen
         errorMsg = "";
-        verbergErrorMsg();
         let registratieVelden = document.querySelectorAll('form#registratie input');
         registratieVelden.forEach(function(input) {
             input.addEventListener('focus', function() {
