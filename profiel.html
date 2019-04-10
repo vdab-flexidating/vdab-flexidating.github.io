@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Profiel</title>
 	<meta charset="utf-8">
@@ -10,34 +11,60 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/styles.css">
+
 </head>
+
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark fixed top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#">FlexiDating</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="zoeken.html">Zoeken</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="profiel.html">Profiel <span class="sr-only">(current)</span></a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <button class="btn btn-outline-light" type="submit" data-toggle="modal"
-                        data-target="#loginModal">Aanmelden</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+		<div class="container">
+			<a class="navbar-brand" href="#">FlexiDating</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="zoeken.html">Zoeken</a>
+					</li>
+				</ul>
+				<div class="d-none niet-ingelogd form-inline my-2  ">
+					<div class="form-group form-inline">
+						<input type="email" class="nput-sm form-control" id="loginNickname" placeholder="Fluffy Bunny">
+					</div>
+					<div class="form-group form-inline">
+						<label for="" class="sr-only">Wachtwoord</label>
+						<input type="password" class=" form-control" id="LoginWachtwoord" placeholder="wachtwoord">
+					</div>
+					<button type="submit" class="form-inline btn btn-outline-light" id="login">Login</button>
+
+					<div class=" form-inline ">
+						<a href="registratie.html"> <button class="btn btn-outline-light"
+								type="submit">Registreer</button></a>
+					</div>
+				</div>
+				<ul class="d-none ingelogd navbar-nav mt-2 mt-lg-0">
+					<li class=" nav-item dropdown">
+						<a class="nav-link dropdown-toggle loginNickname" href="#" id="navbarDropdownMenuLink"
+							role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Hoi single
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="/profiel.html">Mijn account</a>
+							<a class="dropdown-item" href="/berichten.html">Berichten</a>
+							<a id="logout" class="dropdown-item" href="#">Logout</a>
+						</div>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
     <div class="container">
     	<h1 class="my-4 error">Aan het zoeken</h1>
     </div>
@@ -62,7 +89,7 @@
 			    		<dd class="col-md"></dd>
 	    			</div>
 	    			<div class="row sterrenbeeld">
-	    				<dt class="col-md col-lg-4">Sterrenbeeld</dd>
+	    				<dt class="col-md col-lg-4">Sterrenbeeld</dt>
 			    		<dd class="col-md"></dd>
 	    			</div>
 	    			<div class="row email d-none">
@@ -113,8 +140,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    
-    <script src="assets/main.js"></script>
-    <script src="assets/profiel.js"></script>
+
+	<script src="assets/nuttig_lib.js"></script>
+	<script src="assets/main.js"></script>
+	<script src="assets/profiel.js"></script>
+
 </body>
+
 </html>
