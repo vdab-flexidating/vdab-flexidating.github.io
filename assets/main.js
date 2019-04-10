@@ -56,6 +56,7 @@ function isIngelogd() {
         // Ingelogd
 
 
+
         return gebruiker;
     }
 }

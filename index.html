@@ -30,28 +30,34 @@
                         <a class="nav-link" href="zoeken.html">Zoeken</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0 d-none">
-                    <button class="btn btn-outline-light" type="submit" data-toggle="modal"
-                        data-target="#loginModal">Aanmelden</button>
-                </form>
-                <div class=" form-inline my-2 mr-2 ">
-                    <div class="form-group d-none">
-                        <input type="number" class="form-control" id="persoonId" value="7" readonly>
-                    </div>
-                    <div class="form-group">
+                <div class="d-none niet-ingelogd form-inline my-2  ">
+                    <div class="form-group form-inline">
                         <input type="email" class="form-control" id="loginNickname" placeholder="Fluffy Bunny">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-inline">
                         <label for="" class="sr-only">Wachtwoord</label>
                         <input type="password" class="form-control" id="LoginWachtwoord" placeholder="wachtwoord">
                     </div>
-                    <button type="submit" class=" btn btn-outline-light" id="login">Login</button>
-                </div>
+                    <button type="submit" class="form-inline btn btn-outline-light" id="login">Login</button>
 
-                <div class="form-inline my-2">
-                    <a href="registratie.html"> <button class="btn btn-outline-light" type="submit">Maak een
-                            account</button></a>
+                    <div class="niet-ingelogd form-inline ">
+                        <a href="registratie.html"> <button class="btn btn-outline-light"
+                                type="submit">Registreer</button></a>
+                    </div>
                 </div>
+                <ul class=" navbar-nav mt-2 mt-lg-0">
+                    <li class="ingelogd nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Nickname
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/profiel.html">Mijn account</a>
+                            <a id="uitloggen" class="dropdown-item" href="#">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </nav>
