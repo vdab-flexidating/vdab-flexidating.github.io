@@ -47,22 +47,33 @@ window.onload = function () {
  * - of false
  *****/
 function isIngelogd() {
+    // Toon juiste menu
+    let eUitgelogd = document.querySelectorAll(".niet-ingelogd");
+    let eIngelogd = document.querySelectorAll(".ingelogd");
+
     if (!gebruiker) {
         // Indien geen gebruiker 
         console.log("Niet ingelogd");
         toonerrorMsg("Niet ingelogd.<br>");
+
+        for (const element of eUitgelogd) {
+            element.classList.remove("d-none");
+        }
+        for (const element of eIngelogd) {
+            element.classList.add("d-none");
+        }
         return false;
     } else {
         // Ingelogd
+        // plaats nickname
+        let eNickname = document.querySelector(".loginNickname");
+        eNickname.innerHTML = gebruiker.nickname;
 
-        // Toon juiste menu
-        let eToon = document.querySelectorAll(".niet-ingelogd");
-        let eVerberg = document.querySelectorAll(".ingelogd");
-
-        for (const element of eToon) {
+        // toon menu
+        for (const element of eUitgelogd) {
             element.classList.add("d-none");
         }
-        for (const element of eVerberg) {
+        for (const element of eIngelogd) {
             element.classList.remove("d-none");
         }
         return gebruiker;
