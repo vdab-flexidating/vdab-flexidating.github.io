@@ -35,6 +35,10 @@ window.onload = function () {
         // Number.isInteger(data.id) && !oGebruiker ? haalGebruikersInfoOp(gebruikersId) : false;
     });
 
+    document.getElementById('logout').addEventListener('click', function (e) {
+        logout();
+    });
+
 
 }
 
@@ -137,7 +141,27 @@ function login() {
 
 }
 
+/**
+ * Logout dient op volgende momenten aagesproken te worden:
+ * - delete (evenals : verwijderVanStorage("alles"); )
+ * - logout button
+ */
+function logout() {
+    // haal alles uit storage
+    verwijderVanStorage("gebruiker");
 
+    // remove gebruikersinfo
+    gebruiker = "";
+
+    // controleer status
+    isIngelogd();
+}
+
+/**
+ * Haalt alle info op van een id
+ * @param {*} profielId haalt alle info op dmv id
+ * @param {*} inStoragePlaatsen indien true plaatst dit de de response in storage
+ */
 function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 
     let url = rooturl + '/profiel/read_one.php?id=' + profielId;
@@ -167,13 +191,13 @@ function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 }
 
 
-/******** 
+/*********************** 
  * Alles over storage
- ****************/
+ ***********************/
 /*** 
  * @key is waar naar gezocht wordt, 
- * @return value of een error
- * @return false indien @key niet aanwezig in storage
+ * @returnt value of een error
+ * @returnt false indien key niet aanwezig in storage
  ***/
 function haalUitStorage(key) {
 
@@ -213,19 +237,54 @@ function plaatsInStorage(key, data) {
     // window.history.go(0);
 }
 
+/**
+ * @keys zijn alle keys welke je wilt verwijderen
+ * @keys = "alles" gaat alles uit de storage
+ */
+function verwijderVanStorage(...keys) {
+    if (keys != "alles") {
+        // verwijderd elke key
+        if (sStorage == "sCookie") {
+            keys.forEach(element => {
+                clearCookie(element);
+            });
+        } else if (sStorage == "sLocal") {
+            keys.forEach(element => {
+                localStorage.removeItem(element);
+            });
+
+        } else {
+            console.log("Er is geen storage");
+        }
+    } else {
+        // Verwijderd alle storage
+        if (sStorage == "sCookie") {
+            window.postMessage({
+                type: "CLEAR_COOKIES_EXTENSION_API"
+            }, "*");
+        } else if (sStorage == "sLocal") {
+            localStorage.clear();
+        }
+    }
+}
+
+/**
+ * Controleerd of er met localStorage moet gewerkt worden of met cookies
+ **/
 function cookieOfLokaal() {
     if (localStorage) {
         sStorage = "sLocal";
-        // return "sLocal";
     } else if (navigator.cookieEnabled) {
         sStorage = "sCookie";
-        // return "sCookie";
         console.log('cookies OK');
     } else {
         return false;
     }
 }
 
+/*
+ * Plaatst indien nodig het cookie bestand
+ */
 (function () {
     if (cookieOfLokaal() != 'sLocal') {
         var ref = window.document.getElementsByTagName('script')[0];
@@ -236,9 +295,9 @@ function cookieOfLokaal() {
     }
 })();
 
-/*** 
+/************************* 
  * Alles over alerts
- ***/
+ ************************/
 function verbergMsg() {
     // verberg
     let eError = document.getElementById("errorMsg");
