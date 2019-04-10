@@ -35,6 +35,10 @@ window.onload = function () {
         // Number.isInteger(data.id) && !oGebruiker ? haalGebruikersInfoOp(gebruikersId) : false;
     });
 
+    document.getElementById('logout').addEventListener('click', function (e) {
+        logout();
+    });
+
 
 }
 
@@ -137,6 +141,18 @@ function login() {
 
 }
 
+function logout() {
+    // haal alles uit storage
+    verwijderVanStorage("gebruiker");
+    verwijderVanStorage("alles");
+
+    // remove gebruikersinfo
+    gebruiker = "";
+
+    // controleer status
+    isIngelogd();
+}
+
 
 function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 
@@ -211,6 +227,38 @@ function plaatsInStorage(key, data) {
     // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
     // Bij 0 update de huidige pagina
     // window.history.go(0);
+}
+
+/****
+ * @keys zijn alle keys welke je wilt verwijderen
+ * indien @keys = "alles" gaat alles uit de storage
+ */
+function verwijderVanStorage(...keys) {
+
+
+    if (keys != "alles") {
+        if (sStorage == "sCookie") {
+            keys.forEach(element => {
+                clearCookie(element);
+            });
+        } else if (sStorage == "sLocal") {
+            keys.forEach(element => {
+                localStorage.removeItem(element);
+            });
+
+        } else {
+            console.log("Er is geen storage");
+        }
+    } else {
+        // Verwijder alle storage
+        if (sStorage == "sCookie") {
+            window.postMessage({
+                type: "CLEAR_COOKIES_EXTENSION_API"
+            }, "*");
+        } else if (sStorage == "sLocal") {
+            localStorage.clear();
+        }
+    }
 }
 
 function cookieOfLokaal() {
