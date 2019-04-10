@@ -237,9 +237,9 @@ function plaatsInStorage(key, data) {
     // window.history.go(0);
 }
 
-/*
+/**
  * @keys zijn alle keys welke je wilt verwijderen
- * indien @keys = "alles" gaat alles uit de storage
+ * @keys = "alles" gaat alles uit de storage
  */
 function verwijderVanStorage(...keys) {
     if (keys != "alles") {
@@ -268,9 +268,9 @@ function verwijderVanStorage(...keys) {
     }
 }
 
-/*
+/**
  * Controleerd of er met localStorage moet gewerkt worden of met cookies
- */
+ **/
 function cookieOfLokaal() {
     if (localStorage) {
         sStorage = "sLocal";
