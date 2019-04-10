@@ -55,8 +55,16 @@ function isIngelogd() {
     } else {
         // Ingelogd
 
+        // Toon juiste menu
+        let eToon = document.querySelectorAll(".niet-ingelogd");
+        let eVerberg = document.querySelectorAll(".ingelogd");
 
-
+        for (const element of eToon) {
+            element.classList.add("d-none");
+        }
+        for (const element of eVerberg) {
+            element.classList.remove("d-none");
+        }
         return gebruiker;
     }
 }
@@ -98,13 +106,8 @@ function login() {
                     console.log("Gebruiker met id " + data.id + " heeft zich ingelogd.")
                     plaatsInStorage("gebruikerId", data.id);
 
-                    Number.isInteger(gebruikersId) && !gebruiker ? gebruiker = haalGebruikersInfoOp(gebruikersId, true) : false;
-
+                    Number.isInteger(gebruikersId) && !gebruiker ? haalGebruikersInfoOp(gebruikersId, true) : false;
                     plaatsInStorage("gebruiker", gebruiker);
-                    isIngelogd();
-
-                    // Verwelkom gebruiker:
-                    toonsuccesMsg("Dag " + gebruiker.nickname + ", je bent succesvol ingelogd. :) ");
 
                 } else if (data.message == "Unauthorized") {
                     toonerrorMsg("Verkeerde logingegevens");
@@ -136,8 +139,13 @@ function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
             console.log(data);
             if (inStoragePlaatsen) {
                 plaatsInStorage("gebruiker", data);
+                gebruiker = data;
             }
-            return data;
+            isIngelogd();
+
+            // Verwelkom gebruiker:
+            toonsuccesMsg("Dag " + gebruiker.nickname + ", je bent succesvol ingelogd. :) ");
+
         })
         .catch(function (error) {
             console.log(error);
