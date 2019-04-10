@@ -38,6 +38,9 @@ window.onload = function () {
 
 }
 
+/****** 
+ * Alles over inloggen 
+ ****/
 /****
  * @returns:
  * - object van ingelogde gebruiker
@@ -56,22 +59,6 @@ function isIngelogd() {
         return gebruiker;
     }
 }
-
-function plaatsInStorage(key, data) {
-    // var sStorage = cookieOfLokaal();
-    if (sStorage == "sCookie") {
-        var nAantalDagen = 100;
-        setCookie(key, JSON.stringify(data), nAantalDagen);
-        console.log("toegevoegd als cookie " + data);
-    } else if (sStorage == "sLocal") {
-        localStorage.setItem(key, JSON.stringify(data));
-        console.log("toegevoegd als localStorage " + data);
-    }
-    // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
-    // Bij 0 update de huidige pagina
-    // window.history.go(0);
-}
-
 
 /*****
  * @TODO nickname controle niet hoofdlettergevoelig maken
@@ -136,7 +123,6 @@ function login() {
 }
 
 
-
 function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 
     let url = rooturl + '/profiel/read_one.php?id=' + profielId;
@@ -160,6 +146,10 @@ function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 
 }
 
+
+/******** 
+ * Alles over storage
+ ****************/
 /*** 
  * @key is waar naar gezocht wordt, 
  * @return value of een error
@@ -188,6 +178,47 @@ function haalUitStorage(key) {
 
 }
 
+function plaatsInStorage(key, data) {
+    // var sStorage = cookieOfLokaal();
+    if (sStorage == "sCookie") {
+        var nAantalDagen = 100;
+        setCookie(key, JSON.stringify(data), nAantalDagen);
+        console.log("toegevoegd als cookie " + data);
+    } else if (sStorage == "sLocal") {
+        localStorage.setItem(key, JSON.stringify(data));
+        console.log("toegevoegd als localStorage " + data);
+    }
+    // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
+    // Bij 0 update de huidige pagina
+    // window.history.go(0);
+}
+
+function cookieOfLokaal() {
+    if (localStorage) {
+        sStorage = "sLocal";
+        // return "sLocal";
+    } else if (navigator.cookieEnabled) {
+        sStorage = "sCookie";
+        // return "sCookie";
+        console.log('cookies OK');
+    } else {
+        return false;
+    }
+}
+
+(function () {
+    if (cookieOfLokaal() != 'sLocal') {
+        var ref = window.document.getElementsByTagName('script')[0];
+        var script = window.document.createElement('script');
+        script.src = 'assets/nuttig_lib.js';
+        ref.parentNode.insertBefore(script, ref);
+        console.log("Cookiefile geladen");
+    }
+})();
+
+/*** 
+ * Alles over alerts
+ ***/
 function verbergMsg() {
     // verberg
     let eError = document.getElementById("errorMsg");
@@ -214,26 +245,3 @@ function toonsuccesMsg(msg) {
     eSucces.classList.remove("d-none");
     eSucces.innerHTML = msg;
 }
-
-function cookieOfLokaal() {
-    if (localStorage) {
-        sStorage = "sLocal";
-        // return "sLocal";
-    } else if (navigator.cookieEnabled) {
-        sStorage = "sCookie";
-        // return "sCookie";
-        console.log('cookies OK');
-    } else {
-        return false;
-    }
-}
-
-(function () {
-    if (cookieOfLokaal() != 'sLocal') {
-        var ref = window.document.getElementsByTagName('script')[0];
-        var script = window.document.createElement('script');
-        script.src = 'assets/nuttig_lib.js';
-        ref.parentNode.insertBefore(script, ref);
-        console.log("Cookiefile geladen");
-    }
-})();
