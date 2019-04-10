@@ -7,34 +7,11 @@ function changeURL(sNewRoot) {
 
 /* Global vars
  ****************/
-var minLeeftijd = 18;
-var minLengtePass = 6;
 var errorMsg = "";
-var oData;
-var oaProf10 = [];
-// (function haalAlleDataOp() {
-//     let url = rooturl + '/profiel/read.php';
-
-//     fetch(url)
-//         .then(function (resp) {
-//             return resp.json();
-//         })
-//         .then(function (data) {
-//             oData = data;
-//             console.log(oData);
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
-
-// })();
-// })();
 
 var gebruikersId;
 var gebruiker;
 var sStorage;
-
-
 
 
 window.onload = function () {
@@ -44,13 +21,6 @@ window.onload = function () {
     }
 
     gebruiker = haalUitStorage("gebruiker");
-
-    function toonerrorMsg(errorMsg) {
-        let eError = document.getElementById("errorMsg");
-        eError.classList.remove("d-none");
-        eError.innerHTML = errorMsg;
-    }
-
 
     document.getElementById('login').addEventListener('click', function (e) {
         let profielId = document.getElementById('persoonId').value;
@@ -90,17 +60,6 @@ function plaatsInStorage(key, data) {
 }
 
 
-function cookieOfLokaal() {
-    if (localStorage) {
-        return "sLocal"
-    } else if (navigator.cookieEnabled) {
-        return "sCookie";
-        console.log('cookies OK');
-    } else {
-        return false;
-    }
-}
-
 function haalUitStorage(key) {
 
 
@@ -122,6 +81,23 @@ function haalUitStorage(key) {
         return toonerrorMsg(errorMsg);
     }
 
+}
+
+function toonerrorMsg(errorMsg) {
+    let eError = document.getElementById("errorMsg");
+    eError.classList.remove("d-none");
+    eError.innerHTML = errorMsg;
+}
+
+function cookieOfLokaal() {
+    if (localStorage) {
+        return "sLocal"
+    } else if (navigator.cookieEnabled) {
+        return "sCookie";
+        console.log('cookies OK');
+    } else {
+        return false;
+    }
 }
 
 (function () {
