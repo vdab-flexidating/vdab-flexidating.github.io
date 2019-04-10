@@ -35,6 +35,10 @@ window.onload = function () {
         // Number.isInteger(data.id) && !oGebruiker ? haalGebruikersInfoOp(gebruikersId) : false;
     });
 
+    document.getElementById('logout').addEventListener('click', function (e) {
+        logout();
+    });
+
 
 }
 
@@ -137,7 +141,27 @@ function login() {
 
 }
 
+/**
+ * Logout dient op volgende momenten aagesproken te worden:
+ * - delete (evenals : verwijderVanStorage("alles"); )
+ * - logout button
+ */
+function logout() {
+    // haal alles uit storage
+    verwijderVanStorage("gebruiker");
 
+    // remove gebruikersinfo
+    gebruiker = "";
+
+    // controleer status
+    isIngelogd();
+}
+
+/**
+ * Haalt alle info op van een id
+ * @param {*} profielId haalt alle info op dmv id
+ * @param {*} inStoragePlaatsen indien true plaatst dit de de response in storage
+ */
 function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 
     let url = rooturl + '/profiel/read_one.php?id=' + profielId;
@@ -167,13 +191,13 @@ function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
 }
 
 
-/******** 
+/*********************** 
  * Alles over storage
- ****************/
+ ***********************/
 /*** 
  * @key is waar naar gezocht wordt, 
- * @return value of een error
- * @return false indien @key niet aanwezig in storage
+ * @returnt value of een error
+ * @returnt false indien key niet aanwezig in storage
  ***/
 function haalUitStorage(key) {
 
@@ -213,19 +237,54 @@ function plaatsInStorage(key, data) {
     // window.history.go(0);
 }
 
+/**
+ * @keys zijn alle keys welke je wilt verwijderen
+ * @keys = "alles" gaat alles uit de storage
+ */
+function verwijderVanStorage(...keys) {
+    if (keys != "alles") {
+        // verwijderd elke key
+        if (sStorage == "sCookie") {
+            keys.forEach(element => {
+                clearCookie(element);
+            });
+        } else if (sStorage == "sLocal") {
+            keys.forEach(element => {
+                localStorage.removeItem(element);
+            });
+
+        } else {
+            console.log("Er is geen storage");
+        }
+    } else {
+        // Verwijderd alle storage
+        if (sStorage == "sCookie") {
+            window.postMessage({
+                type: "CLEAR_COOKIES_EXTENSION_API"
+            }, "*");
+        } else if (sStorage == "sLocal") {
+            localStorage.clear();
+        }
+    }
+}
+
+/**
+ * Controleerd of er met localStorage moet gewerkt worden of met cookies
+ **/
 function cookieOfLokaal() {
     if (localStorage) {
         sStorage = "sLocal";
-        // return "sLocal";
     } else if (navigator.cookieEnabled) {
         sStorage = "sCookie";
-        // return "sCookie";
         console.log('cookies OK');
     } else {
         return false;
     }
 }
 
+/*
+ * Plaatst indien nodig het cookie bestand
+ */
 (function () {
     if (cookieOfLokaal() != 'sLocal') {
         var ref = window.document.getElementsByTagName('script')[0];
@@ -236,20 +295,22 @@ function cookieOfLokaal() {
     }
 })();
 
-/*** 
+/************************* 
  * Alles over alerts
- ***/
+ ************************/
 function verbergMsg() {
-    // verberg
+    // verberg en verwijder inhoud
     let eError = document.getElementById("errorMsg");
-    eError.classList.add("d-none");
+    if (eError) {
+        eError.classList.add("d-none");
+        eError = "";
+    }
 
     let eSucces = document.getElementById("succesMsg");
-    eSucces.classList.add("d-none");
-
-    // verwijder inhoud
-    eSucces.innerHTML = "";
-    eError.innerHTML = "";
+    if (eSucces) {
+        eSucces.classList.add("d-none");
+        eSucces.innerHTML = "";
+    }    
 }
 
 function toonerrorMsg(msg) {
@@ -264,4 +325,38 @@ function toonsuccesMsg(msg) {
     let eSucces = document.getElementById("succesMsg");
     eSucces.classList.remove("d-none");
     eSucces.innerHTML = msg;
+}
+
+
+function getSterrenbeeld(geboortedatum) {
+    /* return sterrenbeeld op basis van geboortedatum */
+    let sterrenbeelden = ["Steenbok", "Waterman", "Vissen", "Ram", "Stier", "Tweelingen", "Kreeft", "Leeuw", "Maagd", "Weegschaal", "Schorpioen", "Boogschutter"]
+    let maand = geboortedatum.split('-')[1];
+    let dag = geboortedatum.split('-')[2];
+
+    if((maand == 1 && dag <= 20) || (maand == 12 && dag >=23)) {
+        return sterrenbeelden[0];
+    } else if ((maand == 1 && dag >= 21) || (maand == 2 && dag <= 18)) {
+        return sterrenbeelden[1];
+    } else if((maand == 2 && dag >= 19) || (maand == 3 && dag <= 20)) {
+        return sterrenbeelden[2];
+    } else if((maand == 3 && dag >= 21) || (maand == 4 && dag <= 20)) {
+        return sterrenbeelden[3];
+    } else if((maand == 4 && dag >= 21) || (maand == 5 && dag <= 21)) {
+        return sterrenbeelden[4];
+    } else if((maand == 5 && dag >= 22) || (maand == 6 && dag <= 21)) {
+        return sterrenbeelden[5];
+    } else if((maand == 6 && dag >= 22) || (maand == 7 && dag <= 23)) {
+        return sterrenbeelden[6];
+    } else if((maand == 7 && dag >= 24) || (maand == 8 && dag <= 23)) {
+        return sterrenbeelden[7];
+    } else if((maand == 8 && dag >= 24) || (maand == 9 && dag <= 23)) {
+        return sterrenbeelden[8];
+    } else if((maand == 9 && dag >= 24) || (maand == 10 && dag <= 23)) {
+        return sterrenbeelden[9];
+    } else if((maand == 10 && dag >= 24) || (maand == 11 && dag <= 22)) {
+        return sterrenbeelden[10];
+    } else if((maand == 11 && dag >= 23) || (maand == 12 && dag <= 21)) {
+        return sterrenbeelden[11];
+    }
 }

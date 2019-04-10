@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Registratie</title>
+    <title>Profiel bewerken</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,7 +17,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="#">FlexiDating</a>
+            <a class="navbar-brand" href="index.html">FlexiDating</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,35 +31,27 @@
                         <a class="nav-link" href="zoeken.html">Zoeken</a>
                     </li>
                 </ul>
-                <div class="d-none niet-ingelogd form-inline my-2  ">
-                    <div class="form-group form-inline">
-                        <input type="email" class="nput-sm form-control" id="loginNickname" placeholder="Fluffy Bunny">
+                <form class="form-inline my-2 my-lg-0 d-none">
+                    <button class="btn btn-outline-light" type="submit" data-toggle="modal"
+                        data-target="#loginModal">Aanmelden</button>
+                </form>
+                <div class=" form-inline my-2 mr-2 ">
+                    <div class="form-group d-none">
+                        <input type="number" class="form-control" id="persoonId" value="7" readonly>
                     </div>
-                    <div class="form-group form-inline">
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
                         <label for="" class="sr-only">Wachtwoord</label>
-                        <input type="password" class=" form-control" id="LoginWachtwoord" placeholder="wachtwoord">
+                        <input type="password" class="form-control" id="wachtwoord" placeholder="wachtwoord">
                     </div>
-                    <button type="submit" class="form-inline btn btn-outline-light" id="login">Login</button>
-
-                    <div class=" form-inline ">
-                        <a href="registratie.html"> <button class="btn btn-outline-light"
-                                type="submit">Registreer</button></a>
-                    </div>
+                    <button type="submit" class=" btn btn-outline-light" id="login">Login</button>
                 </div>
-                <ul class="d-none ingelogd navbar-nav mt-2 mt-lg-0">
-                    <li class=" nav-item dropdown">
-                        <a class="nav-link dropdown-toggle loginNickname" href="#" id="navbarDropdownMenuLink"
-                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Hoi single
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/profiel.html">Mijn account</a>
-                            <a class="dropdown-item" href="/berichten.html">Berichten</a>
-                            <a id="logout" class="dropdown-item" href="#">Logout</a>
-                        </div>
-                    </li>
-                </ul>
 
+                <div class="form-inline my-2">
+                    <a href="registratie.html"> <button class="btn btn-outline-light" type="submit">Maak een account</button></a>
+                </div>
             </div>
         </div>
     </nav>
@@ -69,37 +61,37 @@
         <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
     </header>
     <div class="container">
-        <h1 class="my-4">Registreren</h1>
+        <h1 class="my-4">Profiel bewerken</h1>
         <div class="alert alert-danger d-none" role="alert" id="errorMsg">
         </div>
         <form action="" name="registratie" id="registratie">
             <div class="form-group">
                 <label for="familienaam">Familienaam</label>
-                <input type="text" name="familienaam" id="familienaam" class="form-control" aria-describedby="helpId" value="groep 1" maxlength="1000">
+                <input type="text" name="familienaam" id="familienaam" class="form-control" aria-describedby="helpId" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="voornaam">Voornaam</label>
-                <input type="text" name="voornaam" id="voornaam" class="form-control" aria-describedby="helpId" value="groep 1 voornaam" maxlength="1000">
+                <input type="text" name="voornaam" id="voornaam" class="form-control" aria-describedby="helpId" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="geboortedatum">Geboortedatum</label>
-                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control" aria-describedby="helpId" value="1990-12-12">
+                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control" aria-describedby="helpId">
             </div>
             <div class="form-group">
                 <label for="email">E-mailadres</label>
-                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId"  value="test@getnada.com" maxlength="1000">
+                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId"  maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="nickname">Nickname</label>
-                <input type="text" name="nickname" id="nickname" class="form-control" aria-describedby="helpId" value="Groep 1 nickname" maxlength="100">
+                <input type="text" name="nickname" id="nickname" class="form-control" aria-describedby="helpId" maxlength="100">
             </div>
             <div class="form-group">
                 <label for="foto">Foto</label>
-                <input type="text" name="foto" id="foto" class="form-control" aria-describedby="helpId" value="no_picture.jpg" readonly maxlength="1000">
+                <input type="text" name="foto" id="foto" class="form-control" aria-describedby="helpId" readonly maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="beroep">Beroep</label>
-                <input type="text" name="beroep" id="beroep" class="form-control" aria-describedby="helpId" value="Dev" maxlength="1000">
+                <input type="text" name="beroep" id="beroep" class="form-control" aria-describedby="helpId" maxlength="1000">
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
@@ -115,43 +107,43 @@
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="sexe" id="sexe-x" value="x" checked>
+                    <input type="radio" class="form-check-input" name="sexe" id="sexe-x" value="x">
                     X
                 </label>
             </div>
 
             <div class="form-group">
                 <label for="haarkleur">Haarkleur</label>
-                <input type="text" name="haarkleur" id="haarkleur" class="form-control" aria-describedby="helpId" value="Bruin" maxlength="50">
+                <input type="text" name="haarkleur" id="haarkleur" class="form-control" aria-describedby="helpId" maxlength="50">
             </div>
 
             <div class="form-group">
                 <label for="oogkleur">Oogkleur</label>
-                <input type="text" name="oogkleur" id="oogkleur" class="form-control" aria-describedby="helpId" value="Blauw" maxlength="50">
+                <input type="text" name="oogkleur" id="oogkleur" class="form-control" aria-describedby="helpId" maxlength="50">
             </div>
             <div class="form-group">
                 <label for="grootte">Grootte</label>
-                <input type="number" name="grootte" id="grootte" class="form-control" aria-describedby="helpId" value="180" maxlength="5">
+                <input type="number" name="grootte" id="grootte" class="form-control" aria-describedby="helpId" maxlength="5">
             </div>
             <div class="form-group">
                 <label for="gewicht">Gewicht</label>
-                <input type="number" name="gewicht" id="gewicht" class="form-control" aria-describedby="helpId" value="80" maxlength="5">
+                <input type="number" name="gewicht" id="gewicht" class="form-control" aria-describedby="helpId" maxlength="5">
             </div>
             <div class="form-group">
                 <label for="wachtwoord1">Wachtwoord</label>
-                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1"  value="vdab123456" maxlength="1000">
+                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="wachtwoord2">Wachtwoord herhalen</label>
-                <input type="password" class="form-control" name="wachwoord2" id="wachtwoord2" value="vdab123456" maxlength="1000">
+                <input type="password" class="form-control" name="wachwoord2" id="wachtwoord2" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="lovecoins">Lovecoins</label>
-                <input type="number" class="form-control" name="lovecoins" id="lovecoins" readonly value="20" maxlength="1000">
+                <input type="number" class="form-control" name="lovecoins" id="lovecoins" readonly maxlength="1000">
             </div>
 
 
-            <button type="submit" id="knop8" class="btn btn-primary">Submit</button>
+            <button type="submit" class="update btn btn-dark">Update profiel</button>
         </form>
 
     </div>
@@ -168,12 +160,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
-
-    <script src="assets/nuttig_lib.js"></script>
     <script src="assets/main.js"> </script>
-    <script src="assets/registratie.js"> </script>
-
-
+    <script src="assets/profielbewerken.js"> </script>
 </body>
 
 </html>
