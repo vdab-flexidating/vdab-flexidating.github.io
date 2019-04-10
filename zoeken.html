@@ -74,16 +74,17 @@
                 <label>Haal pagina met alle profielen</label>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-4">
-                    <!-- <label>Pagina</label> -->
-                    <input type="text" class="form-control" id="input12_1" value="1" placeholder="Pagina">
-                </div>
+                <!-- <div class="form-group col-md-4"> -->
+                <!-- <label>Pagina</label> -->
+                <!-- <input type="text" class="form-control" id="input12_1" value="1" placeholder="Pagina"> -->
+                <!-- </div> -->
                 <!-- </div>
             <div class="form-row"> -->
+                <label for="colFormLabel" class="col-sm-4 col-form-label">Aantal per pagina</label>
                 <div class="form-group col-md-4">
                     <select class="form-control" id="input12_2">
-                        <option selected>Kies aantal...</option>
-                        <option value="12">12</option>
+                        <!-- <option selected>Kies aantal...</option> -->
+                        <option value="12" selected>12</option>
                         <option value="24">24</option>
                         <option value="36">36</option>
                         <option value="48">48</option>
@@ -247,6 +248,15 @@
         <div class="col-md-8">
             <div class="card-wrap" id="persoon">
             </div>
+            <nav aria-label="Page navigation" class="d-block" id="pagenavigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 
@@ -261,6 +271,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+
+    <script src="assets/nuttig_lib.js"></script>
     <script src="assets/main.js"> </script>
     <script src="assets/zoeken.js"> </script>
 </body>
