@@ -8,26 +8,22 @@ function changeURL(sNewRoot) {
 /* Global vars
  ****************/
 var errorMsg = "";
-
 var gebruikersId;
 var gebruiker;
 var sStorage;
 
-
-
 window.onload = function () {
 
-    if (cookieOfLokaal() == false) {
+    if (sStorage == false) {
         console.log("Geen cookies of localStorage");
     }
 
-    // sGebruiker = haalUitStorage("gebruiker");
-    // oGebruiker = JSON.parse(sGebruiker); // Voor objecten 
+    gebruiker = haalUitStorage("gebruiker");
 
     /* DEBUG 
      ***********************/
     plaatsInStorage("iLike", "trains");
-    let ikHouVan = haalUitStorage("iLike");
+    let ikHouVan = haalUitStorage("iLike"); //zowel strings als 
     console.log("i like " + ikHouVan);
     /* END DEBUG */
 
@@ -42,20 +38,27 @@ window.onload = function () {
 
 }
 
+/****
+ * @returns:
+ * - object van ingelogde gebruiker
+ * - of false
+ *****/
 function isIngelogd() {
     if (!gebruiker) {
         // Indien geen gebruiker 
         console.log("Niet ingelogd");
         toonerrorMsg("Niet ingelogd.<br>");
+        return false;
     } else {
         // Ingelogd
 
-    }
 
+        return gebruiker;
+    }
 }
 
 function plaatsInStorage(key, data) {
-    var sStorage = cookieOfLokaal();
+    // var sStorage = cookieOfLokaal();
     if (sStorage == "sCookie") {
         var nAantalDagen = 100;
         setCookie(key, JSON.stringify(data), nAantalDagen);
@@ -69,6 +72,10 @@ function plaatsInStorage(key, data) {
     // window.history.go(0);
 }
 
+
+/*****
+ * @TODO nickname controle niet hoofdlettergevoelig maken
+ */
 function login() {
 
     let nickname = document.getElementById('loginNickname').value;
@@ -108,7 +115,8 @@ function login() {
                     plaatsInStorage("gebruiker", gebruiker);
                     isIngelogd();
 
-                    // return gebruikersId;
+                    // Verwelkom gebruiker:
+                    toonsuccesMsg("Dag " + gebruiker.nickname + ", je bent succesvol ingelogd. :) ");
 
                 } else if (data.message == "Unauthorized") {
                     toonerrorMsg("Verkeerde logingegevens");
@@ -159,14 +167,14 @@ function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
  ***/
 function haalUitStorage(key) {
 
-    var sStorage = cookieOfLokaal();
+    // var sStorage = cookieOfLokaal();
 
     if (localStorage[key] || (sStorage == "sCookie" && getCookie(key))) {
         // ingelogd
         if (sStorage == "sCookie") {
             return getCookie(key);
         } else {
-            return localStorage[key];
+            return JSON.parse(localStorage[key]);
         }
     } else if (sStorage) {
         console.log(sStorage + " is de gekozen storage.");
@@ -180,13 +188,28 @@ function haalUitStorage(key) {
 
 }
 
+function verbergMsg() {
+    // verberg
+    let eError = document.getElementById("errorMsg");
+    eError.classList.add("d-none");
+
+    let eSucces = document.getElementById("succesMsg");
+    eSucces.classList.add("d-none");
+
+    // verwijder inhoud
+    eSucces.innerHTML = "";
+    eError.innerHTML = "";
+}
+
 function toonerrorMsg(msg) {
+    verbergMsg();
     let eError = document.getElementById("errorMsg");
     eError.classList.remove("d-none");
     eError.innerHTML = msg;
 }
 
 function toonsuccesMsg(msg) {
+    verbergMsg();
     let eSucces = document.getElementById("succesMsg");
     eSucces.classList.remove("d-none");
     eSucces.innerHTML = msg;
@@ -194,9 +217,11 @@ function toonsuccesMsg(msg) {
 
 function cookieOfLokaal() {
     if (localStorage) {
-        return "sLocal"
+        sStorage = "sLocal";
+        // return "sLocal";
     } else if (navigator.cookieEnabled) {
-        return "sCookie";
+        sStorage = "sCookie";
+        // return "sCookie";
         console.log('cookies OK');
     } else {
         return false;
