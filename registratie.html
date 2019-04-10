@@ -62,10 +62,9 @@
         <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
     </header>
     <div class="container">
-
-        <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+        <div class="alert alert-danger mt-3" role="alert" id="errorMsg">
         </div>
-        <form name="registratie" id="registratie">
+        <form action="" name="registratie" id="registratie">
             <div class="form-group">
                 <label for="familienaam">Familienaam</label>
                 <input type="text" name="familienaam" id="familienaam" class="form-control" placeholder=""
@@ -83,8 +82,7 @@
             </div>
             <div class="form-group">
                 <label for="email">E-mailadres</label>
-                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelpId"
-                    placeholder="" value="test@getnada.com" maxlength="1000" required>
+                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId" placeholder="" value="test@getnada.com" maxlength="1000" required>
             </div>
             <div class="form-group">
                 <label for="nickname">Nickname</label>
@@ -142,9 +140,8 @@
                     aria-describedby="helpId" value="80" maxlength="5">
             </div>
             <div class="form-group">
-                <label for="wachtwoord">Wachtwoord</label>
-                <input type="password" class="form-control" name="wachwoord" id="wachtwoord" placeholder=""
-                    value="vdab123456" maxlength="1000" required>
+                <label for="wachtwoord1">Wachtwoord</label>
+                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1" placeholder="" value="vdab123456" maxlength="1000" required>
             </div>
             <div class="form-group">
                 <label for="wachtwoord2">Wachtwoord herhalen</label>
@@ -176,6 +173,8 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script src="assets/main.js"> </script>
+    <script src="assets/registratie.js"> </script>
+
 
 </body>
 
