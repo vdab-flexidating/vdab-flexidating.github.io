@@ -35,23 +35,7 @@ var gebruiker;
 var sStorage;
 
 
-// (function haalAlleDataOp() {
-//     // TODO: plaats alle data een localStorage, en pas pas aan bij nieuwe id's 
-//     let url = rooturl + '/profiel/read.php';
 
-//     fetch(url)
-//         .then(function (resp) {
-//             return resp.json();
-//         })
-//         .then(function (data) {
-//             oData = data;
-//             console.log(oData);
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
-
-// })();
 
 window.onload = function () {
 
@@ -59,23 +43,7 @@ window.onload = function () {
         console.log("Geen cookies of localStorage");
     }
 
-    var sStorage = cookieOfLokaal();
-
-    if (localStorage.gebruiker || (sStorage == "sCookie" && getCookie('gebruiker'))) {
-        // ingelogd
-        if (sStorage == "sCookie") {
-            var gebruiker = getCookie('gebruiker');
-        } else {
-            var gebruiker = localStorage.gebruiker;
-        }
-    } else if (sStorage) {
-        console.log(sStorage + " is de gekozen storage.");
-    } else {
-        errorMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
-        errorMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
-
-        return toonerrorMsg(errorMsg);
-    }
+    gebruiker = haalUitStorage("gebruiker");
 
     function toonerrorMsg(errorMsg) {
         let eError = document.getElementById("errorMsg");
@@ -133,6 +101,29 @@ function cookieOfLokaal() {
     }
 }
 
+function haalUitStorage(key) {
+
+
+    var sStorage = cookieOfLokaal();
+
+    if (localStorage.gebruiker || (sStorage == "sCookie" && getCookie(key))) {
+        // ingelogd
+        if (sStorage == "sCookie") {
+            return getCookie(key);
+        } else {
+            return localStorage.key;
+        }
+    } else if (sStorage) {
+        console.log(sStorage + " is de gekozen storage.");
+    } else {
+        errorMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
+        errorMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
+
+        return toonerrorMsg(errorMsg);
+    }
+
+}
+
 (function () {
     if (cookieOfLokaal() != 'sLocal') {
         var ref = window.document.getElementsByTagName('script')[0];
@@ -142,6 +133,7 @@ function cookieOfLokaal() {
         console.log("Cookiefile geladen");
     }
 })();
+
 
 function getSterrenbeeld(geboortedatum) {
     /* return sterrenbeeld op basis van geboortedatum */
@@ -167,11 +159,11 @@ function getSterrenbeeld(geboortedatum) {
         return sterrenbeelden[7];
     } else if((maand == 8 && dag >= 24) || (maand == 9 && dag <= 23)) {
         return sterrenbeelden[8];
-      } else if((maand == 9 && dag >= 24) || (maand == 10 && dag <= 23)) {
+    } else if((maand == 9 && dag >= 24) || (maand == 10 && dag <= 23)) {
         return sterrenbeelden[9];
     } else if((maand == 10 && dag >= 24) || (maand == 11 && dag <= 22)) {
         return sterrenbeelden[10];
     } else if((maand == 11 && dag >= 23) || (maand == 12 && dag <= 21)) {
         return sterrenbeelden[11];
-  }
+    }
 }
