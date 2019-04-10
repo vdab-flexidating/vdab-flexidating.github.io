@@ -1,595 +1,177 @@
-        var rooturl = "https://scrumserver.tenobe.org/scrum/api";
+var rooturl = "https://scrumserver.tenobe.org/scrum/api";
 
-        function changeURL(sNewRoot) {
-            rooturl = sNewRoot;
-            console.log('root set to : ' + rooturl)
+function changeURL(sNewRoot) {
+    rooturl = sNewRoot;
+    console.log('root set to : ' + rooturl)
+}
+
+/* Global vars
+ ****************/
+var minLeeftijd = 18;
+var minLengtePass = 6;
+var errorMsg = "";
+var oData;
+var oaProf10 = [];
+// (function haalAlleDataOp() {
+//     let url = rooturl + '/profiel/read.php';
+
+//     fetch(url)
+//         .then(function (resp) {
+//             return resp.json();
+//         })
+//         .then(function (data) {
+//             oData = data;
+//             console.log(oData);
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//         });
+
+// })();
+// })();
+
+var gebruikersId;
+var gebruiker;
+var sStorage;
+
+
+// (function haalAlleDataOp() {
+//     // TODO: plaats alle data een localStorage, en pas pas aan bij nieuwe id's 
+//     let url = rooturl + '/profiel/read.php';
+
+//     fetch(url)
+//         .then(function (resp) {
+//             return resp.json();
+//         })
+//         .then(function (data) {
+//             oData = data;
+//             console.log(oData);
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//         });
+
+// })();
+
+window.onload = function () {
+
+    if (cookieOfLokaal() == false) {
+        console.log("Geen cookies of localStorage");
+    }
+
+    var sStorage = cookieOfLokaal();
+
+    if (localStorage.gebruiker || (sStorage == "sCookie" && getCookie('gebruiker'))) {
+        // ingelogd
+        if (sStorage == "sCookie") {
+            var gebruiker = getCookie('gebruiker');
+        } else {
+            var gebruiker = localStorage.gebruiker;
         }
+    } else if (sStorage) {
+        console.log(sStorage + " is de gekozen storage.");
+    } else {
+        errorMsg += "Er konden geen cookies of localStorage gebruikt worden. ";
+        errorMsg += "Activeer cookies - of gebruik een moderne browser - om een rekening aan te kunnen maken.";
 
-        window.onload = function () {
-            // alert("hello");
+        return toonerrorMsg(errorMsg);
+    }
 
-            /*
-            --------------------------------------
-            -- knoppen voor profielen
-            --------------------------------------
-            */
+    function toonerrorMsg(errorMsg) {
+        let eError = document.getElementById("errorMsg");
+        eError.classList.remove("d-none");
+        eError.innerHTML = errorMsg;
+    }
 
-            document.getElementById('knop1').addEventListener('click', function (e) {
-                let url = rooturl + '/profiel/read.php';
 
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+    document.getElementById('login').addEventListener('click', function (e) {
+        let profielId = document.getElementById('persoonId').value;
+
+        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+
+        fetch(url)
+            .then(function (resp) {
+                return resp.json();
+            })
+            .then(function (data) {
+                console.log(data);
+                gebruiker = data;
+                gebruikersId = gebruiker.id;
+                plaatsInStorage("gebruiker", gebruiker);
+
+            })
+            .catch(function (error) {
+                console.log(error);
             });
-
-            document.getElementById('knop12').addEventListener('click', function (e) {
-                let page = document.getElementById('input12_1').value;
-                let pageSize = document.getElementById('input12_2').value;
-
-                let url = rooturl + '/profiel/read.php?page=' + page + '&pageSize=' + pageSize;;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop2').addEventListener('click', function (e) {
-                let profielId = document.getElementById('input2_1').value;
-
-                let url = rooturl + '/profiel/read_one.php?id=' + profielId;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-
-
-            });
-
-            document.getElementById('knop3').addEventListener('click', function (e) {
-                let grootte = document.getElementById('input3_1').value;
-                let grootteOperator = document.getElementById('input3_2').value;
-                let orderby = document.getElementById('input3_3').value;
-
-                let url = rooturl + '/profiel/search.php?grootte=' + grootte + '&grootteOperator=' + grootteOperator + '&orderBy=' + orderby;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop4').addEventListener('click', function (e) {
-                let voornaam = document.getElementById('input4_1').value;
-
-                let url = rooturl + '/profiel/search.php?voornaam=' + voornaam;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop13').addEventListener('click', function (e) {
-                let nickname = document.getElementById('input13_1').value;
-                let fuzzy = document.getElementById('input13_2').checked;
-
-                let url = rooturl + '/profiel/search.php?voornaam=' + nickname;
-
-                if (fuzzy) {
-                    url += '&voornaamFuzzy=1';
-                }
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop5').addEventListener('click', function (e) {
-                let geslacht = document.getElementById('input5_1').value;
-
-                let url = rooturl + '/profiel/search.php?sexe=' + geslacht;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop11').addEventListener('click', function (e) {
-                let rangeMinGeboortedatum = document.getElementById('input11_1').value;
-                let rangeMaxGeboortedatum = document.getElementById('input11_2').value;
-
-                let rangeMinGrootte = document.getElementById('input11_3').value;
-                let rangeMaxGrootte = document.getElementById('input11_4').value;
-
-                let url = rooturl + '/profiel/search.php'
-                url += '?geboortedatumOperator=range&rangeMinGeboortedatum=' + rangeMinGeboortedatum + '&rangeMaxGeboortedatum=' + rangeMaxGeboortedatum;
-                url += '&grootteOperator=range&rangeMinGrootte=' + rangeMinGrootte + '&rangeMaxGrootte=' + rangeMaxGrootte;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop6').addEventListener('click', function (e) {
-                let geboortedatum = document.getElementById('input6_1').value;
-                let geboortedatumOperator = document.getElementById('input6_2').value;
-
-                let url = rooturl + '/profiel/search.php?geboortedatum=' + geboortedatum + '&geboortedatumOperator=' + geboortedatumOperator;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop7').addEventListener('click', function (e) {
-                let profielId = document.getElementById('input7_1').value;
-                let nieuweVoornaam = document.getElementById('input7_2').value;
-
-                let url = rooturl + '/profiel/read_one.php?id=' + profielId;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    }) //haal de JSON op en stuur die als resultaat van je promise                         
-                    .then(function (data) {
-                        //nadat de vorige promise opgelost werd kwamen we in deze procedure tercht
-                        //hier kunnen we nu , met het resultat (data) van de vorige promise, aan de slag
-                        //we passen de voornaam aan en sturen ook dit terug zodat deze promise afgesloten kan worden                        
-                        let urlUpdate = rooturl + '/profiel/update.php';
-
-                        data['voornaam'] = nieuweVoornaam;
-
-                        var request = new Request(urlUpdate, {
-                            method: 'PUT',
-                            body: JSON.stringify(data),
-                            headers: new Headers({
-                                'Content-Type': 'application/json'
-                            })
-                        });
-                        fetch(request)
-                            .then(function (resp) {
-                                return resp.json();
-                            })
-                            .then(function (data) {
-                                console.log(data);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-
-
-
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop8').addEventListener('click', function (e) {
-                let url = rooturl + '/profiel/create.php';
-
-                let data = {
-                    familienaam: "Fieuw",
-                    voornaam: "Aldo",
-                    geboortedatum: "1990-16-08",
-                    email: "aldo.fieuw@vdabcampus.be",
-                    nickname: "Aldo-f",
-                    foto: "no_picture.jpg",
-                    beroep: "Developer",
-                    sexe: "M",
-                    haarkleur: "brown",
-                    oogkleur: "blue",
-                    grootte: "180",
-                    gewicht: "80",
-                    wachtwoord: "Els123456",
-                    lovecoins: "1000000"
-                }
-
-                var request = new Request(url, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-
-            });
-
-            document.getElementById('knop9').addEventListener('click', function (e) {
-                let profielId = document.getElementById('input9_1').value;
-
-                let url = rooturl + '/profiel/delete.php';
-
-                let data = {
-                    id: profielId
-                }
-
-                var request = new Request(url, {
-                    method: 'DELETE',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop10').addEventListener('click', function (e) {
-                let nickname = document.getElementById('input10_1').value;
-                let wachtwoord = document.getElementById('input10_2').value;
-
-                let url = rooturl + '/profiel/authenticate.php';
-                //let url = 'http://scrumserver.tenobe.org/scrum/api/profiel/authenticate.php"'
-
-                let data = {
-                    nickname: nickname,
-                    wachtwoord: wachtwoord
-                }
-
-                var request = new Request(url, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            /*
-            --------------------------------------
-            -- knoppen voor berichten
-            --------------------------------------
-            */
-            document.getElementById('knop20').addEventListener('click', function (e) {
-                let profielId = document.getElementById('input20_1').value;
-
-                let url = rooturl + '/bericht/read.php?profielId=' + profielId;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop21').addEventListener('click', function (e) {
-                let berichtId = document.getElementById('input21_1').value;
-
-                let url = rooturl + '/bericht/read_one.php?berichtId=' + berichtId;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop22').addEventListener('click', function (e) {
-                let vanId = document.getElementById('input22_1').value;
-                let naarId = document.getElementById('input22_2').value;
-                let bericht = document.getElementById('input22_3').value;
-
-                let url = rooturl + '/bericht/post.php';
-
-                let data = {
-                    vanId: vanId,
-                    naarId: naarId,
-                    bericht: bericht,
-                    status: "verzonden"
-                }
-
-                var request = new Request(url, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop23').addEventListener('click', function (e) {
-                let id = document.getElementById('input23_1').value;
-
-                let url = rooturl + '/bericht/delete.php';
-
-                let data = {
-                    id: id
-                }
-
-                var request = new Request(url, {
-                    method: 'DELETE',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop24').addEventListener('click', function (e) {
-                let id = document.getElementById('input24_1').value;
-                let status = document.getElementById('input24_2').value;
-
-                let url = rooturl + '/bericht/zet_status.php';
-
-                let data = {
-                    id: id,
-                    status: status
-                }
-
-                var request = new Request(url, {
-                    method: 'PUT',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            /*
-            --------------------------------------
-            -- knoppen voor favorieten
-            --------------------------------------
-            */
-            document.getElementById('knop30').addEventListener('click', function (e) {
-                let profielId = document.getElementById('input30_1').value;
-
-                let url = rooturl + '/favoriet/read.php?profielId=' + profielId;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop31').addEventListener('click', function (e) {
-                let id = document.getElementById('input31_1').value;
-
-                let url = rooturl + '/favoriet/read_one.php?id=' + id;
-
-                fetch(url)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop32').addEventListener('click', function (e) {
-                let mijnId = document.getElementById('input32_1').value;
-                let anderId = document.getElementById('input32_2').value;
-
-                let url = rooturl + '/favoriet/like.php';
-
-                let data = {
-                    mijnId: mijnId,
-                    anderId: anderId
-                }
-
-                var request = new Request(url, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-
-            });
-
-            document.getElementById('knop33').addEventListener('click', function (e) {
-                let id = document.getElementById('input33_1').value;
-
-                let url = rooturl + '/favoriet/delete.php';
-
-                let data = {
-                    id: id
-                }
-
-                var request = new Request(url, {
-                    method: 'DELETE',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-            document.getElementById('knop40').addEventListener('click', function (e) {
-                let naam = document.getElementById('input40_1').value;
-                let afbeelding = document.getElementById('input40_2').value;
-
-                let url = rooturl + '/image/upload.php';
-
-                let data = {
-                    naam: naam,
-                    afbeelding: afbeelding
-                }
-
-                var request = new Request(url, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    })
-                });
-
-                fetch(request)
-                    .then(function (resp) {
-                        return resp.json();
-                    })
-                    .then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
-
-        }
+    });
+}
+
+function plaatsInStorage(key, data) {
+    var sStorage = cookieOfLokaal();
+    if (sStorage == "sCookie") {
+        var nAantalDagen = 100;
+        setCookie(key, JSON.stringify(data), nAantalDagen);
+        console.log("toegevoegd als cookie " + data);
+    } else if (sStorage == "sLocal") {
+        localStorage.setItem(key, JSON.stringify(data));
+        console.log("toegevoegd als localStorage " + data);
+    }
+    // De method go() neemt een integer als argument en laat ons toe een aantal pagina's backward of forward te gaan in de lijst.  
+    // Bij 0 update de huidige pagina
+    window.history.go(0);
+}
+
+
+function cookieOfLokaal() {
+    if (localStorage) {
+        return "sLocal"
+    } else if (navigator.cookieEnabled) {
+        return "sCookie";
+        console.log('cookies OK');
+    } else {
+        return false;
+    }
+}
+
+(function () {
+    if (cookieOfLokaal() != 'sLocal') {
+        var ref = window.document.getElementsByTagName('script')[0];
+        var script = window.document.createElement('script');
+        script.src = 'assets/nuttig_lib.js';
+        ref.parentNode.insertBefore(script, ref);
+        console.log("Cookiefile geladen");
+    }
+})();
+
+function getSterrenbeeld(geboortedatum) {
+    /* return sterrenbeeld op basis van geboortedatum */
+    let sterrenbeelden = ["Steenbok", "Waterman", "Vissen", "Ram", "Stier", "Tweelingen", "Kreeft", "Leeuw", "Maagd", "Weegschaal", "Schorpioen", "Boogschutter"]
+    let maand = geboortedatum.split('-')[1];
+    let dag = geboortedatum.split('-')[2];
+
+    if((maand == 1 && dag <= 20) || (maand == 12 && dag >=23)) {
+        return sterrenbeelden[0];
+    } else if ((maand == 1 && dag >= 21) || (maand == 2 && dag <= 18)) {
+        return sterrenbeelden[1];
+    } else if((maand == 2 && dag >= 19) || (maand == 3 && dag <= 20)) {
+        return sterrenbeelden[2];
+    } else if((maand == 3 && dag >= 21) || (maand == 4 && dag <= 20)) {
+        return sterrenbeelden[3];
+    } else if((maand == 4 && dag >= 21) || (maand == 5 && dag <= 21)) {
+        return sterrenbeelden[4];
+    } else if((maand == 5 && dag >= 22) || (maand == 6 && dag <= 21)) {
+        return sterrenbeelden[5];
+    } else if((maand == 6 && dag >= 22) || (maand == 7 && dag <= 23)) {
+        return sterrenbeelden[6];
+    } else if((maand == 7 && dag >= 24) || (maand == 8 && dag <= 23)) {
+        return sterrenbeelden[7];
+    } else if((maand == 8 && dag >= 24) || (maand == 9 && dag <= 23)) {
+        return sterrenbeelden[8];
+      } else if((maand == 9 && dag >= 24) || (maand == 10 && dag <= 23)) {
+        return sterrenbeelden[9];
+    } else if((maand == 10 && dag >= 24) || (maand == 11 && dag <= 22)) {
+        return sterrenbeelden[10];
+    } else if((maand == 11 && dag >= 23) || (maand == 12 && dag <= 21)) {
+        return sterrenbeelden[11];
+  }
+}

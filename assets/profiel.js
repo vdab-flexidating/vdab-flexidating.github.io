@@ -112,36 +112,3 @@ function getIngevuldProfiel(profiel) {
 	// Foto
 	//eFoto.src = profiel.foto;
 }
-
-function getSterrenbeeld(geboortedatum) {
-	/* return sterrenbeeld op basis van geboortedatum */
-	let sterrenbeelden = ["Steenbok", "Waterman", "Vissen", "Ram", "Stier", "Tweelingen", "Kreeft", "Leeuw", "Maagd", "Weegschaal", "Schorpioen", "Boogschutter"]
-	let maand = geboortedatum.split('-')[1];
-	let dag = geboortedatum.split('-')[2];
-
-	if((maand == 1 && dag <= 20) || (maand == 12 && dag >=23)) {
-    	return sterrenbeelden[0];
-  	} else if ((maand == 1 && dag >= 21) || (maand == 2 && dag <= 18)) {
-    	return sterrenbeelden[1];
-  	} else if((maand == 2 && dag >= 19) || (maand == 3 && dag <= 20)) {
-    	return sterrenbeelden[2];
-  	} else if((maand == 3 && dag >= 21) || (maand == 4 && dag <= 20)) {
-    	return sterrenbeelden[3];
-  	} else if((maand == 4 && dag >= 21) || (maand == 5 && dag <= 21)) {
-    	return sterrenbeelden[4];
-  	} else if((maand == 5 && dag >= 22) || (maand == 6 && dag <= 21)) {
-    	return sterrenbeelden[5];
-  	} else if((maand == 6 && dag >= 22) || (maand == 7 && dag <= 23)) {
-    	return sterrenbeelden[6];
-  	} else if((maand == 7 && dag >= 24) || (maand == 8 && dag <= 23)) {
-    	return sterrenbeelden[7];
-  	} else if((maand == 8 && dag >= 24) || (maand == 9 && dag <= 23)) {
-    	return sterrenbeelden[8];
- 	} else if((maand == 9 && dag >= 24) || (maand == 10 && dag <= 23)) {
-    	return sterrenbeelden[9];
-  	} else if((maand == 10 && dag >= 24) || (maand == 11 && dag <= 22)) {
-    	return sterrenbeelden[10];
-  	} else if((maand == 11 && dag >= 23) || (maand == 12 && dag <= 21)) {
-		return sterrenbeelden[11];
-}
-}
