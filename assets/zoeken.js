@@ -7,157 +7,162 @@ function changeURL(sNewRoot) {
 
 /* Global vars
  ****************/
-var oGebruikers = [];
-var iPers = 0;
+var data;
 
 window.onload = function () {
-    //  random 10 profielen op te halen
 
-
-    // var oaProf10 = []
-    haalPersonenOp(5);
-
-    plaatsGebruiker(oGebruikers);
-
-    // while (i < 5);
-    // console.log(oaProf10);
-    // set10prof(oaProf10);
-    // console.log("na functie");
-
-
-    // var profielId = Math.floor(Math.random() * 100);
-    // }
 }
 
-function haalPersonenOp(aantal) {
-    for (var i = 0; i < aantal; i++) {
-        //var i = 0;
-        //do {
-        //var profielId = 5;
-        //var profielId = Math.floor(Math.random() * 100);
-        var profielId = i + 1;
-        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+document.getElementById('knop12').addEventListener('click', function (e) {
+    let page = document.getElementById('input12_1').value;
+    let pageSize = document.getElementById('input12_2').value;
 
+    let url = rooturl + '/profiel/read.php?page=' + page + '&pageSize=' + pageSize;;
+    //DEBUG 
+    // pageSize = 10;
 
+    haalDataOp(url)
+});
 
-        fetch(url)
-            .then(function (resp) {
-                // console.log(resp.json());
-                return resp.json();
-            })
-            .then(function (data) {
-                if (data.id != null) {
-                    i++;
-                    console.log(data);
-                    // voegPersoonToe(data);
-                    plaatsPersoon(data);
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+document.getElementById('knop3').addEventListener('click', function (e) {
+    let grootte = document.getElementById('input3_1').value;
+    let grootteOperator = document.getElementById('input3_2').value;
+    let orderby = document.getElementById('input3_3').value;
 
+    let url = rooturl + '/profiel/search.php?grootte=' + grootte + '&grootteOperator=' + grootteOperator + '&orderBy=' + orderby;
 
+    haalDataOp(url)
+});
 
-        // fetch(url)
-        //     .then(function (resp) {
-        //         return resp.json();
-        //     })
-        //     .then(function (data) {
-        //         console.log(data);
-        //          if (typeof data != string){
-        //             oaProf10.push(data);
-        //         i++;
-        //         }
-        //         oaProf10.push(data);
-        //         console.log(oaProf10.length);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+document.getElementById('knop4').addEventListener('click', function (e) {
+    let voornaam = document.getElementById('input4_1').value;
+
+    let url = rooturl + '/profiel/search.php?voornaam=' + voornaam;
+
+    haalDataOp(url)
+});
+
+document.getElementById('knop13').addEventListener('click', function (e) {
+    let nickname = document.getElementById('input13_1').value;
+    let fuzzy = document.getElementById('input13_2').checked;
+
+    let url = rooturl + '/profiel/search.php?voornaam=' + nickname;
+
+    if (fuzzy) {
+        url += '&voornaamFuzzy=1';
     }
-    //while (i < aantal)
+
+    haalDataOp(url)
+});
+
+document.getElementById('knop5').addEventListener('click', function (e) {
+    let geslacht = document.getElementById('input5_1').value;
+
+    let url = rooturl + '/profiel/search.php?sexe=' + geslacht;
+
+    haalDataOp(url)
+});
+
+document.getElementById('knop11').addEventListener('click', function (e) {
+    let rangeMinGeboortedatum = document.getElementById('input11_1').value;
+    let rangeMaxGeboortedatum = document.getElementById('input11_2').value;
+
+    let rangeMinGrootte = document.getElementById('input11_3').value;
+    let rangeMaxGrootte = document.getElementById('input11_4').value;
+
+    let url = rooturl + '/profiel/search.php'
+    url += '?geboortedatumOperator=range&rangeMinGeboortedatum=' + rangeMinGeboortedatum + '&rangeMaxGeboortedatum=' + rangeMaxGeboortedatum;
+    url += '&grootteOperator=range&rangeMinGrootte=' + rangeMinGrootte + '&rangeMaxGrootte=' + rangeMaxGrootte;
+
+    haalDataOp(url)
+});
+
+document.getElementById('knop6').addEventListener('click', function (e) {
+    let geboortedatum = document.getElementById('input6_1').value;
+    let geboortedatumOperator = document.getElementById('input6_2').value;
+
+    let url = rooturl + '/profiel/search.php?geboortedatum=' + geboortedatum + '&geboortedatumOperator=' + geboortedatumOperator;
+
+    haalDataOp(url)
+});
+
+function haalDataOp(url) {
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            plaatsPersonen(data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
-function voegPersoonToe(peroon) {
-    oGebruikers.push(peroon);
+function plaatsPersonen(oaData) {
+    var placeId = document.getElementById("persoon");
+
+    while (placeId.hasChildNodes()) {
+        placeId.removeChild(placeId.lastChild);
+    }
+
+
+    // let page = document.getElementById('input12_1').value;
+    let pageSize = document.getElementById('input12_2').value;
+
+    console.log(Paginator(oaData, 1, pageSize))
+    console.log(Paginator(oaData, 2, pageSize))
+    console.log(Paginator(oaData, 3, pageSize))
+
+    for (var i = 0; i < oaData.length; i++) {
+        plaatsPersoon(oaData[i], i)
+    }
 }
 
-function plaatsPersoon(persoon) {
+function plaatsPersoon(persoon, i) {
 
-    // var placeId = document.getElementById("prof" + iPers);
     var placeId = document.getElementById("persoon");
     var eDiv = document.createElement('div');
     eDiv.setAttribute('class', 'card');
-    eDiv.setAttribute('id', 'prof' + iPers);
+    eDiv.setAttribute('id', 'prof' + i);
     placeId.appendChild(eDiv);
-    placeId = document.getElementById('prof' + iPers);
+    placeId = document.getElementById('prof' + i);
     eA = document.createElement('a');
-    eA.setAttribute('href', '?gebruiker=' + persoon.id);
-    eA.setAttribute('id', 'a' + iPers);
+    eA.setAttribute('href', '/profiel.html?gebruiker=' + persoon.id);
+    eA.setAttribute('id', 'a' + i);
     placeId.appendChild(eA);
-    placeId = document.getElementById('a' + iPers);
+    placeId = document.getElementById('a' + i);
     var eImg = document.createElement('img');
     eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + persoon.foto);
     eImg.setAttribute('class', 'img-thumbnail')
     placeId.appendChild(eImg);
     eDiv = document.createElement('div');
     eDiv.setAttribute('class', 'card-body');
-    eDiv.setAttribute('id', 'bodyprof' + iPers)
+    eDiv.setAttribute('id', 'bodyprof' + i)
     placeId.appendChild(eDiv);
-    placeId = document.getElementById('bodyprof' + iPers);
+    placeId = document.getElementById('bodyprof' + i);
     var eP = document.createElement('p');
     eP.innerHTML = persoon.nickname;
     placeId.appendChild(eP);
-
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.id;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.voornaam;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.familienaam;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.geboortedatum;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.email;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.nickname;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.beroep;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.sexe;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.haarkleur;
-    // placeId.appendChild(eP);
-    // var eP = document.createElement('p');
-    // eP.innerHTML = persoon.groote;
-    // placeId.appendChild(eP);
-
-    iPers++;
-    if (iPers === 4) {
-        iPers = 0;
-    }
-
+    // console.log(persoon.nickname + " is geplaatst");
 }
 
-function plaatsGebruiker(oGebruikers) {
+function Paginator(items, page, per_page) {
 
-    console.log("start functie");
-    console.log(oGebruikers.length);
-    //console.log(oaProf10[0].id);
-    for (i = 0; i < oGebruikers.length; i++) {
-        var placeId = document.getElementById("prof" + i);
-        var eImg = document.createElement('img');
-        eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + oGebruikers[i].foto);
-        placeId.appendChild(eImg);
-    }
+    var page = page || 1,
+        per_page = per_page || 12,
+        offset = (page - 1) * per_page,
 
+        paginatedItems = items.slice(offset).slice(0, per_page),
+        total_pages = Math.ceil(items.length / per_page);
+    return {
+        page: page,
+        per_page: per_page,
+        pre_page: page - 1 ? page - 1 : null,
+        next_page: (total_pages > page) ? page + 1 : null,
+        total: items.length,
+        total_pages: total_pages,
+        data: paginatedItems
+    };
 }
