@@ -1,114 +1,182 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Profiel</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/styles.css">
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark fixed top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="#">FlexiDating</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="zoeken.html">Zoeken</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="profiel.html">Profiel <span class="sr-only">(current)</span></a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <button class="btn btn-outline-light" type="submit" data-toggle="modal"
-                        data-target="#loginModal">Aanmelden</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/styles.css">
 
-    <div class="container profiel">
-	 	<h1 class="my-4 nickname"></h1>
-	    <section class="row">
-	    	<div class="col-md foto my-3">
-	    		<img src="https://via.placeholder.com/315" alt="Profielfoto" class="col img-fluid p-0">
-	    	</div>
-	    	<div class="col-md my-3">
-	    		<dl>
-	    			<div class="row familienaam">
-	    				<dt class="col-sm">Familienaam</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row voornaam">
-	    				<dt class="col-sm">Voornaam</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row geboortedatum">
-	    				<dt class="col-sm">Geboortedatum</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row sterrenbeeld">
-	    				<dt class="col-sm">Sterrenbeeld</dd>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row email">
-	    				<dt class="col-sm">E-mailadres</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row beroep">
-	    				<dt class="col-sm">Beroep</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row sexe">
-	    				<dt class="col-sm">Sexe</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row haarkleur">
-	    				<dt class="col-sm">Haarkleur</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row oogkleur">
-	    				<dt class="col-sm">Oogkleur</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row grootte">
-	    				<dt class="col-sm">Grootte</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    			<div class="row gewicht">
-	    				<dt class="col-sm">Gewicht</dt>
-			    		<dd class="col-sm"></dd>
-	    			</div>
-	    		</dl>
-		    </div>
-	    </section>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+		<div class="container">
+			<a class="navbar-brand" href="index.html">FlexiDating</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav mr-auto py-2  mt-lg-0">
+					<li class="nav-item ">
+						<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="zoeken.html">Zoeken</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="berichten.html">Berichten</a>
+					</li>
+				</ul>
+				<div class="d-none niet-ingelogd form-inline my-2  ">
+					<div class="form-group form-inline">
+						<input type="email" class="nput-sm form-control" id="loginNickname" placeholder="Fluffy Bunny">
+					</div>
+					<div class="form-group form-inline">
+						<label for="" class="sr-only">Wachtwoord</label>
+						<input type="password" class=" form-control" id="LoginWachtwoord" placeholder="wachtwoord">
+					</div>
+					<button type="submit" class="form-inline btn btn-outline-light" id="login">Login</button>
+
+					<div class=" form-inline ">
+						<a href="registratie.html"> <button class="btn btn-outline-light"
+								type="submit">Registreer</button></a>
+					</div>
+				</div>
+				<ul class="d-none ingelogd navbar-nav mt-2 mt-lg-0">
+					<li class=" nav-item dropdown">
+						<a class="nav-link dropdown-toggle loginNickname" href="#" id="navbarDropdownMenuLink"
+							role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Hoi single
+						</a>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item active" href="#">Mijn account</a>
+							<a class="dropdown-item" href="/profielbewerken.html">Profiel bewerken</a>
+							<a class="dropdown-item" href="/berichten.html">Berichten</a>
+							<a id="logout" class="dropdown-item" href="#">Logout</a>
+						</div>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+	<header class="masthead small">
+        <div class=""></div>
+        <h1 class="banner-title">FlexiDating <span>Profiel</span></h1>
+    </header>
+	<div class="container ingelogd">
+		<h1 class="my-4 zoeken">Aan het zoeken</h1>
+	</div>
+	<div class="alert alert-danger d-none" role="alert" id="errorMsg">
+	</div>
+	<div class="alert alert-success d-none" role="alert" id="succesMsg">
 	</div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <!-- 
-TO DO: uit comment halen na oplossing id
-    	<script src="assets/main.js"></script> -->
-    <script src="assets/profiel.js"></script>
+	<div class="container profiel ingelogd d-none">
+		<h1 class="my-4 nickname"></h1>
+		<div class="row">
+			<div class="col-sm profielfoto my-3">
+				<img src="https://via.placeholder.com/315" alt="Profielfoto" class="col img-fluid p-0">
+			</div>
+			<div class="col-sm my-3 gegevens">
+				<dl>
+					<div class="row familienaam blur-text">
+						<dt class="col-md col-lg-4">Familienaam</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row voornaam blur-text">
+						<dt class="col-md col-lg-4">Voornaam</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row geboortedatum blur-text">
+						<dt class="col-md col-lg-4">Geboortedatum</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row sterrenbeeld">
+						<dt class="col-md col-lg-4">Sterrenbeeld</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row email blur-text">
+						<dt class="col-md col-lg-4">E-mailadres</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row beroep">
+						<dt class="col-md col-lg-4">Beroep</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row sexe">
+						<dt class="col-md col-lg-4">Sexe</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row haarkleur">
+						<dt class="col-md col-lg-4">Haarkleur</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row oogkleur">
+						<dt class="col-md col-lg-4">Oogkleur</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row grootte">
+						<dt class="col-md col-lg-4">Grootte</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row gewicht">
+						<dt class="col-md col-lg-4">Gewicht</dt>
+						<dd class="col-md"></dd>
+					</div>
+					<div class="row lovecoins d-none">
+						<dt class="col-md col-lg-4">Lovecoins</dt>
+						<dd class="col-md"></dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="bevestigVerwijder" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      	<div class="modal-header">
+		        	<h5 class="modal-title">Verwijder profiel</h5>
+		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          		<span aria-hidden="true">&times;</span>
+		        	</button>
+		      	</div>
+		      	<div class="modal-body">
+		        Ben je zeker dat je jouw profiel wil verwijderen?
+		      	</div>
+		      	<div class="modal-footer">
+		        	<button type="button" class="btn btn-secondary" id="verwijder" data-dismiss="modal">Verwijder profiel</button>
+		        	<button type="button" class="btn btn-primary" id="behoud">Nee</button>
+		      </div>
+		    </div>
+		 </div>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+	</script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+	</script>
+
+	<script src="assets/nuttig_lib.js"></script>
+	<script src="assets/main.js"></script>
+	<script src="assets/profiel.js"></script>
+
 </body>
+
 </html>
