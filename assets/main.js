@@ -34,6 +34,10 @@ $(function () {
     // haalFavorietenOp(5, "FavorietenVanId5");
     // vraagFavorietOp(10, "FavorietId");
     // verwijderEenFavoriet(65);
+    // Lovecoins
+    // pasLovecoinsAan(50, '=');
+    pasLovecoinsAan(50, '+');
+    // pasLovecoinsAan(300, '-');
 
     /* END DEBUG */
 
@@ -484,6 +488,129 @@ function verwijderEenFavoriet(berichtId) {
             console.log(error);
         });
 }
+
+
+/**
+ * 
+ * Over Lovecoins
+ */
+
+function controleerLovecoins(aantalLovecoins) {
+    if (!Number.isNaN(aantalLovecoins)) {
+        return true;
+    } else {
+        // toon fout
+        return false;
+    }
+}
+
+/**
+ * 
+ * @param {*} aantalLovecoins de lovecoins welke je wilt aanpassen
+ * @param {*} bewerking te gebruiken - + = (als string)
+ */
+function pasLovecoinsAan(aantalLovecoins, bewerking) {
+    let valid = controleerLovecoins(aantalLovecoins);
+
+    if (valid) {
+        if (bewerking == "=") {
+            // zet nieuw aantal lovecoins    
+            zetLovecoins(aantalLovecoins);
+        } else {
+            // haal lovecoins op 
+            let huidigAantalLovecoins = gebruiker.lovecoins;
+
+            // +
+            if (bewerking == "+") {
+                nieuwAantalLovecoins = huidigAantalLovecoins + aantalLovecoins;
+                zetLovecoins(nieuwAantalLovecoins);
+
+            } else if (bewerking == "-") {
+                nieuwAantalLovecoins = huidigAantalLovecoins - aantalLovecoins;
+                zetLovecoins(nieuwAantalLovecoins);
+
+            } else {
+                // Deze bewering is nog niet ondersteund
+                toonerrorMsg("Deze bewerking is nog niet ondersteund.")
+            }
+
+        }
+    }
+}
+
+/**
+ * 
+ * @param {*} nieuwAantalLovecoins zet de lovecoins naar dit bedrag
+ */
+function zetLovecoins(nieuwAantalLovecoins) {
+    let ontvanger = gebruiker.id
+
+    let url = rooturl + '/profiel/read_one.php?id=' + ontvanger;
+
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            let urlUpdate = rooturl + '/profiel/update.php';
+
+            data['familienaam'] = data.familienaam;
+            data['voornaam'] = data.voornaam;
+            data['geboortedatum'] = data.geboortedatum;
+            data['email'] = data.email;
+            data['nickname'] = data.nickname;
+            data['foto'] = data.foto;
+            data['beroep'] = data.beroep;
+            data['sexe'] = data.sexe;
+            data['haarkleur'] = data.haarkleur;
+            data['oogkleur'] = data.oogkleur;
+            data['grootte'] = data.grootte;
+            data['gewicht'] = data.gewicht;
+            data['wachtwoord'] = data.wachtwoord;
+            data['lovecoins'] = nieuwAantalLovecoins.toString();
+
+            console.log(JSON.stringify(data));
+
+            let copyVanGebruiker = data;
+
+            var request = new Request(urlUpdate, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            });
+
+            fetch(request)
+                .then(function (resp) {
+                    return resp.json();
+                    console.log(resp)
+                })
+                .then(function (data) {
+                    console.log(data);
+                    // pas gebruiker aan in localStorage
+                    plaatsInStorage("gebruiker", copyVanGebruiker);
+
+                    // en in var
+                    gebruiker = copyVanGebruiker;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
+    // Toon de error
+    if (errorMsg != "") {
+        toonerrorMsg(errorMsg);
+    }
+
+}
+
 
 
 /***
