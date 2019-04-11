@@ -69,15 +69,36 @@
 		</div>
 	</nav>
 	<header class="masthead small">
-        <div class=""></div>
-        <h1 class="banner-title">FlexiDating <span>Profiel</span></h1>
-    </header>
+		<div class=""></div>
+		<h1 class="banner-title">FlexiDating <span>Profiel</span></h1>
+	</header>
 	<div class="container ingelogd">
 		<h1 class="my-4 zoeken">Aan het zoeken</h1>
 	</div>
 	<div class="alert alert-danger d-none" role="alert" id="errorMsg">
 	</div>
 	<div class="alert alert-success d-none" role="alert" id="succesMsg">
+	</div>
+
+	<div class="modal" id="bevestigVerwijder" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Verwijder profiel</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Ben je zeker dat je jouw profiel wil verwijderen?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="verwijder" data-dismiss="modal">Verwijder
+						profiel</button>
+					<button type="button" class="btn btn-primary" id="behoud">Nee</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="container profiel ingelogd d-none">

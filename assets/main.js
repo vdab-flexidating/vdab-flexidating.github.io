@@ -37,21 +37,29 @@ $(function () {
     // Lovecoins
     // pasLovecoinsAan(50, '=');
     // pasLovecoinsAan(50, '+');
-    pasLovecoinsAan(300, '-');
+    // pasLovecoinsAan(300, '-');
 
     /* END DEBUG */
 
     isIngelogd();
 
+    // TODO
+    haalFavorietenOp(gebruiker.id, "mijnFavorieten");
+
 
     document.getElementById('login').addEventListener('click', function (e) {
         gebruikersId = login();
+        haalFavorietenOp(data.id, "mijnFavorieten");
         // Number.isInteger(data.id) && !oGebruiker ? haalGebruikersInfoOp(gebruikersId) : false;
     });
 
     document.getElementById('logout').addEventListener('click', function (e) {
         logout();
     });
+
+
+
+
 
 
 });
@@ -89,6 +97,10 @@ function isIngelogd() {
         for (const element of eIngelogd) {
             element.classList.add("d-none");
         }
+
+        // haal de favorieten op bij het inloggen
+        haalFavorietenOp(gebruiker.id, "mijnFavorieten");
+
         return false;
     } else {
         // Ingelogd
@@ -146,6 +158,8 @@ function login() {
 
                     Number.isInteger(gebruikersId) && !gebruiker ? haalGebruikersInfoOp(gebruikersId, true) : false;
                     plaatsInStorage("gebruiker", gebruiker);
+
+                    haalFavorietenOp(data.id, "mijnFavorieten");
 
                 } else if (data.message == "Unauthorized") {
                     toonerrorMsg("Verkeerde logingegevens");
@@ -357,7 +371,7 @@ function toonsuccesMsg(msg) {
 /**
  * 
  * @param {*} profielId het id van wie je de favorieten wilt
- * @param {*} inStoragePlaatsen true als je het in storage wilt
+ * @param {*} storageKey plaats een key als je het in storage wilt
  */
 function haalFavorietenOp(profielId, storageKey) {
     let url = rooturl + '/favoriet/read.php?profielId=' + profielId;
@@ -437,7 +451,9 @@ function likeIemand(mijnId, anderId, storageKey) {
 
             if (typeof storageKey == "string") {
                 // TODO: bij logout moet dit weg
-                plaatsInStorage(storageKey, data);
+                if (data.id) {
+                    plaatsInStorage(storageKey, data);
+                }
 
                 console.log(data.message);
                 if (data.id) {
@@ -457,6 +473,10 @@ function likeIemand(mijnId, anderId, storageKey) {
         });
 }
 
+/**
+ * Plaats een bericht als favoriet
+ * @param {*} berichtId met betrekking tot bericht als favoriet bestempelen
+ */
 function verwijderEenFavoriet(berichtId) {
     let id = berichtId;
 

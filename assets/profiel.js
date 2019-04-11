@@ -32,14 +32,13 @@ console.log(gebruikersId)
 if (gebruiker) {
 	var url = window.location.search;
 	// via zoekpagina
-	if(url.includes('gebruiker')) {
+	if (url.includes('gebruiker')) {
 		var profielId = getProfielIdFromGet(url);
 		getIngevuldProfielById(profielId);
 		getButtonFavoriet();
 		getButtonBericht();
 		getButtonVolledigProfiel();
-	}
-	else {
+	} else {
 		//eigen profiel
 		document.title = "Mijn account";
 		eHeaderTekst.innerHTML = "Mijn account";
@@ -52,30 +51,29 @@ if (gebruiker) {
 			if (eProfielVelden[i].classList) {
 				eProfielVelden[i].classList.remove('d-none');
 				eProfielVelden[i].classList.remove('blur-text');
-			}		
+			}
 		}
 		//buttons toevoegen
 		getButtonBewerk();
 		getButtonVerwijder();
 		// lovecoins verhogen
 	}
-}
-else {
+} else {
 	toonerrorMsg("Gelieve in te loggen om deze inhoud weer te geven.");
 }
 
 function getProfielIdFromGet(url) {
 	var zoek = "gebruiker=";
-	    
-    var begin = url.indexOf(zoek);
-    if (begin != -1) {
-        begin += zoek.length;
-        var einde = url.indexOf("&", begin);
-        if (einde == -1) {
-            einde = url.length;
-        }
-        return url.substring(begin, einde);
-    }
+
+	var begin = url.indexOf(zoek);
+	if (begin != -1) {
+		begin += zoek.length;
+		var einde = url.indexOf("&", begin);
+		if (einde == -1) {
+			einde = url.length;
+		}
+		return url.substring(begin, einde);
+	}
 	return profielId;
 }
 
@@ -85,23 +83,22 @@ function getIngevuldProfielById(id) {
 	let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
 	fetch(url)
-	    .then(function (resp) {
-	        return resp.json();
-	    })
-	    .then(function (data) {
-	        profiel = data;
+		.then(function (resp) {
+			return resp.json();
+		})
+		.then(function (data) {
+			profiel = data;
 
-	        if (profiel.id) {
-	        	getIngevuldProfiel(profiel);
-	        }
-	        else {
-	        	eZoeken.classList.add('d-none');
-	        	toonerrorMsg("De gevraagde gebruiker werd niet gevonden");
-	        }	
-	    })
-	    .catch(function (error) {
-	        console.log(error);
-	    });
+			if (profiel.id) {
+				getIngevuldProfiel(profiel);
+			} else {
+				eZoeken.classList.add('d-none');
+				toonerrorMsg("De gevraagde gebruiker werd niet gevonden");
+			}
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
 }
 
 function getIngevuldProfiel(profiel) {
@@ -150,10 +147,10 @@ function getButtonVerwijder() {
 	document.querySelector(".profiel button.verwijder").addEventListener("click", function () {
 		eModal.classList.add('d-block');
 		eClose.addEventListener("click", function () {
-			eModal.classList.remove('d-block');	
+			eModal.classList.remove('d-block');
 		});
 		eBehoudProfiel.addEventListener("click", function () {
-			eModal.classList.remove('d-block');	
+			eModal.classList.remove('d-block');
 		});
 		eBevestigVerwijder.addEventListener("click", function () {
 			eModal.classList.remove('d-block');
@@ -161,43 +158,45 @@ function getButtonVerwijder() {
 			verwijderVanStorage("alles");
 			verwijderProfiel(gebruikersId);
 			console.log(gebruiker);
-			if(!gebruiker) {
+			if (!gebruiker) {
 				console.log('verwijderd')
 				toonerrorMsg("Uw profiel werd succesvol verwijderd.");
 				eZoeken.classList.add('d-none');
 				eProfiel.classList.add('d-none');
 			}
-		});		
+		});
 	});
 }
 
 function verwijderProfiel(profielId) {
 	/* verwijderd gebruiker op basis van id */
 
-	let url=rooturl+'/profiel/delete.php';
+	let url = rooturl + '/profiel/delete.php';
 
-    let data = {
-        id: profielId
-    }
+	let data = {
+		id: profielId
+	}
 
-    var request = new Request(url, {
-        method: 'DELETE',
-        body: JSON.stringify(data),
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        })
-    });
-    
-    fetch(request)
-        .then( function (resp) {
-        	return resp.json();
-        })
-        .then( function (data) {
-        	console.log(data);
-        })
-        .catch(function (error) {
-        	console.log(error);
-        });
+	var request = new Request(url, {
+		method: 'DELETE',
+		body: JSON.stringify(data),
+		headers: new Headers({
+			'Content-Type': 'application/json'
+		})
+	});
+
+	fetch(request)
+		.then(function (resp) {
+			return resp.json();
+		})
+		.then(function (data) {
+			console.log(data);
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+
+	//TO DO uitloggen
 }
 
 function getButtonFavoriet() {
@@ -209,52 +208,92 @@ function getButtonFavoriet() {
 	// is profiel een favoriet?
 	getIconFavoriet(gebruikersId, profielId);
 
+
 	//event button "favoriet"
 	document.querySelector(".profiel button.favoriet").addEventListener("click", function () {
 		//aan te vullen like/unlike
 		if (document.querySelector('button.favoriet.fa-heart-o')) {
 			console.log('like');
-		}
-		else {
+			likeIemand(gebruikersId, profielId, "laatsGelikte");
+			getIconFavoriet(gebruikersId, profielId, true);
+
+		} else {
 			console.log('unlike');
 		}
 		//na wijziging
-		getIconFavoriet(gebruikersId, profielId);
+		// Plaats de nieuwe favorieten in localstorage
+		//haalFavorietenOp(gebruiker.id, "mijnFavorieten");
 	});
 }
 
-function getIconFavoriet(gebruikersId, profielId) {
+/**
+ * 
+ * @param {*} gebruikersId ingelogde gebruiker
+ * @param {*} profielId persoon die gecontroleerd wordt
+ * @param {*} isFavoriet plaats dit true om de button favoriet te maken
+ */
+function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 	/* controleert of profiel een favoriet is van de gebruiker en zorgt voor gepast icon*/
 
 	//TO DO vervangen door local storage
+	let mijnFavorieten = haalUitStorage("mijnFavorieten");
+	if (isFavoriet) {
 
-	//alle favorieten gebruiker ophalen
-	let url=rooturl+'/favoriet/read.php?profielId='+gebruikersId;
+		let eButtonFavoriet = document.querySelector("profiel button[class^='fa-heart']");
 
-	let eButtonFavoriet = document.querySelector('button.favoriet');
+		if (favoriet) {
+			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+		} else {
+			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
+		}
 
-    fetch(url)
-        .then(function (resp) {
-        	return resp.json();
-        })
-        .then(function (data) {
-        	//ids favorieten verzamelen in array
-        	if (data.length > 0) {
-	        	var favorietenGebruiker = data;	     
-	        	console.log(favorietenGebruiker);   	
-	        	for (var i = 0; i < favorietenGebruiker.length; i++) {
-	           		if (favorietenGebruiker[i].anderId == profielId && !(favorietenGebruiker[i].statusCode == 3)) {
-	        			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
-	        		}
-	        		else {
-	        			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
-	        		}	        		
-	        	}
-	        }
-        })
-        .catch(function (error) {
-        	console.log(error);
-        });
+	} else if (mijnFavorieten) {
+		var favoriet = false;
+		for (const element of mijnFavorieten) {
+			console.log(element.anderId);
+			if (element.anderId == profielId) {
+				favoriet = true;
+			}
+		}
+		let eButtonFavoriet = document.querySelector(".btn.btn-dark.float-right.mt-2.favoriet");
+
+		if (favoriet) {
+			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+		} else {
+			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
+		}
+
+	} else {
+		// wanneer er niets in localstore zit
+		//alle favorieten gebruiker ophalen
+		let url = rooturl + '/favoriet/read.php?profielId=' + gebruikersId;
+
+		let eButtonFavoriet = document.querySelector('button.favoriet');
+
+		fetch(url)
+			.then(function (resp) {
+				return resp.json();
+			})
+			.then(function (data) {
+				//ids favorieten verzamelen in array
+				if (data.length > 0) {
+					var favorietenGebruiker = data;
+
+					console.log(favorietenGebruiker);
+					for (var i = 0; i < favorietenGebruiker.length; i++) {
+						if (favorietenGebruiker[i].anderId == profielId && !(favorietenGebruiker[i].statusCode == 3)) {
+							eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+						} else {
+							eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
+						}
+					}
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
 }
 
 function getButtonBericht() {
@@ -268,7 +307,7 @@ function getButtonBericht() {
 	//event button "stuur bericht"
 	document.querySelector(".profiel button.bericht").addEventListener("click", function () {
 		console.log('bericht')
-	// 	location.href = berichten.html?berichtnaar=id; 
+		// 	location.href = berichten.html?berichtnaar=id; 
 	});
 }
 
@@ -282,14 +321,14 @@ function getButtonVolledigProfiel() {
 
 	//event button "toon volledig profiel"
 	document.querySelector(".profiel button.volledig").addEventListener("click", function () {
-	//	TO DO lovecoins
-	// 	popup: kost 1 lovecoin: ok? nog voldoende lovecoins?
+		//	TO DO lovecoins
+		// 	popup: kost 1 lovecoin: ok? nog voldoende lovecoins?
 
-	//	toon alle velden behalve lovecoins + verberg button
+		//	toon alle velden behalve lovecoins + verberg button
 		for (var i = 0; i < eProfielVelden.length; i++) {
 			if (eProfielVelden[i].classList) {
 				eProfielVelden[i].classList.remove('blur-text');
-			}		
+			}
 		}
 		this.classList.add('d-none');
 	});
