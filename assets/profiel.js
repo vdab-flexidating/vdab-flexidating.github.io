@@ -247,9 +247,9 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 	let mijnFavorieten = haalUitStorage("mijnFavorieten");
 	if (isFavoriet) {
 
-		let eButtonFavoriet = document.querySelector("profiel button[class^='fa-heart']");
+		var eButtonFavoriet = document.querySelector(".profiel button.btn.favoriet");
 
-		if (favoriet) {
+		if (isFavoriet) {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
 		} else {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
