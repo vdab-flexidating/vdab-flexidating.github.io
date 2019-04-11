@@ -23,36 +23,14 @@ $(function () {
     let eWachtwoord2 = document.getElementById('wachtwoord2');
     let eLovecoins = document.getElementById('lovecoins');
 
-    //getIngevuldProfiel(gebruiker);
-
-    //tijdelijk voor testing
-    getIngevuldProfielById();
-
-    function getIngevuldProfielById(id) {
-        /* haalt profiel op o.b.v. id en vult profiel in */
-        let profielId = id;
-        rooturl = getRootUrl();
-        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
-
-        fetch(url)
-            .then(function (resp) {
-                return resp.json();
-            })
-            .then(function (data) {
-                profiel = data;
-
-                if (profiel.id) {
-                    getIngevuldProfiel(profiel);
-                } else {
-                    console.log('niet gevonden')
-                    //nog bekijken
-
-                }
-
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    if (gebruiker) {
+        getIngevuldProfiel(gebruiker);
+    }
+    else {        
+        toonerrorMsg("Deze inhoud is enkel zichtbaar voor ingelogde gebruikers.");
+        //verberg pagina
+        document.querySelector('.bewerken h1').classList.add('d-none');
+        document.querySelector('.bewerken form').classList.add('d-none');
     }
 
     function getIngevuldProfiel(profiel) {
@@ -95,7 +73,7 @@ $(function () {
             })
         })
 
-        // Data ophalen uit id
+        // Data ophalen uit velden
         let familienaam = eFamilienaam.value;
         let voornaam = eVoornaam.value;
         let geboortedatum = eGeboortedatum.value;
@@ -204,7 +182,7 @@ $(function () {
                     data['oogkleur'] = oogkleur;
                     data['grootte'] = grootte;
                     data['gewicht'] = gewicht;
-                    data['wachtwoord'] = wachtwoord;
+                    data['wachtwoord'] = wachtwoord1;
                     data['lovecoins'] = lovecoins;
 
                     console.log(JSON.stringify(data));

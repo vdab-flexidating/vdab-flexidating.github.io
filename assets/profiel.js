@@ -1,5 +1,5 @@
 /* DOM elementen */
-var eError = document.querySelector("h1.error");
+var eZoeken = document.querySelector("h1.zoeken");
 var eProfiel = document.querySelector("div.profiel");
 var eNickname = document.querySelector(".profiel .nickname");
 var eFoto = document.querySelector(".profiel .profielfoto img");
@@ -17,118 +17,65 @@ var eGrootte = document.querySelector(".profiel .grootte dd");
 var eGewicht = document.querySelector(".profiel .gewicht dd");
 var eLovecoins = document.querySelector(".profiel .lovecoins dd");
 
+var eModal = document.getElementById('bevestigVerwijder');
+var eClose = document.querySelector('#bevestigVerwijder .close');
+var eBevestigVerwijder = document.getElementById('verwijder');
+var eBehoudProfiel = document.getElementById('behoud');
 
+gebruiker = haalUitStorage("gebruiker");
+gebruikersId = gebruiker.id;
+console.log(gebruikersId)
 
-// TO DO : aanvullen aan de hand van zoekpagina / local storage
-// TO DO : controleren of ingelogd
-var eigenProfiel = true;
-var zoekId;
-if (zoekId) {
-	eigenProfiel = false;
-
-	//getIngevuldProfielById(id);
-
-	//toon button "favoriet"
-	var eButtonFavoriet = document.createElement("button");
-	eButtonFavoriet.className = "btn btn-dark float-right mt-2 favoriet";
-	
-
-	//TO DO button verschilt indien reeds favoriet (ophalen uit database)
-	var favoriet = false;
-	if (favoriet) {
-		eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+//controle of er een gebruiker ingelogd is
+if (gebruiker) {
+	var url = window.location.search;
+	// via zoekpagina
+	if(url.includes('gebruiker')) {
+		var profielId = getProfielIdFromGet(url);
+		getIngevuldProfielById(profielId);
+		getButtonFavoriet();
+		getButtonBericht();
+		getButtonVolledigProfiel();
 	}
 	else {
-		eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
-	}
-	eProfiel.insertBefore(eButtonFavoriet, eNickname);
+		//eigen profiel
+		getIngevuldProfiel(gebruiker);
+		
 
-	//event button "favoriet"
-	// document.querySelector(".profiel button.favoriet").addEventListener("click", function () {
-	// 	aan te vullen like/unlike
-	// });
-
-	//toon button "stuur bericht"
-	var eButtonBericht = document.createElement("button");
-	var tButtonBericht = document.createTextNode("Stuur bericht");
-	eButtonBericht.appendChild(tButtonBericht);
-	eButtonBericht.className = "btn btn-dark bericht";
-	eProfiel.appendChild(eButtonBericht);
-
-	//event button "stuur bericht"
-	// document.querySelector(".profiel button.bericht").addEventListener("click", function () {
-	// 	location.href = berichten.html?berichtnaar=id; 
-	// });
-
-	//toon button "toon volledig profiel"
-	var eButtonVolledig = document.createElement("button");
-	var tButtonVolledig = document.createTextNode("Toon volledig profiel");
-	eButtonVolledig.appendChild(tButtonVolledig);
-	eButtonVolledig.className = "btn btn-dark volledig ml-2";
-	eProfiel.appendChild(eButtonVolledig);
-
-	//event button "toon volledig profiel"
-	document.querySelector(".profiel button.volledig").addEventListener("click", function () {
-	//	TO DO lovecoins
-	// 	popup: kost 1 lovecoin: ok? nog voldoende lovecoins?
-
-	//	toon alle velden behalve lovecoins + verberg button
+		//toon alle velden van profiel
 		for (var i = 0; i < eProfielVelden.length; i++) {
-			if (eProfielVelden[i].classList && !eProfielVelden[i].classList.contains('lovecoins')) {
+			if (eProfielVelden[i].classList) {
 				eProfielVelden[i].classList.remove('d-none');
 			}		
 		}
-		this.classList.add('d-none');
-	});
-}
-else if (eigenProfiel) {
-	//haal gegevens profiel uit local storage (1 of meerdere keys?)
-	//gebruiker = localStorage.gebruiker;
-	
-	//getIngevuldProfiel(gebruiker);
-
-	//toon alle velden van profiel
-	for (var i = 0; i < eProfielVelden.length; i++) {
-		if (eProfielVelden[i].classList) {
-			eProfielVelden[i].classList.remove('d-none');
-		}		
+		//buttons toevoegen
+		getButtonBewerk();
+		getButtonVerwijder();
+		// lovecoins verhogen
 	}
-
-	//toon button "bewerk profiel"
-	var eButtonBewerk = document.createElement("button");
-	var tButtonBewerk = document.createTextNode("Bewerk profiel");
-	eButtonBewerk.appendChild(tButtonBewerk);
-	eButtonBewerk.className = "btn btn-dark bewerk";
-	eProfiel.appendChild(eButtonBewerk);
-
-	//event button "bewerk profiel"
-	// document.querySelector(".profiel button.bewerk").addEventListener("click", function () {
-	// 	location.href = profielbewerken.html;
-	// });
-
-	//toon button "verwijder profiel"
-	var eButtonVerwijder = document.createElement("button");
-	var tButtonVerwijder = document.createTextNode("Verwijder profiel");
-	eButtonVerwijder.appendChild(tButtonVerwijder);
-	eButtonVerwijder.className = "btn btn-dark ml-2 verwijder";
-	eProfiel.appendChild(eButtonVerwijder);
-
-	//event button "verwijder profiel"
-	document.querySelector(".profiel button.verwijder").addEventListener("click", function () {
-		//voorlopig vast id
-		verwijderProfiel(5071);
-		//melding profiel verwijderd?
-
-	});
-
-	// lovecoins verhogen
+}
+else {
+	toonerrorMsg("Deze inhoud is enkel zichtbaar voor ingelogde gebruikers.");
+	eZoeken.classList.add('d-none');
 }
 
-//voorlopig vast id
-getIngevuldProfielById(5112);
+function getProfielIdFromGet(url) {
+	var zoek = "gebruiker=";
+	    
+    var begin = url.indexOf(zoek);
+    if (begin != -1) {
+        begin += zoek.length;
+        var einde = url.indexOf("&", begin);
+        if (einde == -1) {
+            einde = url.length;
+        }
+        return url.substring(begin, einde);
+    }
+	return profielId;
+}
 
 function getIngevuldProfielById(id) {
-	/* haalt profiel op o.b.v. id en vult profiel in */
+	/* haalt profiel op o.b.v. id en vult profiel in (indien niet eigen profiel)*/
 	let profielId = id;
 	let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
@@ -141,14 +88,10 @@ function getIngevuldProfielById(id) {
 
 	        if (profiel.id) {
 	        	getIngevuldProfiel(profiel);
-	        	eProfiel.classList.remove('d-none');
-	        	eError.classList.add('d-none');
 	        }
 	        else {
-	        	eError.innerHTML = "De gevraagde gebruiker werd niet gevonden";
-	        	
-	        }
-	   		
+	        	eZoeken.innerHTML = "De gevraagde gebruiker werd niet gevonden";
+	        }	
 	    })
 	    .catch(function (error) {
 	        console.log(error);
@@ -157,10 +100,8 @@ function getIngevuldProfielById(id) {
 
 function getIngevuldProfiel(profiel) {
 	/* vult gegevens profiel aan op basis van een array */
-
 	eNickname.innerHTML = profiel.nickname;
-	eFoto.src = profiel.foto;
-
+	eFoto.src = "https://scrumserver.tenobe.org/scrum/img/" + profiel.foto;
 	eFamilienaam.innerHTML = profiel.familienaam;
 	eVoornaam.innerHTML = profiel.voornaam;
 	eGeboortedatum.innerHTML = profiel.geboortedatum;
@@ -173,6 +114,56 @@ function getIngevuldProfiel(profiel) {
 	eGrootte.innerHTML = profiel.grootte;
 	eGewicht.innerHTML = profiel.gewicht;
 	eLovecoins.innerHTML = profiel.lovecoins;
+
+	eProfiel.classList.remove('d-none');
+	eZoeken.classList.add('d-none');
+}
+
+function getButtonBewerk() {
+	//toon button "bewerk profiel"
+	var eButtonBewerk = document.createElement("button");
+	var tButtonBewerk = document.createTextNode("Bewerk profiel");
+	eButtonBewerk.appendChild(tButtonBewerk);
+	eButtonBewerk.className = "btn btn-dark bewerk";
+	eProfiel.appendChild(eButtonBewerk);
+
+	//event button "bewerk profiel"
+	document.querySelector(".profiel button.bewerk").addEventListener("click", function () {
+		location.href = "profielbewerken.html";
+	});
+}
+
+function getButtonVerwijder() {
+	//toon button "verwijder profiel"
+	var eButtonVerwijder = document.createElement("button");
+	var tButtonVerwijder = document.createTextNode("Verwijder profiel");
+	eButtonVerwijder.appendChild(tButtonVerwijder);
+	eButtonVerwijder.className = "btn btn-dark ml-2 verwijder";
+	eProfiel.appendChild(eButtonVerwijder);
+
+	//event button "verwijder profiel"
+	document.querySelector(".profiel button.verwijder").addEventListener("click", function () {
+		eModal.classList.add('d-block');
+		eClose.addEventListener("click", function () {
+			eModal.classList.remove('d-block');	
+		});
+		eBehoudProfiel.addEventListener("click", function () {
+			eModal.classList.remove('d-block');	
+		});
+		eBevestigVerwijder.addEventListener("click", function () {
+			eModal.classList.remove('d-block');
+			logout();
+			verwijderVanStorage("alles");
+			verwijderProfiel(gebruikersId);
+			console.log(gebruiker);
+			if(!gebruiker) {
+				console.log('verwijderd')
+				toonerrorMsg("Uw profiel werd succesvol verwijderd.");
+				eZoeken.classList.add('d-none');
+				eProfiel.classList.add('d-none');
+			}
+		});		
+	});
 }
 
 function verwijderProfiel(profielId) {
@@ -206,13 +197,31 @@ function verwijderProfiel(profielId) {
     //TO DO uitloggen
 }
 
-function getFavorietenGebruiker(profielId) {
-	/* verwijderd alle favorieten van een gebruiker o.b.v. id */
+function getButtonFavoriet() {
+	//toon button "favoriet"
+	var eButtonFavoriet = document.createElement("button");
+	eButtonFavoriet.className = "btn btn-dark float-right mt-2 favoriet";
+	eProfiel.insertBefore(eButtonFavoriet, eNickname);
+
+	// is profiel een favoriet?
+	getIconFavoriet(gebruikersId, profielId);
+
+	//event button "favoriet"
+	document.querySelector(".profiel button.favoriet").addEventListener("click", function () {
+		console.log('like')
+		//aan te vullen like/unlike
+		//na wijziging
+		getIconFavoriet(gebruikersId, profielId);
+	});
+}
+
+function getIconFavoriet(gebruikersId, profielId) {
+	/* controleert of profiel een favoriet is van de gebruiker en zorgt voor gepast icon*/
 
 	//alle favorieten gebruiker ophalen
-	let url=rooturl+'/favoriet/read.php?profielId='+profielId;
+	let url=rooturl+'/favoriet/read.php?profielId='+gebruikersId;
 
-	var idFavorietenGebruiker = [];
+	let eButtonFavoriet = document.querySelector('button.favoriet');
 
     fetch(url)
         .then(function (resp) {
@@ -221,16 +230,56 @@ function getFavorietenGebruiker(profielId) {
         .then(function (data) {
         	//ids favorieten verzamelen in array
         	if (data.length > 0) {
-	        	var favorietenGebruiker = data;
-	        	
+	        	var favorietenGebruiker = data;	        	
 	        	for (var i = 0; i < favorietenGebruiker.length; i++) {
-	        		idFavorietenGebruiker.push(favorietenGebruiker[i].id);
+	           		if (favorietenGebruiker[i].anderId == profielId) {
+	        			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+	        		}
+	        		else {
+	        			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
+	        		}	        		
 	        	}
 	        }
         })
         .catch(function (error) {
         	console.log(error);
         });
+}
 
-    
+function getButtonBericht() {
+	//toon button "stuur bericht"
+	var eButtonBericht = document.createElement("button");
+	var tButtonBericht = document.createTextNode("Stuur bericht");
+	eButtonBericht.appendChild(tButtonBericht);
+	eButtonBericht.className = "btn btn-dark bericht";
+	eProfiel.appendChild(eButtonBericht);
+
+	//event button "stuur bericht"
+	document.querySelector(".profiel button.bericht").addEventListener("click", function () {
+		console.log('bericht')
+	// 	location.href = berichten.html?berichtnaar=id; 
+	});
+}
+
+function getButtonVolledigProfiel() {
+	//toon button "toon volledig profiel"
+	var eButtonVolledig = document.createElement("button");
+	var tButtonVolledig = document.createTextNode("Toon volledig profiel");
+	eButtonVolledig.appendChild(tButtonVolledig);
+	eButtonVolledig.className = "btn btn-dark volledig ml-2";
+	eProfiel.appendChild(eButtonVolledig);
+
+	//event button "toon volledig profiel"
+	document.querySelector(".profiel button.volledig").addEventListener("click", function () {
+	//	TO DO lovecoins
+	// 	popup: kost 1 lovecoin: ok? nog voldoende lovecoins?
+
+	//	toon alle velden behalve lovecoins + verberg button
+		for (var i = 0; i < eProfielVelden.length; i++) {
+			if (eProfielVelden[i].classList && !eProfielVelden[i].classList.contains('lovecoins')) {
+				eProfielVelden[i].classList.remove('d-none');
+			}		
+		}
+		this.classList.add('d-none');
+	});
 }
