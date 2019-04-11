@@ -1,10 +1,17 @@
 /* Global vars
  ****************/
+var rooturl = "https://scrumserver.tenobe.org/scrum/api";
 var errorMsg = "";
 var gebruikersId;
 var gebruiker;
 var sStorage;
-var rooturl = "https://scrumserver.tenobe.org/scrum/api";
+//favoriet 
+var favorietenVanId;
+var vraagFavorietOp;
+var likeIemand;
+var verwijderFavoriet;
+
+
 
 $(function () {
 
@@ -16,9 +23,18 @@ $(function () {
 
     /* DEBUG 
      ***********************/
+    // Storage
     // plaatsInStorage("iLike", "trains");
     // let ikHouVan = haalUitStorage("iLike"); //zowel strings als 
     // console.log("i like " + ikHouVan);
+    // Favorieten 
+    // haalFavorietenOp(gebruiker.id, "mijnFavorieten");
+    // likeIemand(gebruiker.id, 65);
+    // likeIemand(gebruiker.id, 20);
+    // haalFavorietenOp(5, "FavorietenVanId5");
+    // vraagFavorietOp(10, "FavorietId");
+    // verwijderEenFavoriet(65);
+
     /* END DEBUG */
 
     isIngelogd();
@@ -330,7 +346,152 @@ function toonsuccesMsg(msg) {
     eSucces.innerHTML = msg;
 }
 
+/*******
+ * Alles over favoriet
+ */
 
+/**
+ * 
+ * @param {*} profielId het id van wie je de favorieten wilt
+ * @param {*} inStoragePlaatsen true als je het in storage wilt
+ */
+function haalFavorietenOp(profielId, storageKey) {
+    let url = rooturl + '/favoriet/read.php?profielId=' + profielId;
+
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            favorietenVanId = data;
+
+            if (typeof storageKey == "string") {
+                // TODO: bij logout moet dit weg
+                plaatsInStorage(storageKey, data);
+                console.log("Geplaats in storage met key: " + storageKey + " value: " + favorietenVanId);
+            } else {
+                console.log("var favorietenVanId : " + favorietenVanId);
+            }
+            console.log(data);
+            console.log("----");
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function vraagFavorietOp(favoerietId, storageKey) {
+
+    let url = rooturl + '/favoriet/read_one.php?id=' + favoerietId;
+
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            favorietenVanId = data;
+
+            if (typeof storageKey == "string") {
+                // TODO: bij logout moet dit weg
+                plaatsInStorage(storageKey, data);
+                console.log("De favorieten van " + favoerietId + " zijn: " + favorietenVanId + " en zitten als  " + storageKey + " in storage");
+
+            } else {
+                console.log("De favorieten van : " + favoerietId + " zijn:  " + favorietenVanId);
+            }
+            console.log(data);
+            console.log("----");
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function likeIemand(mijnId, anderId, storageKey) {
+
+    let url = rooturl + '/favoriet/like.php';
+
+    let data = {
+        mijnId: mijnId,
+        anderId: anderId
+    }
+
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            likeIemand = data;
+
+            if (typeof storageKey == "string") {
+                // TODO: bij logout moet dit weg
+                plaatsInStorage(storageKey, data);
+
+                console.log(data.message);
+                if (data.id) {
+                    console.log("id " + mijnId + " likte: " + likeIemand.id + " en zit als " + storageKey + " in storage");
+                }
+            } else {
+                console.log(data.message);
+                if (data.id) {
+                    console.log("id " + mijnId + " likte: " + likeIemand.id);
+                }
+            }
+            console.log(data);
+            console.log("----");
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function verwijderEenFavoriet(berichtId) {
+    let id = berichtId;
+
+    let url = rooturl + '/favoriet/delete.php';
+
+    let data = {
+        id: id
+    }
+
+    var request = new Request(url, {
+        method: 'DELETE',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            verwijderFavoriet = data;
+            console.log(data.message);
+            console.log("Van id: " + berichtId);
+            console.log("----");
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+
+/***
+ * Alles over sterrenbeelden
+ */
+/***
+ *  @param {*} geboortedatum haal sterrenbeeld op op basis van geboortedatum
+ */
 function getSterrenbeeld(geboortedatum) {
     /* return sterrenbeeld op basis van geboortedatum */
     let sterrenbeelden = ["Steenbok", "Waterman", "Vissen", "Ram", "Stier", "Tweelingen", "Kreeft", "Leeuw", "Maagd", "Weegschaal", "Schorpioen", "Boogschutter"]
