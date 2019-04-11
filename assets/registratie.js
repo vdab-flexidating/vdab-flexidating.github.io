@@ -22,7 +22,10 @@ window.onload = function () {
         let geboortedatum = document.getElementById('geboortedatum').value;
         let email = document.getElementById('maakEmail').value;
         let nickname = document.getElementById('nickname').value;
-        let foto = document.getElementById('foto').value;
+
+        
+
+
         let beroep = document.getElementById('beroep').value;
 
         let sexe = document.getElementsByName('sexe');
@@ -105,15 +108,26 @@ window.onload = function () {
                 
             }
         }
+        
 
         if (valid) {
+            //foto uit form halen
+            var fotoUpload = document.getElementById('foto')
+            if ('files' in fotoUpload && fotoUpload.files.length > 0) {
+                if ('name' in fotoUpload.files[0]) {
+                    naamFoto = fotoUpload.files[0].name;
+                    //foto encoden en uploaden
+                    encodeImageFileAsURL(fotoUpload, naamFoto);
+                }
+            }
+
             let data = {
                 familienaam: familienaam,
                 voornaam: voornaam,
                 geboortedatum: geboortedatum,
                 email: email,
                 nickname: nickname,
-                foto: foto,
+                foto: haalUitStorage("naamFoto"),
                 beroep: beroep,
                 sexe: sexe,
                 haarkleur: haarkleur,
@@ -123,6 +137,8 @@ window.onload = function () {
                 wachtwoord: wachtwoord1,
                 lovecoins: lovecoins
             }
+
+            verwijderVanStorage("naamFoto");
 
             var request = new Request(url, {
                 method: 'POST',

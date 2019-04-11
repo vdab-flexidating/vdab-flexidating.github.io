@@ -685,3 +685,49 @@ function getSterrenbeeld(geboortedatum) {
         return sterrenbeelden[11];
     }
 }
+
+
+/***
+ * Algemene functies over image uploader
+ */
+function encodeImageFileAsURL(element, naam) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    var afbeelding;
+    
+    reader.readAsDataURL(file);
+    reader.onloadend = function() {
+        console.log('RESULT', reader.result);
+        uploadFoto(naam, reader.result)
+    }
+}
+
+function uploadFoto(naam, afbeelding) {
+    let url=rooturl+'/image/upload.php';
+
+    let data = {
+        naam:naam,
+        afbeelding:afbeelding
+    }
+
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then( function (resp) {
+            return resp.json();
+        })
+        .then( function (data) {
+            console.log(data);
+            plaatsInStorage("naamFoto", data.fileName)
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
