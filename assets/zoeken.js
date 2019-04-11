@@ -93,8 +93,9 @@ function haalDataOp(url) {
         })
         .then(function (data) {
             console.log(data);
-            // plaatsPersonen(data);
-            splitsData(data)
+            plaatsPersonen(data);
+            //splitsData(data)
+            //plaatsInStorage("personen", data)
         })
         .catch(function (error) {
             console.log(error);
@@ -103,8 +104,8 @@ function haalDataOp(url) {
 
 function splitsData(oaData) {
     let pageSize = document.getElementById('input12_2').value;
-    var iPages = oaData.length / pageSize;
-    console.log(iPages);
+
+
 
 }
 
