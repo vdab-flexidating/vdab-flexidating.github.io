@@ -65,6 +65,11 @@ div.profiel div.profielfoto {
     max-width: 315px;
 }
 
+.blur-text {
+    color: transparent;
+    text-shadow: 0 0 5px #000;
+}
+
 @media (min-width: 576px) {}
 
 @media (min-width: 768px) {}

@@ -28,9 +28,6 @@ $(function () {
     }
     else {        
         toonerrorMsg("Deze inhoud is enkel zichtbaar voor ingelogde gebruikers.");
-        //verberg pagina
-        document.querySelector('.bewerken h1').classList.add('d-none');
-        document.querySelector('.bewerken form').classList.add('d-none');
     }
 
     function getIngevuldProfiel(profiel) {
