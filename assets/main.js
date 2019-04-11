@@ -508,8 +508,9 @@ function controleerLovecoins(aantalLovecoins) {
  * 
  * @param {*} aantalLovecoins de lovecoins welke je wilt aanpassen
  * @param {*} bewerking te gebruiken - + = (als string)
+ * @param {*} transfer boolean, probeer je te verplaatsen?
  */
-function pasLovecoinsAan(aantalLovecoins, bewerking) {
+function pasLovecoinsAan(aantalLovecoins, bewerking, transfer) {
     let valid = controleerLovecoins(aantalLovecoins);
 
     if (valid) {
@@ -529,11 +530,20 @@ function pasLovecoinsAan(aantalLovecoins, bewerking) {
                 nieuwAantalLovecoins = huidigAantalLovecoins - aantalLovecoins;
                 if (nieuwAantalLovecoins >= 0) {
                     zetLovecoins(nieuwAantalLovecoins);
+
+                    // we gaan er hier van uit dat er geen fouten meer mogelijk zijn
+                    // en starten reeds met de transfer
+                    if (transfer) {
+                        return true;
+                    }
                 } else {
                     // Onder 0 
                     errorMsg += "Je hebt te weinig lovecoins om deze actie uit te voeren.<br>";
                     errorMsg += "Meer bepaald hebt u " + -nieuwAantalLovecoins + " lovecoins te weinig.";
                     toonerrorMsg(errorMsg);
+                    if (transfer) {
+                        return false
+                    }
                 }
 
             } else {
@@ -600,6 +610,7 @@ function zetLovecoins(nieuwAantalLovecoins) {
 
                     // en in var
                     gebruiker = copyVanGebruiker;
+                    return true;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -619,14 +630,20 @@ function zetLovecoins(nieuwAantalLovecoins) {
 }
 
 /**
- * 
+ * Verplaats lovecoins van de ene persoon aan de andere persoon
  * @param {*} mijnId het id van de verzender
  * @param {*} ontvangerId het id van de ontvanger
  * @param {*} aantalLovecoins hoeveel je wilt versturen
+ * @param {*} bewering de actie die je probeerd
  */
-function geefLovecoins(mijnId, ontvangerId, aantalLovecoins) {
+function transferLovecoins(mijnId, ontvangerId, aantalLovecoins, bewering) {
+    // controleer of de verzender genoeg lovecoins heeft voor de actie
+    let valid = pasLovecoinsAan(20, "-", true);
 
-
+    if (valid) {
+        // verzenden van lovecoins mag
+        // TODO: tranfer naar ontvanger
+    }
 }
 
 
