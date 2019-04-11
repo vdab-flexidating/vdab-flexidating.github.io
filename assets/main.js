@@ -36,8 +36,8 @@ $(function () {
     // verwijderEenFavoriet(65);
     // Lovecoins
     // pasLovecoinsAan(50, '=');
-    pasLovecoinsAan(50, '+');
-    // pasLovecoinsAan(300, '-');
+    // pasLovecoinsAan(50, '+');
+    pasLovecoinsAan(300, '-');
 
     /* END DEBUG */
 
@@ -518,7 +518,7 @@ function pasLovecoinsAan(aantalLovecoins, bewerking) {
             zetLovecoins(aantalLovecoins);
         } else {
             // haal lovecoins op 
-            let huidigAantalLovecoins = gebruiker.lovecoins;
+            let huidigAantalLovecoins = parseInt(gebruiker.lovecoins);
 
             // +
             if (bewerking == "+") {
@@ -527,7 +527,14 @@ function pasLovecoinsAan(aantalLovecoins, bewerking) {
 
             } else if (bewerking == "-") {
                 nieuwAantalLovecoins = huidigAantalLovecoins - aantalLovecoins;
-                zetLovecoins(nieuwAantalLovecoins);
+                if (nieuwAantalLovecoins >= 0) {
+                    zetLovecoins(nieuwAantalLovecoins);
+                } else {
+                    // Onder 0 
+                    errorMsg += "Je hebt te weinig lovecoins om deze actie uit te voeren.<br>";
+                    errorMsg += "Meer bepaald hebt u " + -nieuwAantalLovecoins + " lovecoins te weinig.";
+                    toonerrorMsg(errorMsg);
+                }
 
             } else {
                 // Deze bewering is nog niet ondersteund
@@ -611,6 +618,16 @@ function zetLovecoins(nieuwAantalLovecoins) {
 
 }
 
+/**
+ * 
+ * @param {*} mijnId het id van de verzender
+ * @param {*} ontvangerId het id van de ontvanger
+ * @param {*} aantalLovecoins hoeveel je wilt versturen
+ */
+function geefLovecoins(mijnId, ontvangerId, aantalLovecoins) {
+
+
+}
 
 
 /***
