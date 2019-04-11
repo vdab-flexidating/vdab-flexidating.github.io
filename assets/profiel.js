@@ -198,8 +198,6 @@ function verwijderProfiel(profielId) {
         .catch(function (error) {
         	console.log(error);
         });
-
-    //TO DO uitloggen
 }
 
 function getButtonFavoriet() {
