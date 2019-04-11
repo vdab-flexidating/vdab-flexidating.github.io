@@ -5,6 +5,7 @@ $(function () {
 
     gebruiker = haalUitStorage("gebruiker");
     gebruikersId = gebruiker.id;
+    huidigeFoto = gebruiker.foto;
 
     /* DOM-elementen */
     let eFamilienaam = document.getElementById('familienaam');
@@ -12,6 +13,7 @@ $(function () {
     let eGeboortedatum = document.getElementById('geboortedatum');
     let eEmail = document.getElementById('maakEmail');
     let eNickname = document.getElementById('nickname');
+    let eHuidigeFoto = document.getElementById('huidigeFoto')
     let eFoto = document.getElementById('foto');
     let eBeroep = document.getElementById('beroep');
     let eSexe = document.getElementsByName('sexe');
@@ -38,7 +40,7 @@ $(function () {
         eGeboortedatum.value = profiel.geboortedatum;
         eEmail.value = profiel.email;
         eNickname.value = profiel.nickname;
-        eFoto.value = profiel.foto;
+        eHuidigeFoto.src = "https://scrumserver.tenobe.org/scrum/img/" + huidigeFoto;
         eBeroep.value = profiel.beroep;
 
         //radiobuttons doorlopen
@@ -76,7 +78,6 @@ $(function () {
         let geboortedatum = eGeboortedatum.value;
         let email = eEmail.value;
         let nickname = eNickname.value;
-        let foto = eFoto.value;
         let beroep = eBeroep.value;
         let sexe;
         for (let i = 0; i < eSexe.length; i++) {
@@ -144,7 +145,8 @@ $(function () {
         }
 
         let allesIngevuld = true;
-        let alleWaarden = document.querySelectorAll('#registratie input:not([type="radio"])');
+        let alleWaarden = document.querySelectorAll('#registratie input:not([type="radio"]):not([type="file"])');
+        console.log(alleWaarden)
         for (let i = 0; i < alleWaarden.length; i++) {
             if (!alleWaarden[i].value.length) {
                 valid = false;
@@ -160,6 +162,23 @@ $(function () {
 
         let url = rooturl + '/profiel/read_one.php?id=' + profielId;
         if (valid) {
+            //foto uit form halen
+            var fotoUpload = document.getElementById('foto')
+            var foto;
+            if ('files' in fotoUpload && fotoUpload.files.length > 0) {
+                if ('name' in fotoUpload.files[0]) {
+                    naamFoto = fotoUpload.files[0].name;
+                    //foto encoden en uploaden
+                    encodeImageFileAsURL(fotoUpload, naamFoto);
+                    foto = haalUitStorage("naamFoto");
+                }
+            }
+            else {
+                foto = huidigeFoto;
+            }
+            
+            console.log(foto)
+
             fetch(url)
                 .then(function (resp) {
                     return resp.json();
@@ -184,7 +203,7 @@ $(function () {
 
                     console.log(JSON.stringify(data));
 
-
+                    verwijderVanStorage("naamFoto");
 
                     var request = new Request(urlUpdate, {
                         method: 'PUT',
@@ -200,6 +219,7 @@ $(function () {
                         })
                         .then(function (data) {
                             console.log(data);
+                            haalGebruikersInfoOp(gebruikersId, true);
                         })
                         .catch(function (error) {
                             console.log(error);
