@@ -19,10 +19,17 @@ var eLovecoins = document.querySelector(".profiel .lovecoins dd");
 
 var eHeaderTekst = document.querySelector('.banner-title span');
 
+// Modal verwijdering
 var eModal = document.getElementById('bevestigVerwijder');
 var eClose = document.querySelector('#bevestigVerwijder .close');
 var eBevestigVerwijder = document.getElementById('verwijder');
 var eBehoudProfiel = document.getElementById('behoud');
+// Modal actie lovecoins
+var eModal2 = document.getElementById('bevestigAankoop');
+var eClose2 = document.querySelector('#bevestigAankoop .close');
+var eLoveActie = document.getElementById('doeActie');
+var eLoveAnnuleer = document.getElementById('annuleerActie');
+
 
 gebruiker = haalUitStorage("gebruiker");
 gebruikersId = gebruiker.id;
@@ -33,6 +40,7 @@ if (gebruiker) {
 	var url = window.location.search;
 	// via zoekpagina
 	if (url.includes('gebruiker')) {
+		//profiel van iemand anders
 		var profielId = getProfielIdFromGet(url);
 		getIngevuldProfielById(profielId);
 		getButtonFavoriet();
@@ -239,9 +247,9 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 	let mijnFavorieten = haalUitStorage("mijnFavorieten");
 	if (isFavoriet) {
 
-		let eButtonFavoriet = document.querySelector("profiel button[class^='fa-heart']");
+		var eButtonFavoriet = document.querySelector(".profiel button.btn.favoriet");
 
-		if (favoriet) {
+		if (isFavoriet) {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
 		} else {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
@@ -312,6 +320,7 @@ function getButtonBericht() {
 }
 
 function getButtonVolledigProfiel() {
+	var bevestigd = false;
 	//toon button "toon volledig profiel"
 	var eButtonVolledig = document.createElement("button");
 	var tButtonVolledig = document.createTextNode("Toon volledig profiel");
@@ -324,12 +333,82 @@ function getButtonVolledigProfiel() {
 		//	TO DO lovecoins
 		// 	popup: kost 1 lovecoin: ok? nog voldoende lovecoins?
 
-		//	toon alle velden behalve lovecoins + verberg button
-		for (var i = 0; i < eProfielVelden.length; i++) {
-			if (eProfielVelden[i].classList) {
-				eProfielVelden[i].classList.remove('blur-text');
+		//  Vraag bevestiging
+		let infoActie = "Wil je toch liever alles bekijken?<br>";
+		infoActie += "Betaal dan 1 lovecoin en vindt zo je ideale match.";
+		openLoveModel("Love actie: bekijk alles", infoActie, 1, "-", true, "toonVerborgen");
+	});
+}
+
+
+/**
+ * Opent een love model en voorziet deze van gepaste inhoudt
+ * @param {*} titel De titel van de model 
+ * @param {*} body de actie die je probeert te doen
+ * @param {*} aantalLovecoins hoeveel kost de actie
+ * @param {*} bewerking + - = 
+ * @param {*} transfer  wil je een return terug
+ * @param {*} welkeActie string met actie meegeven
+ * @param { } bevestig de teskt die komt bij bevestigknop
+ * @param { } annuleer de tekst die komt bij annulatieknop
+ */
+function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeActie, bevestig, annuleer) {
+	//Haal elementen op
+	let eModelTitel = document.getElementById("loveTitel");
+	let eModelBody = document.getElementById("loveBody");
+	let eModelActie = document.getElementById("doeActie");
+	let eModelAnnuleer = document.getElementById("annuleerActie");
+
+	//Plaats de variabelen op hun plek
+	eModelTitel.innerText = titel;
+	eModelBody.innerHTML = body;
+	bevestig ? eModelActie.innerText = bevestig : false;
+	annuleer ? eModelAnnuleer.innerText = annuleer : false;
+
+	// Toon model
+	eModal2.classList.add('d-block');
+	eClose2.addEventListener("click", function () {
+		eModal2.classList.remove('d-block');
+	});
+	eLoveAnnuleer.addEventListener("click", function () {
+		eModal2.classList.remove('d-block');
+	});
+	eLoveActie.addEventListener("click", function () {
+		eModal2.classList.remove('d-block');
+		console.log("Actie werd bevestigd.");
+
+		if (welkeActie == "toonVerborgen") {
+			//  Accepteer betaling
+			pasLovecoinsAan(aantalLovecoins, bewerking, transfer);
+
+			// Hou betaling bij in storage
+			let nieuweLovecoinActie = [{
+				id: profielId,
+				actie: welkeActie,
+				prijs: aantalLovecoins
+			}]
+
+			let lovecoinActies = haalUitStorage("loveActies");
+			if (lovecoinActies) {
+				//indien er reeds bestaan								
+				lovecoinActies.push(nieuweLovecoinActie[0]);
+			} else {
+				lovecoinActies = nieuweLovecoinActie;
 			}
+
+			plaatsInStorage("loveActies", lovecoinActies);
+
+			//	toon alle velden behalve lovecoins + verberg button
+			for (var i = 0; i < eProfielVelden.length; i++) {
+				if (eProfielVelden[i].classList) {
+					eProfielVelden[i].classList.remove('blur-text');
+				}
+			}
+
+			let eButtonVolledig = document.querySelector(".profiel button.volledig")
+			eButtonVolledig.classList.add('d-none');
+		} else {
+			console.log("Verkeerde actie meegegeven");
 		}
-		this.classList.add('d-none');
 	});
 }

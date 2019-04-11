@@ -528,7 +528,7 @@ function controleerLovecoins(aantalLovecoins) {
  * 
  * @param {*} aantalLovecoins de lovecoins welke je wilt aanpassen
  * @param {*} bewerking te gebruiken - + = (als string)
- * @param {*} transfer boolean, probeer je te verplaatsen?
+ * @param {*} transfer boolean Wil je een bevestiging (return value) krijgen? Ook nodig voor transfer
  */
 function pasLovecoinsAan(aantalLovecoins, bewerking, transfer) {
     let valid = controleerLovecoins(aantalLovecoins);
@@ -714,20 +714,20 @@ function encodeImageFileAsURL(element, naam) {
     var file = element.files[0];
     var reader = new FileReader();
     var afbeelding;
-    
+
     reader.readAsDataURL(file);
-    reader.onloadend = function() {
+    reader.onloadend = function () {
         console.log('RESULT', reader.result);
         uploadFoto(naam, reader.result)
     }
 }
 
 function uploadFoto(naam, afbeelding) {
-    let url=rooturl+'/image/upload.php';
+    let url = rooturl + '/image/upload.php';
 
     let data = {
-        naam:naam,
-        afbeelding:afbeelding
+        naam: naam,
+        afbeelding: afbeelding
     }
 
     var request = new Request(url, {
@@ -739,10 +739,10 @@ function uploadFoto(naam, afbeelding) {
     });
 
     fetch(request)
-        .then( function (resp) {
+        .then(function (resp) {
             return resp.json();
         })
-        .then( function (data) {
+        .then(function (data) {
             console.log(data);
             plaatsInStorage("naamFoto", data.fileName)
 
