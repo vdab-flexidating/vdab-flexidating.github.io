@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Registratie</title>
+    <title>Profiel bewerken</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,18 +17,21 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="#">FlexiDating</a>
+            <a class="navbar-brand" href="index.html">FlexiDating</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
+                <ul class="navbar-nav mr-auto py-2  mt-lg-0">
+                    <li class="nav-item">
                         <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="zoeken.html">Zoeken</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="berichten.html">Berichten</a>
                     </li>
                 </ul>
                 <div class="d-none niet-ingelogd form-inline my-2  ">
@@ -52,8 +55,9 @@
                             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Hoi single
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/profiel.html">Mijn account</a>
+                            <a class="dropdown-item active" href="/profielbewerken.html">Profiel bewerken</a>
                             <a class="dropdown-item" href="/berichten.html">Berichten</a>
                             <a id="logout" class="dropdown-item" href="#">Logout</a>
                         </div>
@@ -66,46 +70,54 @@
 
     <header class="masthead small">
         <div class=""></div>
-        <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
+        <h1 class="banner-title">FlexiDating <span>Profiel bewerken</span></h1>
     </header>
-    <div class="alert alert-success d-none" role="alert" id="succesMsg">
-        </div>
-    <div class="alert alert-danger d-none ingelogd" role="alert" id="alIngelogd">Ga naar <a href="profiel.html">mijn account.</a>
-    </div>
-    <div class="container niet-ingelogd">
-        <h1 class="my-4">Registreren</h1>
+    <div class="container bewerken">
+        <h1 class="my-4 ingelogd">Profiel bewerken</h1>
         <div class="alert alert-danger d-none" role="alert" id="errorMsg">
         </div>
-        <div class="alert alert-success d-none" role="alert" id="accountAangemaakt">Je profiel is aangemaakt. Log in om verder te gaan.
+        <div class="alert alert-success d-none" role="alert" id="profielBewerkt">Je profiel werd succesvol bewerkt
+            </div>
+        <div class='d-none'>
+            <div class="alert alert-success d-none" role="alert" id="succesMsg">
+            </div>
         </div>
-        <form action="" name="registratie" id="registratie">
+        <form action="" name="registratie" id="registratie" class="ingelogd">
             <div class="form-group">
                 <label for="familienaam">Familienaam</label>
-                <input type="text" name="familienaam" id="familienaam" class="form-control" aria-describedby="helpId" maxlength="1000">
+                <input type="text" name="familienaam" id="familienaam" class="form-control" aria-describedby="helpId"
+                    maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="voornaam">Voornaam</label>
-                <input type="text" name="voornaam" id="voornaam" class="form-control" aria-describedby="helpId" maxlength="1000">
+                <input type="text" name="voornaam" id="voornaam" class="form-control" aria-describedby="helpId"
+                    maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="geboortedatum">Geboortedatum</label>
-                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control" aria-describedby="helpId">
+                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control"
+                    aria-describedby="helpId">
             </div>
             <div class="form-group">
                 <label for="email">E-mailadres</label>
-                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId" maxlength="1000">
+                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId"
+                    maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="nickname">Nickname</label>
-                <input type="text" name="nickname" id="nickname" class="form-control" aria-describedby="helpId" maxlength="100">
+                <input type="text" name="nickname" id="nickname" class="form-control" aria-describedby="helpId"
+                    maxlength="100">
             </div>
+            <p>Huidige foto<p>
+            <img src="https://scrumserver.tenobe.org/scrum/img/no_image.png" id="huidigeFoto" alt="Huidige foto">
             <div class="form-group">
-                <label for="foto">Foto</label>
+                <label for="foto">Foto wijzigen</label>
                 <input type="file" name="foto" id="foto" class="form-control" aria-describedby="helpId" accept="image/png, image/jpeg">
             </div>
             <div class="form-group">
                 <label for="beroep">Beroep</label>
-                <input type="text" name="beroep" id="beroep" class="form-control" aria-describedby="helpId" maxlength="1000">
+                <input type="text" name="beroep" id="beroep" class="form-control" aria-describedby="helpId"
+                    maxlength="1000">
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
@@ -121,30 +133,35 @@
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="sexe" id="sexe-x" value="x" checked>
+                    <input type="radio" class="form-check-input" name="sexe" id="sexe-x" value="x">
                     X
                 </label>
             </div>
+
             <div class="form-group">
                 <label for="haarkleur">Haarkleur</label>
-                <input type="text" name="haarkleur" id="haarkleur" class="form-control" aria-describedby="helpId" maxlength="50">
+                <input type="text" name="haarkleur" id="haarkleur" class="form-control" aria-describedby="helpId"
+                    maxlength="50">
             </div>
 
             <div class="form-group">
                 <label for="oogkleur">Oogkleur</label>
-                <input type="text" name="oogkleur" id="oogkleur" class="form-control" aria-describedby="helpId" maxlength="50">
+                <input type="text" name="oogkleur" id="oogkleur" class="form-control" aria-describedby="helpId"
+                    maxlength="50">
             </div>
             <div class="form-group">
                 <label for="grootte">Grootte</label>
-                <input type="number" name="grootte" id="grootte" class="form-control" aria-describedby="helpId" maxlength="5">
+                <input type="number" name="grootte" id="grootte" class="form-control" aria-describedby="helpId"
+                    maxlength="5">
             </div>
             <div class="form-group">
                 <label for="gewicht">Gewicht</label>
-                <input type="number" name="gewicht" id="gewicht" class="form-control" aria-describedby="helpId" maxlength="5">
+                <input type="number" name="gewicht" id="gewicht" class="form-control" aria-describedby="helpId"
+                    maxlength="5">
             </div>
             <div class="form-group">
                 <label for="wachtwoord1">Wachtwoord</label>
-                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1"  maxlength="1000">
+                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="wachtwoord2">Wachtwoord herhalen</label>
@@ -152,10 +169,13 @@
             </div>
             <div class="form-group">
                 <label for="lovecoins">Lovecoins</label>
-                <input type="number" class="form-control" name="lovecoins" id="lovecoins" readonly value="20" maxlength="1000">
+                <input type="number" class="form-control" name="lovecoins" id="lovecoins" readonly maxlength="1000">
             </div>
-            <button type="submit" id="knop8" class="btn btn-primary">Submit</button>
+
+
+            <button type="submit" class="update btn btn-dark">Update profiel</button>
         </form>
+
     </div>
 
 
@@ -171,11 +191,8 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
-    <script src="assets/nuttig_lib.js"></script>
     <script src="assets/main.js"> </script>
-    <script src="assets/registratie.js"> </script>
-
-
+    <script src="assets/profielbewerken.js"> </script>
 </body>
 
 </html>
