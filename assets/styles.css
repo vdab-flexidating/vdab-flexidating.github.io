@@ -61,6 +61,18 @@ h2.card-title {
     width: 245px;
 }
 
+
+.card-zoek {
+    width: 20%;
+}
+
+.wordwrap {
+    word-break: break-all;
+}
+
+.form-row {
+    margin: 20px 15px;
+
 div.profiel div.profielfoto {
     max-width: 315px;
 }
@@ -79,6 +91,7 @@ div.profiel div.profielfoto {
 #huidigeFoto {
     max-width: 100px;
     clear: both;
+
 }
 
 @media (min-width: 576px) {}

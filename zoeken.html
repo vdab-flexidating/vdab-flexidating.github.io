@@ -80,13 +80,14 @@
     </div>
     <div class="container">
         <h2 class="h2 card-title">Laten we kennismaken &#x1F495;</h2>
-    </div>
-    <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="form-row">
-                    <label>Haal pagina met alle profielen</label>
-                </div>
+
+            <div class="col-md-4">
+                <!-- <div class="form-row">
+                    <label>
+                        <h5>Haal pagina met alle profielen</h5>
+                    </label>
+                </div> -->
                 <div class="form-row">
                     <!-- <div class="form-group col-md-4"> -->
                     <!-- <label>Pagina</label> -->
@@ -94,7 +95,9 @@
                     <!-- </div> -->
                     <!-- </div>
                 <div class="form-row"> -->
-                    <label for="colFormLabel" class="col-sm-4 col-form-label">Aantal per pagina</label>
+                    <label for="colFormLabel" class="col-sm-4 col-form-label">
+                        Aantal per pagina
+                    </label>
                     <div class="form-group col-md-4">
                         <select class="form-control" id="input12_2">
                             <!-- <option selected>Kies aantal...</option> -->
@@ -104,14 +107,16 @@
                             <option value="48">48</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-4">
+                    <!-- <div class="form-group col-md-4">
                         <button type="button" class="btn btn-secondary" id="knop12">
                             Zoeken
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="form-row">
-                    <label>Zoek profielen volgens grootte</label>
+                    <label>
+                        <h5>Zoek profielen volgens grootte</h5>
+                    </label>
                 </div>
                 <div class="form-row">
                     <label for="colFormLabel" class="col-sm-4 col-form-label">Groote</label>
@@ -137,7 +142,9 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <label>Zoek profielen met asterix</label>
+                    <label>
+                        <h5>Zoek profielen met asterix</h5>
+                    </label>
                 </div>
                 <div class="form-row">
                     <label for="colFormLabel" class="col-sm-4 col-form-label">Voornaam</label>
@@ -151,7 +158,9 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <label>Fuzzy zoeken naar profielen</label>
+                    <label>
+                        <h5>Fuzzy zoeken naar profielen</h5>
+                    </label>
                 </div>
                 <div class="form-row">
                     <label for="colFormLabel" class="col-sm-4 col-form-label">Voornaam</label>
@@ -171,7 +180,9 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <label>Zoek profielen volgens geslacht</label>
+                    <label>
+                        <h5>Zoek profielen volgens geslacht</h5>
+                    </label>
                 </div>
                 <div class="form-row">
                     <label for="colFormLabel" class="col-sm-4 col-form-label">Geslacht</label>
@@ -191,10 +202,12 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <label>Zoek profielen (met range)</label>
+                    <label>
+                        <h5>Zoek profielen (met range)</h5>
+                    </label>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-6">
                         <div class="form-group">
                             <label for="">Minimum geboorteDatum</label>
                             <input type="date" class="form-control" value="1990-01-01" name="" id="input11_1"
@@ -202,7 +215,7 @@
                             <!-- <small id="helpId" class="form-text text-muted">Help text</small> -->
                         </div>
                     </div>
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-6">
                         <div class="form-group">
                             <label for="">Maximum geboorteDatum</label>
                             <input type="date" class="form-control" value="1990-02-01" name="" id="input11_2"
@@ -229,10 +242,12 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <label>Zoek profielen geboren vanaf</label>
+                    <label>
+                        <h5>Zoek profielen geboren vanaf</h5>
+                    </label>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-6">
                         <div class="form-group">
                             <label for="">GeboorteDatum</label>
                             <input type="date" class="form-control" value="1980-01-01" name="" id="input6_1"
@@ -260,37 +275,31 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card-wrap" id="persoon">
+                <div class="row">
+                    <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+                    </div>
+                    <div class="alert alert-success d-none" role="alert" id="succesMsg">
+                    </div>
+                    <div class="card-wrap" id="persoon">
+                    </div>
                 </div>
-                <nav aria-label="Page navigation" class="d-block" id="pagenavigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <nav aria-label="Page navigation" class="d-block" id="navigation">
+                    <ul class="pagination justify-content-center" id="pagenavigation">
+                        <!-- <li class="page-item"><a class="page-link" id="link0" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" id="link1" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" id="link2" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" id="link3" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" id="link4" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" id="link5" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" id="link6" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" id="link7" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" id="link8" href="#">Next</a></li> -->
                     </ul>
                 </nav>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card-wrap" id="persoon">
-            </div>
-            <nav aria-label="Page navigation" class="d-block">
-                <ul class="pagination justify-content-center" id="pagenavigation">
-                    <!-- <li class="page-item"><a class="page-link" id="link0" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" id="link1" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" id="link2" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" id="link3" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" id="link4" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" id="link5" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" id="link6" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" id="link7" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" id="link8" href="#">Next</a></li> -->
-                </ul>
-            </nav>
-        </div>
     </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
