@@ -32,6 +32,8 @@ var eLoveAnnuleer = document.getElementById('annuleerActie');
 // Globale loveacties
 var loveActies;
 var betaaldeLoveActies = []; // acties op bekeken profiel
+// Favorieten
+var mijnFavorieten;
 
 
 gebruiker = haalUitStorage("gebruiker");
@@ -101,7 +103,18 @@ if (gebruiker) {
 		//buttons toevoegen
 		getButtonBewerk();
 		getButtonVerwijder();
-		// lovecoins verhogen
+		// TODO: lovecoins verhogen
+
+		// Favorieten toevoegen
+		if (mijnFavorieten) {
+			getFavorieten("Mijn favorieten", gebruiker, mijnFavoriet);
+		} else {
+			mijnFavorieten = haalUitStorage("mijnFavorieten");
+			getFavorieten("Mijn favorieten", gebruiker, mijnFavorieten);
+		}
+
+
+
 	}
 } else {
 	toonerrorMsg("Gelieve in te loggen om deze inhoud weer te geven.");
@@ -260,7 +273,7 @@ function getButtonFavoriet() {
 		if (document.querySelector('button.favoriet.fa-heart-o')) {
 			console.log('like');
 			likeIemand(gebruikersId, profielId, "laatsGelikte");
-			getIconFavoriet(gebruikersId, profielId, true);
+			// getIconFavoriet(gebruikersId, profielId, true);
 
 		} else {
 			console.log('unlike');
@@ -281,7 +294,7 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 	/* controleert of profiel een favoriet is van de gebruiker en zorgt voor gepast icon*/
 
 	//TO DO vervangen door local storage
-	let mijnFavorieten = haalUitStorage("mijnFavorieten");
+	mijnFavorieten = haalUitStorage("mijnFavorieten");
 	if (isFavoriet) {
 
 		var eButtonFavoriet = document.querySelector(".profiel button.btn.favoriet");
@@ -291,7 +304,6 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 		} else {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
 		}
-
 	} else if (mijnFavorieten) {
 		var favoriet = false;
 		for (const element of mijnFavorieten) {
@@ -376,6 +388,73 @@ function getButtonVolledigProfiel() {
 	});
 }
 
+function getFavorieten(titel, profiel, favorieten) {
+	// TODO als favorieten niet meegegeven werd
+
+
+	// alles aanwezig
+	eFavTitel = document.querySelector("#fav-container > h2");
+
+
+	FavTitel.innerText = profiel.nickname + "'s favorieten:";
+
+	for (const favoriet of favorieten) {
+		plaatFavoriet(favoriet)
+
+	}
+}
+
+function plaatFavoriet(favoriet) {
+	let eContainer = document.querySelector("#fav-container > .row");
+
+	let eDiv = document.createElement('div');
+	eDiv.setAttribute('class', 'col-sm-4');
+
+	eA = document.createElement('a');
+	eA.setAttribute('href', '/profiel.html?gebruiker=' + favoriet.anderId);
+
+	let eCard = document.createElement('div');
+	eCard.setAttribute('class', "card");
+
+	let eCardBody = document.createElement('div');
+	eCardBody.setAttribute("class", "card-body");
+
+	let eCardTitle = document.createElement("h5");
+	eCardTitle.setAttribute("class", "card-title");
+	eCardTitle.innerText = favoriet.anderId;
+
+	eCardBody.innerHTML = "Status: " + favoriet.status;
+
+
+	// eCardTitle.appendChild()
+	eCardBody.appendChild(eCardTitle)
+	eCard.appendChild(eCardBody)
+	eA.appendChild(eCard)
+	eDiv.appendChild(eA)
+	eContainer.appendChild(eContainer)
+
+	// placeId = document.getElementById('prof' + i);
+	// eA = document.createElement('a');
+	// eA.setAttribute('href', '/profiel.html?gebruiker=' + persoon.id);
+	// eA.setAttribute('id', 'a' + i);
+	// placeId.appendChild(eA);
+	// placeId = document.getElementById('a' + i);
+	// var eImg = document.createElement('img');
+	// eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + persoon.foto);
+	// eImg.setAttribute('class', 'img-thumbnail')
+	// placeId.appendChild(eImg);
+	// eDiv = document.createElement('div');
+	// eDiv.setAttribute('class', 'card-body');
+	// eDiv.setAttribute('id', 'bodyprof' + i)
+	// placeId.appendChild(eDiv);
+	// placeId = document.getElementById('bodyprof' + i);
+	// var eP = document.createElement('p');
+	// eP.innerHTML = persoon.nickname;
+	// placeId.appendChild(eP);
+	// // console.log(persoon.nickname + " is geplaatst");
+
+
+}
 
 /**
  * Opent een love model en voorziet deze van gepaste inhoudt
