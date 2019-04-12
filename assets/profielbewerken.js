@@ -146,7 +146,7 @@ $(function () {
 
         let allesIngevuld = true;
         let alleWaarden = document.querySelectorAll('#registratie input:not([type="radio"]):not([type="file"])');
-        console.log(alleWaarden)
+        //console.log(alleWaarden)
         for (let i = 0; i < alleWaarden.length; i++) {
             if (!alleWaarden[i].value.length) {
                 valid = false;
@@ -160,7 +160,6 @@ $(function () {
             }
         }
 
-        let url = rooturl + '/profiel/read_one.php?id=' + profielId;
         if (valid) {
             //foto uit form halen
             var fotoUpload = document.getElementById('foto')
@@ -169,66 +168,13 @@ $(function () {
                 if ('name' in fotoUpload.files[0]) {
                     naamFoto = fotoUpload.files[0].name;
                     //foto encoden en uploaden
-                    encodeImageFileAsURL(fotoUpload, naamFoto);
-                    foto = haalUitStorage("naamFoto");
+                    encodeImageFileAsURL(fotoUpload, naamFoto, profielId, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord1, lovecoins);
                 }
             }
             else {
                 foto = huidigeFoto;
-            }
-            
-            console.log(foto)
-
-            fetch(url)
-                .then(function (resp) {
-                    return resp.json();
-                })
-                .then(function (data) {
-                    let urlUpdate = rooturl + '/profiel/update.php';
-
-                    data['familienaam'] = familienaam;
-                    data['voornaam'] = voornaam;
-                    data['geboortedatum'] = geboortedatum;
-                    data['email'] = email;
-                    data['nickname'] = nickname;
-                    data['foto'] = foto;
-                    data['beroep'] = beroep;
-                    data['sexe'] = sexe;
-                    data['haarkleur'] = haarkleur;
-                    data['oogkleur'] = oogkleur;
-                    data['grootte'] = grootte;
-                    data['gewicht'] = gewicht;
-                    data['wachtwoord'] = wachtwoord1;
-                    data['lovecoins'] = lovecoins;
-
-                    console.log(JSON.stringify(data));
-
-                    verwijderVanStorage("naamFoto");
-
-                    var request = new Request(urlUpdate, {
-                        method: 'PUT',
-                        body: JSON.stringify(data),
-                        headers: new Headers({
-                            'Content-Type': 'application/json'
-                        })
-                    });
-                    fetch(request)
-                        .then(function (resp) {
-                            return resp.json();
-                            console.log(resp)
-                        })
-                        .then(function (data) {
-                            console.log(data);
-                            haalGebruikersInfoOp(gebruikersId, true);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                changeProfiel(profielId, familienaam, voornaam, geboortedatum, email, nickname, foto, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord1, lovecoins);
+            }            
         }
 
         // Toon de error
@@ -237,3 +183,100 @@ $(function () {
         }
     });
 });
+
+/***
+ * Algemene functies over image uploader
+ */
+function encodeImageFileAsURL(element, naam, profielId, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    var afbeelding;
+
+    reader.readAsDataURL(file);
+    reader.onloadend = function () {
+        console.log('RESULT', reader.result);
+        uploadFoto(naam, reader.result, profielId, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins)
+    }
+}
+
+function uploadFoto(naam, afbeelding, profielId, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins) {
+    let url = rooturl + '/image/upload.php';
+
+    let data = {
+        naam: naam,
+        afbeelding: afbeelding
+    }
+
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            let foto = data.fileName;
+            changeProfiel(profielId, familienaam, voornaam, geboortedatum, email, nickname, foto, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function changeProfiel(profielId, familienaam, voornaam, geboortedatum, email, nickname, foto, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins) {
+    let url = rooturl + '/profiel/read_one.php?id=' + profielId;
+    fetch(url)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            let urlUpdate = rooturl + '/profiel/update.php';
+
+            data['familienaam'] = familienaam;
+            data['voornaam'] = voornaam;
+            data['geboortedatum'] = geboortedatum;
+            data['email'] = email;
+            data['nickname'] = nickname;
+            data['foto'] = foto;
+            data['beroep'] = beroep;
+            data['sexe'] = sexe;
+            data['haarkleur'] = haarkleur;
+            data['oogkleur'] = oogkleur;
+            data['grootte'] = grootte;
+            data['gewicht'] = gewicht;
+            data['wachtwoord'] = wachtwoord;
+            data['lovecoins'] = lovecoins;
+
+            console.log(JSON.stringify(data));
+
+            var request = new Request(urlUpdate, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            });
+            fetch(request)
+                .then(function (resp) {
+                    return resp.json();
+                    console.log(resp)
+                })
+                .then(function (data) {
+                    console.log(data);
+                    haalGebruikersInfoOp(gebruikersId, true);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
