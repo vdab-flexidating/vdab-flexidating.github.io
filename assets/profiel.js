@@ -101,6 +101,8 @@ if (gebruiker) {
 			}
 		}
 
+		document.getElementById('fav-container').classList.remove('d-none');
+
 		document.querySelector(".profiel button.lovecoins").classList.remove('d-none');
 		document.querySelector(".profiel button.lovecoins").addEventListener("click", function () {
 			pasLovecoinsAan(10, '+', true);
