@@ -29,6 +29,9 @@ var eModal2 = document.getElementById('bevestigAankoop');
 var eClose2 = document.querySelector('#bevestigAankoop .close');
 var eLoveActie = document.getElementById('doeActie');
 var eLoveAnnuleer = document.getElementById('annuleerActie');
+// Globale loveacties
+var loveActies;
+var betaaldeLoveActies = []; // acties op bekeken profiel
 
 
 gebruiker = haalUitStorage("gebruiker");
@@ -45,7 +48,41 @@ if (gebruiker) {
 		getIngevuldProfielById(profielId);
 		getButtonFavoriet();
 		getButtonBericht();
-		getButtonVolledigProfiel();
+
+
+		// Controleer reeds betaalde loveActies
+		loveActies = haalUitStorage("loveActies");
+		console.log(loveActies);
+		if (loveActies) {
+			for (const loveActie of loveActies) {
+				console.log(loveActie.id);
+				if (loveActie.id == profielId) {
+					// Acties die horen bij profiel
+					console.log(loveActie.actie);
+					betaaldeLoveActies.push(loveActie.actie)
+				}
+
+			}
+
+			if (!betaaldeLoveActies.includes("toonVerborgen")) {
+				getButtonVolledigProfiel()
+			} else {
+				// er werd betaald voor toonVerborgen
+				for (var i = 0; i < eProfielVelden.length; i++) {
+					if (eProfielVelden[i].classList) {
+						eProfielVelden[i].classList.remove('d-none');
+						eProfielVelden[i].classList.remove('blur-text');
+					}
+				}
+
+
+			}
+
+		} else {
+			//Er zijn geen love acties			
+			getButtonVolledigProfiel();
+		}
+
 	} else {
 		//eigen profiel
 		document.title = "Mijn account";
@@ -378,7 +415,6 @@ function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeA
 
 		if (welkeActie == "toonVerborgen") {
 			//  Accepteer betaling
-			// TODO: wat bij niet genoeg coins? 
 			let valid = pasLovecoinsAan(aantalLovecoins, bewerking, transfer);
 
 			if (valid) {
@@ -396,6 +432,7 @@ function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeA
 				} else {
 					lovecoinActies = nieuweLovecoinActie;
 				}
+
 
 				plaatsInStorage("loveActies", lovecoinActies);
 
