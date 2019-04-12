@@ -72,6 +72,7 @@ h2.card-title {
 
 .form-row {
     margin: 20px 15px;
+}
 
 div.profiel div.profielfoto {
     max-width: 315px;
@@ -91,7 +92,10 @@ div.profiel div.profielfoto {
 #huidigeFoto {
     max-width: 100px;
     clear: both;
+}
 
+.inbox_chat .chat_list {
+    cursor: pointer;
 }
 
 @media (min-width: 576px) {}

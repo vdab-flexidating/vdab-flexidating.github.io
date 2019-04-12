@@ -23,6 +23,12 @@ window.onload = function () {
 
     haalDataOp(url)
 
+    gebruiker = haalUitStorage("gebruiker");
+    console.log(gebruiker);
+    if (!gebruiker) {
+        document.getElementById('errorMsgNietIngelogd').classList.remove('d-none');
+        document.getElementById('errorMsgNietIngelogd').innerHTML = "Gelieve in te loggen om deze inhoud weer te geven."
+    }
 }
 
 // document.getElementById('knop12').addEventListener('click', function (e) {

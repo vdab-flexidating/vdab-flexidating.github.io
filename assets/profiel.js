@@ -49,7 +49,8 @@ if (gebruiker) {
 		getIngevuldProfielById(profielId);
 		getButtonFavoriet();
 		getButtonBericht();
-
+		console.log(document.querySelector('.dropdown-menu-right .active').classList)
+		document.querySelector('.dropdown-menu-right .active').classList.remove('active');
 
 		// Controleer reeds betaalde loveActies
 		loveActies = haalUitStorage("loveActies");
