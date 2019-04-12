@@ -269,7 +269,9 @@ function changeProfiel(profielId, familienaam, voornaam, geboortedatum, email, n
                 })
                 .then(function (data) {
                     console.log(data);
+                    document.getElementById('profielBewerkt').classList.remove('d-none');
                     haalGebruikersInfoOp(gebruikersId, true);
+
                 })
                 .catch(function (error) {
                     console.log(error);
