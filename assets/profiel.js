@@ -320,7 +320,6 @@ function getButtonBericht() {
 }
 
 function getButtonVolledigProfiel() {
-	var bevestigd = false;
 	//toon button "toon volledig profiel"
 	var eButtonVolledig = document.createElement("button");
 	var tButtonVolledig = document.createTextNode("Toon volledig profiel");
@@ -347,9 +346,9 @@ function getButtonVolledigProfiel() {
  * @param {*} body de actie die je probeert te doen
  * @param {*} aantalLovecoins hoeveel kost de actie
  * @param {*} bewerking + - = 
- * @param {*} transfer  wil je een return terug
+ * @param {*} transfer  wil je een return terug?
  * @param {*} welkeActie string met actie meegeven
- * @param { } bevestig de teskt die komt bij bevestigknop
+ * @param { } bevestig de tekst die komt bij bevestigknop
  * @param { } annuleer de tekst die komt bij annulatieknop
  */
 function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeActie, bevestig, annuleer) {
@@ -379,34 +378,38 @@ function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeA
 
 		if (welkeActie == "toonVerborgen") {
 			//  Accepteer betaling
-			pasLovecoinsAan(aantalLovecoins, bewerking, transfer);
+			// TODO: wat bij niet genoeg coins? 
+			let valid = pasLovecoinsAan(aantalLovecoins, bewerking, transfer);
 
-			// Hou betaling bij in storage
-			let nieuweLovecoinActie = [{
-				id: profielId,
-				actie: welkeActie,
-				prijs: aantalLovecoins
-			}]
+			if (valid) {
+				// Hou betaling bij in storage
+				let nieuweLovecoinActie = [{
+					id: profielId,
+					actie: welkeActie,
+					prijs: aantalLovecoins
+				}]
 
-			let lovecoinActies = haalUitStorage("loveActies");
-			if (lovecoinActies) {
-				//indien er reeds bestaan								
-				lovecoinActies.push(nieuweLovecoinActie[0]);
-			} else {
-				lovecoinActies = nieuweLovecoinActie;
-			}
-
-			plaatsInStorage("loveActies", lovecoinActies);
-
-			//	toon alle velden behalve lovecoins + verberg button
-			for (var i = 0; i < eProfielVelden.length; i++) {
-				if (eProfielVelden[i].classList) {
-					eProfielVelden[i].classList.remove('blur-text');
+				let lovecoinActies = haalUitStorage("loveActies");
+				if (lovecoinActies) {
+					//indien er reeds bestaan								
+					lovecoinActies.push(nieuweLovecoinActie[0]);
+				} else {
+					lovecoinActies = nieuweLovecoinActie;
 				}
+
+				plaatsInStorage("loveActies", lovecoinActies);
+
+				//	toon alle velden behalve lovecoins + verberg button
+				for (var i = 0; i < eProfielVelden.length; i++) {
+					if (eProfielVelden[i].classList) {
+						eProfielVelden[i].classList.remove('blur-text');
+					}
+				}
+
+				let eButtonVolledig = document.querySelector(".profiel button.volledig")
+				eButtonVolledig.classList.add('d-none');
 			}
 
-			let eButtonVolledig = document.querySelector(".profiel button.volledig")
-			eButtonVolledig.classList.add('d-none');
 		} else {
 			console.log("Verkeerde actie meegegeven");
 		}
