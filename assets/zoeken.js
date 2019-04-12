@@ -104,13 +104,17 @@ function haalDataOp(url) {
             return resp.json();
         })
         .then(function (data) {
-            console.log(data);
+            console.log("data: " + data);
             //plaatsPersonen(data);
             splitsData(data)
             //plaatsInStorage("personen", data)
         })
         .catch(function (error) {
-            console.log(error);
+            console.log("error :" + error);
+            // if (oaData.length === 0) {
+            toonerrorMsg("Geen resultaat voor deze zoekopdracht.")
+            // }
+
         });
 }
 
@@ -139,10 +143,22 @@ function wisPersonen() {
     while (placeId.hasChildNodes()) {
         placeId.removeChild(placeId.lastChild);
     }
-
+    verbergMsg()
     toonerrorMsg("Pagina is aan het laden...");
+    verbergNavigator()
 }
 
+function verbergNavigator() {
+    eNav = document.getElementById("navigation");
+    eNav.classList.remove("d-block");
+    eNav.setAttribute("class", "d-none");
+}
+
+function toonNavigator() {
+    eNav = document.getElementById("navigation");
+    eNav.classList.remove("d-none");
+    eNav.setAttribute("class", "d-block");
+}
 
 function plaatsPersonen(oaData) {
     var placeId = document.getElementById("persoon");
@@ -171,7 +187,7 @@ function plaatsPersonen(oaData) {
 
 function plaatsPersoon(persoon, i) {
     verbergMsg()
-
+    toonNavigator()
     var placeId = document.getElementById("persoon");
     var eDiv = document.createElement('div');
     eDiv.setAttribute('class', 'card-zoek');
