@@ -49,7 +49,8 @@ if (gebruiker) {
 		getIngevuldProfielById(profielId);
 		getButtonFavoriet();
 		getButtonBericht();
-
+		console.log(document.querySelector('.dropdown-menu-right .active').classList)
+		document.querySelector('.dropdown-menu-right .active').classList.remove('active');
 
 		// Controleer reeds betaalde loveActies
 		loveActies = haalUitStorage("loveActies");
@@ -99,6 +100,14 @@ if (gebruiker) {
 				eProfielVelden[i].classList.remove('blur-text');
 			}
 		}
+
+		document.getElementById('fav-container').classList.remove('d-none');
+
+		document.querySelector(".profiel button.lovecoins").classList.remove('d-none');
+		document.querySelector(".profiel button.lovecoins").addEventListener("click", function () {
+			pasLovecoinsAan(10, '+', true);
+		})
+
 		//buttons toevoegen
 		getButtonBewerk();
 		getButtonVerwijder();
@@ -392,25 +401,30 @@ function getFavorieten(titel, profiel, favorieten) {
 
 
 	// alles aanwezig
-	eFavTitel = document.querySelector("#fav-container > h2");
+	// let eFavTitel = document.querySelector("#fav-container > h2");
+	let eFavTitel = document.getElementById("fav-titel");
 
 
-	FavTitel.innerText = profiel.nickname + "'s favorieten:";
+
+	eFavTitel.innerHTML = profiel.nickname + "'s favorieten:";
 
 	for (const favoriet of favorieten) {
-		plaatFavoriet(favoriet)
+		plaatsFavoriet(favoriet)
 
 	}
 }
 
-function plaatFavoriet(favoriet) {
-	let eContainer = document.querySelector("#fav-container > .row");
+function plaatsFavoriet(favoriet) {
+	let eContainer = document.getElementById("fav-row");
 
 	let eDiv = document.createElement('div');
 	eDiv.setAttribute('class', 'col-sm-4');
 
+
 	eA = document.createElement('a');
 	eA.setAttribute('href', '/profiel.html?gebruiker=' + favoriet.anderId);
+
+	// eDiv.appendChild(eA);
 
 	let eCard = document.createElement('div');
 	eCard.setAttribute('class', "card");
@@ -422,15 +436,16 @@ function plaatFavoriet(favoriet) {
 	eCardTitle.setAttribute("class", "card-title");
 	eCardTitle.innerText = favoriet.anderId;
 
-	eCardBody.innerHTML = "Status: " + favoriet.status;
+	let eCardSpan = document.createElement("span");
+	eCardSpan.innerHTML = "Status: " + favoriet.status;
 
 
-	// eCardTitle.appendChild()
 	eCardBody.appendChild(eCardTitle)
+	eCardBody.appendChild(eCardSpan)
 	eCard.appendChild(eCardBody)
 	eA.appendChild(eCard)
 	eDiv.appendChild(eA)
-	eContainer.appendChild(eContainer)
+	eContainer.appendChild(eDiv)
 
 	// placeId = document.getElementById('prof' + i);
 	// eA = document.createElement('a');

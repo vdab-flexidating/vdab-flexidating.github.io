@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Flexidating - zoeken</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -74,11 +74,13 @@
         <div class=""></div>
         <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
     </header>
+    <div class="alert alert-danger d-none niet-ingelogd" role="alert" id="errorMsgNietIngelogd">
+    </div>
     <div class="alert alert-danger d-none" role="alert" id="errorMsg">
     </div>
     <div class="alert alert-success d-none" role="alert" id="succesMsg">
     </div>
-    <div class="container">
+    <div class="container ingelogd">
         <h2 class="h2 card-title">Laten we kennismaken &#x1F495;</h2>
         <div class="row">
 
@@ -276,12 +278,15 @@
             </div>
             <div class="col-md-8">
                 <div class="row">
-                    <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger d-none" role="alert" id="errorMsg">
+                        </div>
+                        <div class="alert alert-success d-none" role="alert" id="succesMsg">
+                        </div>
                     </div>
-                    <div class="alert alert-success d-none" role="alert" id="succesMsg">
-                    </div>
-                    <div class="card-wrap" id="persoon">
-                    </div>
+
+                </div>
+                <div class="card-wrap" id="persoon">
                 </div>
                 <nav aria-label="Page navigation" class="d-block" id="navigation">
                     <ul class="pagination justify-content-center" id="pagenavigation">
