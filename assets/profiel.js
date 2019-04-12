@@ -33,7 +33,6 @@ var eLoveAnnuleer = document.getElementById('annuleerActie');
 var loveActies;
 var betaaldeLoveActies = []; // acties op bekeken profiel
 
-
 gebruiker = haalUitStorage("gebruiker");
 gebruikersId = gebruiker.id;
 console.log(gebruikersId)

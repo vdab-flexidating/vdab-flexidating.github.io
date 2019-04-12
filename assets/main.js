@@ -153,6 +153,7 @@ function login() {
             if (data.message) {
                 if (data.id) {
                     gebruikersId = parseInt(data.id);
+
                     console.log("Gebruiker met id " + data.id + " heeft zich ingelogd.")
                     plaatsInStorage("gebruikerId", data.id);
 
@@ -160,7 +161,6 @@ function login() {
                     plaatsInStorage("gebruiker", gebruiker);
 
                     haalFavorietenOp(data.id, "mijnFavorieten");
-
                 } else if (data.message == "Unauthorized") {
                     toonerrorMsg("Verkeerde logingegevens");
                 } else {
@@ -192,6 +192,9 @@ function logout() {
 
     // controleer status
     isIngelogd();
+
+    // terugkeren naar home
+    location.href = "index.html";
 }
 
 /**
