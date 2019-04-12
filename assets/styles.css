@@ -61,6 +61,18 @@ h2.card-title {
     width: 245px;
 }
 
+.card-zoek {
+    width: 20%;
+}
+
+.wordwrap {
+    word-break: break-all;
+}
+
+.form-row {
+    margin: 20px 15px;
+}
+
 @media (min-width: 576px) {}
 
 @media (min-width: 768px) {}

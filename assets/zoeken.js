@@ -15,19 +15,26 @@ var totalPage = 1;
 var zoekData;
 
 window.onload = function () {
-
-}
-
-document.getElementById('knop12').addEventListener('click', function (e) {
-    // let page = document.getElementById('input12_1').value;
     let page = 1;
-    let pageSize = document.getElementById('input12_2').value;
+    let pageSize = 12;
     let url = rooturl + '/profiel/read.php?page=' + page + '&pageSize=' + pageSize;;
     //DEBUG 
     // pageSize = 10;
 
     haalDataOp(url)
-});
+
+}
+
+// document.getElementById('knop12').addEventListener('click', function (e) {
+//     // let page = document.getElementById('input12_1').value;
+//     let page = 1;
+//     let pageSize = document.getElementById('input12_2').value;
+//     let url = rooturl + '/profiel/read.php?page=' + page + '&pageSize=' + pageSize;;
+//     //DEBUG 
+//     // pageSize = 10;
+//     // wisPersonen();
+//     haalDataOp(url);
+// });
 
 document.getElementById('knop3').addEventListener('click', function (e) {
     let grootte = document.getElementById('input3_1').value;
@@ -35,16 +42,16 @@ document.getElementById('knop3').addEventListener('click', function (e) {
     let orderby = document.getElementById('input3_3').value;
 
     let url = rooturl + '/profiel/search.php?grootte=' + grootte + '&grootteOperator=' + grootteOperator + '&orderBy=' + orderby;
-
-    haalDataOp(url)
+    wisPersonen();
+    haalDataOp(url);
 });
 
 document.getElementById('knop4').addEventListener('click', function (e) {
     let voornaam = document.getElementById('input4_1').value;
 
     let url = rooturl + '/profiel/search.php?voornaam=' + voornaam;
-
-    haalDataOp(url)
+    wisPersonen();
+    haalDataOp(url);
 });
 
 document.getElementById('knop13').addEventListener('click', function (e) {
@@ -56,16 +63,16 @@ document.getElementById('knop13').addEventListener('click', function (e) {
     if (fuzzy) {
         url += '&voornaamFuzzy=1';
     }
-
-    haalDataOp(url)
+    wisPersonen();
+    haalDataOp(url);
 });
 
 document.getElementById('knop5').addEventListener('click', function (e) {
     let geslacht = document.getElementById('input5_1').value;
 
     let url = rooturl + '/profiel/search.php?sexe=' + geslacht;
-
-    haalDataOp(url)
+    wisPersonen();
+    haalDataOp(url);
 });
 
 document.getElementById('knop11').addEventListener('click', function (e) {
@@ -78,8 +85,8 @@ document.getElementById('knop11').addEventListener('click', function (e) {
     let url = rooturl + '/profiel/search.php'
     url += '?geboortedatumOperator=range&rangeMinGeboortedatum=' + rangeMinGeboortedatum + '&rangeMaxGeboortedatum=' + rangeMaxGeboortedatum;
     url += '&grootteOperator=range&rangeMinGrootte=' + rangeMinGrootte + '&rangeMaxGrootte=' + rangeMaxGrootte;
-
-    haalDataOp(url)
+    wisPersonen();
+    haalDataOp(url);
 });
 
 document.getElementById('knop6').addEventListener('click', function (e) {
@@ -87,8 +94,8 @@ document.getElementById('knop6').addEventListener('click', function (e) {
     let geboortedatumOperator = document.getElementById('input6_2').value;
 
     let url = rooturl + '/profiel/search.php?geboortedatum=' + geboortedatum + '&geboortedatumOperator=' + geboortedatumOperator;
-
-    haalDataOp(url)
+    wisPersonen();
+    haalDataOp(url);
 });
 
 function haalDataOp(url) {
@@ -108,11 +115,11 @@ function haalDataOp(url) {
 }
 
 function splitsData(oaData, iGaNaar) {
-    console.log("vorige " + vorigePage + " volgende " + volgendePage + " totaal " + totalPage);
+    console.log("splitsdata vorige " + vorigePage + " volgende " + volgendePage + " totaal " + totalPage);
     let pageSize = document.getElementById('input12_2').value;
     zoekData = oaData
     oPageData = Paginator(zoekData, iGaNaar, pageSize);
-    console.log(Paginator(zoekData, iGaNaar, pageSize));
+    //console.log(Paginator(zoekData, iGaNaar, pageSize));
     plaatsPersonen(oPageData.data);
     // for (let i = 1, l = oPageData.total_pages; i <= l; i++)
     //     console.log(`Selected page ${i}:`, pagination(i, l));
@@ -120,12 +127,21 @@ function splitsData(oaData, iGaNaar) {
     huidigePage = oPageData.page;
     volgendePage = oPageData.next_page;
     totalPage = oPageData.total_pages;
-    console.log("vorige " + vorigePage + " volgende " + volgendePage + " totaal " + totalPage);
+    console.log("splitsdata einde vorige " + vorigePage + " volgende " + volgendePage + " totaal " + totalPage);
     oPageBut = pagination(huidigePage, totalPage);
     console.log(oPageBut.rangeWithDots);
-    creatPaginator(oPageBut.rangeWithDots);
+    createPaginator(oPageBut.rangeWithDots, huidigePage);
 }
 
+function wisPersonen() {
+    var placeId = document.getElementById("persoon");
+
+    while (placeId.hasChildNodes()) {
+        placeId.removeChild(placeId.lastChild);
+    }
+
+    toonerrorMsg("Pagina is aan het laden...");
+}
 
 
 function plaatsPersonen(oaData) {
@@ -154,10 +170,11 @@ function plaatsPersonen(oaData) {
 }
 
 function plaatsPersoon(persoon, i) {
+    verbergMsg()
 
     var placeId = document.getElementById("persoon");
     var eDiv = document.createElement('div');
-    eDiv.setAttribute('class', 'card');
+    eDiv.setAttribute('class', 'card-zoek');
     eDiv.setAttribute('id', 'prof' + i);
     placeId.appendChild(eDiv);
     placeId = document.getElementById('prof' + i);
@@ -176,24 +193,28 @@ function plaatsPersoon(persoon, i) {
     placeId.appendChild(eDiv);
     placeId = document.getElementById('bodyprof' + i);
     var eP = document.createElement('p');
+    eP.setAttribute('class', 'wordwrap')
     eP.innerHTML = persoon.nickname;
     placeId.appendChild(eP);
     // console.log(persoon.nickname + " is geplaatst");
 }
 
 function Paginator(items, page, per_page) {
-
+    console.log(" pagina " + page + " aantal per pagina " + per_page)
     var page = page || 1,
         per_page = per_page || 12,
         offset = (page - 1) * per_page,
 
         paginatedItems = items.slice(offset).slice(0, per_page),
         total_pages = Math.ceil(items.length / per_page);
+    console.log(offset + " pagina " + page + " aantal per pagina " + per_page + paginatedItems)
+    parseInt(page);
+
     return {
         page: page,
         per_page: per_page,
         pre_page: page - 1 ? page - 1 : null,
-        next_page: (total_pages > page) ? page + 1 : null,
+        next_page: (total_pages > page) ? parseInt(page) + 1 : null,
         total: items.length,
         total_pages: total_pages,
         data: paginatedItems
@@ -202,9 +223,9 @@ function Paginator(items, page, per_page) {
 
 // https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
 function pagination(c, m) {
-
-    var current = c,
-        last = m,
+    console.log("huidige " + c + " laatste " + m)
+    var current = parseInt(c),
+        last = parseInt(m),
         delta = 2,
         left = current - delta,
         right = current + delta + 1,
@@ -212,6 +233,7 @@ function pagination(c, m) {
         rangeWithDots = [],
         l;
 
+    console.log(range + rangeWithDots)
 
     for (let i = 1; i <= last; i++) {
         if (i == 1 || i == last || i >= left && i < right) {
@@ -231,8 +253,6 @@ function pagination(c, m) {
         l = i;
     }
 
-    console.log(rangeWithDots.length)
-    console.log(zoekData.length)
     return {
         rangeWithDots
     };
@@ -242,37 +262,60 @@ function pagination(c, m) {
 
 }
 
-function creatPaginator(oBut) {
+function createPaginator(oBut, actPage) {
+    console.log("createPaginator" + oBut)
     eDoel = document.getElementById("pagenavigation");
     while (eDoel.hasChildNodes()) {
         eDoel.removeChild(eDoel.lastChild);
     }
-
+    var laatste = oBut.length - 1
     var eLi = document.createElement('li');
-    eLi.setAttribute('class', 'page-link');
-    eLi.setAttribute('id', 'link0')
-    eLi.setAttribute('onclick', "naarPage(vorigePage)");
-    eLi.innerHTML = 'vorige';
+    eLi.setAttribute('class', 'page-item');
+    // eLi.setAttribute('id', 'link0')
+    // eLi.setAttribute('onclick', "naarPage(vorigePage)");
+    // eLi.innerHTML = 'vorige';
+    var eA = document.createElement('a');
+    eA.setAttribute('class', 'page-link')
+    eA.setAttribute('onclick', "naarPage(vorigePage)");
+    eA.innerHTML = 'vorige';
+    eLi.appendChild(eA);
     eDoel.appendChild(eLi);
     for (i = 0; i < oBut.length; i++) {
         eLi = document.createElement('li');
-        eLi.setAttribute('class', 'page-link');
-        eLi.setAttribute('id', 'link' + (i + 1));
-        eLi.innerHTML = oBut[i];
-        if (oBut[i] != "...") {
-            eLi.setAttribute('onclick', "naarPage(this.innerHTML)");
+        if (oBut[i] === parseInt(actPage)) {
+            eLi.setAttribute('class', 'page-item active');
+        } else {
+            eLi.setAttribute('class', 'page-item');
         }
+        eA = document.createElement('a');
+        eA.setAttribute('class', 'page-link active');
+        // eLi.setAttribute('id', 'link' + (i + 1));
+        eA.innerHTML = oBut[i];
+        if (oBut[i] != "...") {
+            eA.setAttribute('onclick', "naarPage(this.innerHTML)");
+        }
+        eLi.appendChild(eA);
         eDoel.appendChild(eLi);
     }
     var eLi = document.createElement('li');
-    eLi.setAttribute('class', 'page-link');
-    eLi.setAttribute('id', 'link10');
-    eLi.setAttribute('onclick', "naarPage(volgendePage)");
-    eLi.innerHTML = 'volgende';
+    console.log("laatste " + laatste + " - " + parseInt(oBut[parseInt(laatste)]));
+    if (parseInt(oBut[parseInt(laatste)]) === parseInt(actPage)) {
+        console.log("disabled");
+        eLi.setAttribute('class', 'page-item disabled');
+    } else {
+        eLi.setAttribute('class', 'page-item');
+    }
+    eLi.setAttribute('class', 'page-item');
+    eA = document.createElement('a');
+    eA.setAttribute('class', 'page-link');
+    // eLi.setAttribute('id', 'link10');
+    eA.setAttribute('onclick', "naarPage(volgendePage)");
+    eA.innerHTML = 'volgende';
+    eLi.appendChild(eA);
     eDoel.appendChild(eLi);
 }
 
 function naarPage(iGaNaar) {
-    console.log(iGaNaar);
+    console.log("ga naar " + iGaNaar);
     splitsData(zoekData, iGaNaar);
 }
