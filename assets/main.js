@@ -458,6 +458,13 @@ function likeIemand(mijnId, anderId, storageKey) {
                 console.log(data.message);
                 if (data.id) {
                     console.log("id " + mijnId + " likte: " + likeIemand.id + " en zit als " + storageKey + " in storage");
+
+                    if (storageKey == "laatsGelikte") {
+                        getIconFavoriet(gebruikersId, profielId, true);
+
+                        // plaats in localStorage
+                        haalFavorietenOp(gebruikersId, "mijnFavorieten");
+                    }
                 }
             } else {
                 console.log(data.message);

@@ -260,7 +260,7 @@ function getButtonFavoriet() {
 		if (document.querySelector('button.favoriet.fa-heart-o')) {
 			console.log('like');
 			likeIemand(gebruikersId, profielId, "laatsGelikte");
-			getIconFavoriet(gebruikersId, profielId, true);
+			// getIconFavoriet(gebruikersId, profielId, true);
 
 		} else {
 			console.log('unlike');
@@ -291,7 +291,6 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 		} else {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
 		}
-
 	} else if (mijnFavorieten) {
 		var favoriet = false;
 		for (const element of mijnFavorieten) {
