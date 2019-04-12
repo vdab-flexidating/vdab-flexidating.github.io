@@ -363,7 +363,7 @@ function getButtonBericht() {
 	//event button "stuur bericht"
 	document.querySelector(".profiel button.bericht").addEventListener("click", function () {
 		console.log('bericht')
-		// 	location.href = berichten.html?berichtnaar=id; 
+		location.href = "berichten.html?profiel="+profiel.id; 
 	});
 }
 

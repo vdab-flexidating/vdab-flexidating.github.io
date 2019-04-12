@@ -179,7 +179,7 @@ function plaatsPersoon(persoon, i) {
     placeId.appendChild(eDiv);
     placeId = document.getElementById('prof' + i);
     eA = document.createElement('a');
-    eA.setAttribute('href', '/profiel.html?gebruiker=' + persoon.id);
+    eA.setAttribute('href', 'profiel.html?gebruiker=' + persoon.id);
     eA.setAttribute('id', 'a' + i);
     placeId.appendChild(eA);
     placeId = document.getElementById('a' + i);
