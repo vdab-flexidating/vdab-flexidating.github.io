@@ -2,13 +2,14 @@ window.onload = function () {
 
     var minLeeftijd = 18;
     var minLengtePass = 6;
+    document.getElementById('errorMsg').classList.add('d-none');
 
     document.getElementById('knop8').addEventListener('click', function (e) {
         e.preventDefault();
-        let url = rooturl + '/profiel/create.php';
 
         //reset error meldingen
         errorMsg = "";
+        verbergMsg();
         let registratieVelden = document.querySelectorAll('form#registratie input');
         registratieVelden.forEach(function(input) {
             input.addEventListener('focus', function() {
@@ -16,16 +17,12 @@ window.onload = function () {
             })
         })
              
-        // Data ophalen uit id
+        // Data ophalen uit velden
         let familienaam = document.getElementById('familienaam').value;
         let voornaam = document.getElementById('voornaam').value;
         let geboortedatum = document.getElementById('geboortedatum').value;
         let email = document.getElementById('maakEmail').value;
         let nickname = document.getElementById('nickname').value;
-
-        
-
-
         let beroep = document.getElementById('beroep').value;
 
         let sexe = document.getElementsByName('sexe');
@@ -42,6 +39,7 @@ window.onload = function () {
         let wachtwoord1 = document.getElementById('wachtwoord1').value;
         let wachtwoord2 = document.getElementById('wachtwoord2').value;
         let lovecoins = document.getElementById('lovecoins').value;
+        console.log(haarkleur);
 
         /* Validatie
          *********************/
@@ -108,75 +106,17 @@ window.onload = function () {
                 
             }
         }
-        
-
+       
         if (valid) {
-            //foto uit form halen
+            //foto uit form halen, naam opslaan en gegevens doorsturen naar databank
             var fotoUpload = document.getElementById('foto')
             if ('files' in fotoUpload && fotoUpload.files.length > 0) {
                 if ('name' in fotoUpload.files[0]) {
                     naamFoto = fotoUpload.files[0].name;
                     //foto encoden en uploaden
-                    encodeImageFileAsURL(fotoUpload, naamFoto);
+                    encodeImageFileAsURL(fotoUpload, naamFoto, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord1, lovecoins);
                 }
             }
-
-            let data = {
-                familienaam: familienaam,
-                voornaam: voornaam,
-                geboortedatum: geboortedatum,
-                email: email,
-                nickname: nickname,
-                foto: haalUitStorage("naamFoto"),
-                beroep: beroep,
-                sexe: sexe,
-                haarkleur: haarkleur,
-                oogkleur: oogkleur,
-                grootte: grootte,
-                gewicht: gewicht,
-                wachtwoord: wachtwoord1,
-                lovecoins: lovecoins
-            }
-
-            verwijderVanStorage("naamFoto");
-
-            var request = new Request(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: new Headers({
-                    'Content-Type': 'application/json'
-                })
-            });
-
-            fetch(request)
-                .then(function (resp) {
-                    return resp.json();
-                })
-                .then(function (data) {
-                    console.log(data);
-                    gebruikersId = parseInt(data.id);
-
-                    // 400 of 503 error tonen
-                    let konNietAanmaken = "Kon profiel niet aanmaken.";
-                    let dataOnvolledig = "Kon profiel niet aanmaken. Data is onvolledig.";
-
-                    if (dataOnvolledig == data.message) {
-                        errorMsg += "Niet alle velden werden ingevuld.<br>";
-                    }
-                    if (konNietAanmaken == data.message) {
-                        // De enigste error die we niet opvangen is de controle op uniekheid nickname
-                        errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
-                        document.getElementById('nickname').
-                        classList.add("is-invalid");
-                    }
-                    // Toon de error
-                    if (errorMsg != "") {
-                        toonerrorMsg(errorMsg);
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
         }
 
         // Toon de error
@@ -184,4 +124,117 @@ window.onload = function () {
             toonerrorMsg(errorMsg);
         }
     });
+}
+
+function setProfiel(familienaam, voornaam, geboortedatum, email, nickname, foto, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins) {
+    let url = rooturl + '/profiel/create.php';
+
+    let data = {
+        familienaam: familienaam,
+        voornaam: voornaam,
+        geboortedatum: geboortedatum,
+        email: email,
+        nickname: nickname,
+        foto: foto,
+        beroep: beroep,
+        sexe: sexe,
+        haarkleur: haarkleur,
+        oogkleur: oogkleur,
+        grootte: grootte,
+        gewicht: gewicht,
+        wachtwoord: wachtwoord,
+        lovecoins: lovecoins
+    }
+    console.log(data)
+
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            gebruikersId = parseInt(data.id);
+
+            // profiel aangemaakt
+            let profielAangemaakt = "Het profiel werd aangemaakt."
+            if (profielAangemaakt == data.message) {
+                document.getElementById('accountAangemaakt').classList.remove('d-none');
+            }
+
+            // 400 of 503 error tonen
+            let konNietAanmaken = "Kon profiel niet aanmaken.";
+            let dataOnvolledig = "Kon profiel niet aanmaken. Data is onvolledig.";
+
+            if (dataOnvolledig == data.message) {
+                errorMsg += "Niet alle velden werden ingevuld.<br>";
+            }
+            if (konNietAanmaken == data.message) {
+                // De enigste error die we niet opvangen is de controle op uniekheid nickname
+                errorMsg += "Nickname reeds in gebruik, kies een andere nickname.<br>";
+                document.getElementById('nickname').
+                classList.add("is-invalid");
+            }
+            // Toon de error
+            if (errorMsg != "") {
+                toonerrorMsg(errorMsg);
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+
+/***
+ * Algemene functies over image uploader
+ */
+function encodeImageFileAsURL(element, naam, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    var afbeelding;
+
+    reader.readAsDataURL(file);
+    reader.onloadend = function () {
+        console.log('RESULT', reader.result);
+        uploadFoto(naam, reader.result, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins)
+    }
+}
+
+function uploadFoto(naam, afbeelding, familienaam, voornaam, geboortedatum, email, nickname, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins) {
+    let url = rooturl + '/image/upload.php';
+
+    let data = {
+        naam: naam,
+        afbeelding: afbeelding
+    }
+
+    var request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    });
+
+    fetch(request)
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            let foto = data.fileName;
+            setProfiel(familienaam, voornaam, geboortedatum, email, nickname, foto, beroep, sexe, haarkleur, oogkleur, grootte, gewicht, wachtwoord, lovecoins);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }

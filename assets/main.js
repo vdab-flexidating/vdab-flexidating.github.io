@@ -89,7 +89,7 @@ function isIngelogd() {
     if (!gebruiker) {
         // Indien geen gebruiker 
         console.log("Niet ingelogd");
-        toonerrorMsg("Niet ingelogd.<br>");
+        //toonerrorMsg("Niet ingelogd.<br>");
 
         for (const element of eUitgelogd) {
             element.classList.remove("d-none");
@@ -153,6 +153,7 @@ function login() {
             if (data.message) {
                 if (data.id) {
                     gebruikersId = parseInt(data.id);
+
                     console.log("Gebruiker met id " + data.id + " heeft zich ingelogd.")
                     plaatsInStorage("gebruikerId", data.id);
 
@@ -160,7 +161,6 @@ function login() {
                     plaatsInStorage("gebruiker", gebruiker);
 
                     haalFavorietenOp(data.id, "mijnFavorieten");
-
                 } else if (data.message == "Unauthorized") {
                     toonerrorMsg("Verkeerde logingegevens");
                 } else {
@@ -192,6 +192,9 @@ function logout() {
 
     // controleer status
     isIngelogd();
+
+    // terugkeren naar home
+    location.href = "index.html";
 }
 
 /**
@@ -458,6 +461,13 @@ function likeIemand(mijnId, anderId, storageKey) {
                 console.log(data.message);
                 if (data.id) {
                     console.log("id " + mijnId + " likte: " + likeIemand.id + " en zit als " + storageKey + " in storage");
+
+                    if (storageKey == "laatsGelikte") {
+                        getIconFavoriet(gebruikersId, profielId, true);
+
+                        // plaats in localStorage
+                        haalFavorietenOp(gebruikersId, "mijnFavorieten");
+                    }
                 }
             } else {
                 console.log(data.message);
@@ -704,50 +714,4 @@ function getSterrenbeeld(geboortedatum) {
     } else if ((maand == 11 && dag >= 23) || (maand == 12 && dag <= 21)) {
         return sterrenbeelden[11];
     }
-}
-
-
-/***
- * Algemene functies over image uploader
- */
-function encodeImageFileAsURL(element, naam) {
-    var file = element.files[0];
-    var reader = new FileReader();
-    var afbeelding;
-
-    reader.readAsDataURL(file);
-    reader.onloadend = function () {
-        console.log('RESULT', reader.result);
-        uploadFoto(naam, reader.result)
-    }
-}
-
-function uploadFoto(naam, afbeelding) {
-    let url = rooturl + '/image/upload.php';
-
-    let data = {
-        naam: naam,
-        afbeelding: afbeelding
-    }
-
-    var request = new Request(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        })
-    });
-
-    fetch(request)
-        .then(function (resp) {
-            return resp.json();
-        })
-        .then(function (data) {
-            console.log(data);
-            plaatsInStorage("naamFoto", data.fileName)
-
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
 }

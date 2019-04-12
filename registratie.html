@@ -68,39 +68,36 @@
         <div class=""></div>
         <h1 class="banner-title">FlexiDating <span>De datingsite voor jou</span></h1>
     </header>
-    <div class="alert alert-danger d-none ingelogd" role="alert">Je hebt al een account
+    <div class="alert alert-success d-none" role="alert" id="succesMsg">
         </div>
+    <div class="alert alert-danger d-none ingelogd" role="alert" id="alIngelogd">Ga naar <a href="profiel.html">mijn account.</a>
+    </div>
     <div class="container niet-ingelogd">
         <h1 class="my-4">Registreren</h1>
         <div class="alert alert-danger d-none" role="alert" id="errorMsg">
         </div>
-        <div class="alert alert-success d-none" role="alert" id="succesMsg">
+        <div class="alert alert-success d-none" role="alert" id="accountAangemaakt">Je profiel is aangemaakt. Log in om verder te gaan.
         </div>
         <form action="" name="registratie" id="registratie">
             <div class="form-group">
                 <label for="familienaam">Familienaam</label>
-                <input type="text" name="familienaam" id="familienaam" class="form-control" aria-describedby="helpId"
-                    value="groep 1" maxlength="1000">
+                <input type="text" name="familienaam" id="familienaam" class="form-control" aria-describedby="helpId" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="voornaam">Voornaam</label>
-                <input type="text" name="voornaam" id="voornaam" class="form-control" aria-describedby="helpId"
-                    value="groep 1 voornaam" maxlength="1000">
+                <input type="text" name="voornaam" id="voornaam" class="form-control" aria-describedby="helpId" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="geboortedatum">Geboortedatum</label>
-                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control"
-                    aria-describedby="helpId" value="1990-12-12">
+                <input type="date" name="geboortedatum" id="geboortedatum" class="form-control" aria-describedby="helpId">
             </div>
             <div class="form-group">
                 <label for="email">E-mailadres</label>
-                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId"
-                    value="test@getnada.com" maxlength="1000">
+                <input type="email" class="form-control" name="email" id="maakEmail" aria-describedby="emailHelpId" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="nickname">Nickname</label>
-                <input type="text" name="nickname" id="nickname" class="form-control" aria-describedby="helpId"
-                    value="Groep 1 nickname" maxlength="100">
+                <input type="text" name="nickname" id="nickname" class="form-control" aria-describedby="helpId" maxlength="100">
             </div>
             <div class="form-group">
                 <label for="foto">Foto</label>
@@ -108,8 +105,7 @@
             </div>
             <div class="form-group">
                 <label for="beroep">Beroep</label>
-                <input type="text" name="beroep" id="beroep" class="form-control" aria-describedby="helpId" value="Dev"
-                    maxlength="1000">
+                <input type="text" name="beroep" id="beroep" class="form-control" aria-describedby="helpId" maxlength="1000">
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
@@ -129,48 +125,37 @@
                     X
                 </label>
             </div>
-
             <div class="form-group">
                 <label for="haarkleur">Haarkleur</label>
-                <input type="text" name="haarkleur" id="haarkleur" class="form-control" aria-describedby="helpId"
-                    value="Bruin" maxlength="50">
+                <input type="text" name="haarkleur" id="haarkleur" class="form-control" aria-describedby="helpId" maxlength="50">
             </div>
 
             <div class="form-group">
                 <label for="oogkleur">Oogkleur</label>
-                <input type="text" name="oogkleur" id="oogkleur" class="form-control" aria-describedby="helpId"
-                    value="Blauw" maxlength="50">
+                <input type="text" name="oogkleur" id="oogkleur" class="form-control" aria-describedby="helpId" maxlength="50">
             </div>
             <div class="form-group">
                 <label for="grootte">Grootte</label>
-                <input type="number" name="grootte" id="grootte" class="form-control" aria-describedby="helpId"
-                    value="180" maxlength="5">
+                <input type="number" name="grootte" id="grootte" class="form-control" aria-describedby="helpId" maxlength="5">
             </div>
             <div class="form-group">
                 <label for="gewicht">Gewicht</label>
-                <input type="number" name="gewicht" id="gewicht" class="form-control" aria-describedby="helpId"
-                    value="80" maxlength="5">
+                <input type="number" name="gewicht" id="gewicht" class="form-control" aria-describedby="helpId" maxlength="5">
             </div>
             <div class="form-group">
                 <label for="wachtwoord1">Wachtwoord</label>
-                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1" value="vdab123456"
-                    maxlength="1000">
+                <input type="password" class="form-control" name="wachwoord1" id="wachtwoord1"  maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="wachtwoord2">Wachtwoord herhalen</label>
-                <input type="password" class="form-control" name="wachwoord2" id="wachtwoord2" value="vdab123456"
-                    maxlength="1000">
+                <input type="password" class="form-control" name="wachwoord2" id="wachtwoord2" maxlength="1000">
             </div>
             <div class="form-group">
                 <label for="lovecoins">Lovecoins</label>
-                <input type="number" class="form-control" name="lovecoins" id="lovecoins" readonly value="20"
-                    maxlength="1000">
+                <input type="number" class="form-control" name="lovecoins" id="lovecoins" readonly value="20" maxlength="1000">
             </div>
-
-
             <button type="submit" id="knop8" class="btn btn-primary">Submit</button>
         </form>
-
     </div>
 
 
