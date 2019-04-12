@@ -3,11 +3,6 @@ window.onload = function () {
     var minLeeftijd = 18;
     var minLengtePass = 6;
     document.getElementById('errorMsg').classList.add('d-none');
-    console.log(!document.getElementById('succesMsg').classList.contains('d-none'))
-    if (!document.getElementById('succesMsg').classList.contains('d-none')) {
-        console.log('ja')
-        document.getElementById('alIngelogd').classList.add('ingelogd');
-    }
 
     document.getElementById('knop8').addEventListener('click', function (e) {
         e.preventDefault();
