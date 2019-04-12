@@ -35,7 +35,6 @@ var betaaldeLoveActies = []; // acties op bekeken profiel
 // Favorieten
 var mijnFavorieten;
 
-
 gebruiker = haalUitStorage("gebruiker");
 gebruikersId = gebruiker.id;
 console.log(gebruikersId)
