@@ -220,9 +220,9 @@ function getButtonVerwijder() {
 		});
 		eBevestigVerwijder.addEventListener("click", function () {
 			eModal.classList.remove('d-block');
-			logout();
 			verwijderVanStorage("alles");
 			verwijderProfiel(gebruikersId);
+			gebruiker = haalUitStorage('gebruiker');
 			console.log(gebruiker);
 			if (!gebruiker) {
 				console.log('verwijderd')
