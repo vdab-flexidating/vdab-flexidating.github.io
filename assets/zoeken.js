@@ -110,7 +110,7 @@ function haalDataOp(url) {
             return resp.json();
         })
         .then(function (data) {
-            console.log("data: " + data);
+            console.log(data);
             //plaatsPersonen(data);
             splitsData(data)
             //plaatsInStorage("personen", data)
@@ -194,31 +194,71 @@ function plaatsPersonen(oaData) {
 function plaatsPersoon(persoon, i) {
     verbergMsg()
     toonNavigator()
-    var placeId = document.getElementById("persoon");
-    var eDiv = document.createElement('div');
-    eDiv.setAttribute('class', 'card-zoek');
-    eDiv.setAttribute('id', 'prof' + i);
-    placeId.appendChild(eDiv);
-    placeId = document.getElementById('prof' + i);
+    var eContainer = document.getElementById("persoon");
+    // var eDiv = document.createElement('div');
+    // eDiv.setAttribute('class', 'card-zoek');
+    // eDiv.setAttribute('id', 'prof' + i);
+    // placeId.appendChild(eDiv);
+    // placeId = document.getElementById('prof' + i);
+    // eA = document.createElement('a');
+    // eA.setAttribute('href', 'profiel.html?gebruiker=' + persoon.id);
+    // eA.setAttribute('id', 'a' + i);
+    // placeId.appendChild(eA);
+    // placeId = document.getElementById('a' + i);
+    // var eImg = document.createElement('img');
+    // eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + persoon.foto);
+    // eImg.setAttribute('class', 'img-thumbnail')
+    // placeId.appendChild(eImg);
+    // eDiv = document.createElement('div');
+    // eDiv.setAttribute('class', 'card-body');
+    // eDiv.setAttribute('id', 'bodyprof' + i)
+    // placeId.appendChild(eDiv);
+    // placeId = document.getElementById('bodyprof' + i);
+    // var eP = document.createElement('p');
+    // eP.setAttribute('class', 'wordwrap')
+    // eP.innerHTML = persoon.nickname;
+    // placeId.appendChild(eP);
+    // console.log(persoon.nickname + " is geplaatst");
+
+
+    //Maak
+    let eDiv = document.createElement('div');
+    eDiv.setAttribute('class', 'card');
+
     eA = document.createElement('a');
-    eA.setAttribute('href', 'profiel.html?gebruiker=' + persoon.id);
-    eA.setAttribute('id', 'a' + i);
-    placeId.appendChild(eA);
-    placeId = document.getElementById('a' + i);
+    eA.setAttribute('href', '/profiel.html?gebruiker=' + persoon.id);
+
     var eImg = document.createElement('img');
     eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + persoon.foto);
-    eImg.setAttribute('class', 'img-thumbnail')
-    placeId.appendChild(eImg);
-    eDiv = document.createElement('div');
-    eDiv.setAttribute('class', 'card-body');
-    eDiv.setAttribute('id', 'bodyprof' + i)
-    placeId.appendChild(eDiv);
-    placeId = document.getElementById('bodyprof' + i);
-    var eP = document.createElement('p');
-    eP.setAttribute('class', 'wordwrap')
-    eP.innerHTML = persoon.nickname;
-    placeId.appendChild(eP);
-    // console.log(persoon.nickname + " is geplaatst");
+    eImg.setAttribute('class', 'card-img-top')
+
+    let eCardBody = document.createElement('div');
+    eCardBody.setAttribute("class", "card-body");
+
+    let eCardTitle = document.createElement("h5");
+    eCardTitle.setAttribute("class", "card-title");
+    eCardTitle.innerText = persoon.nickname;
+
+    let eCardSpan = document.createElement("i");
+    if (persoon.sexe == "m") {
+        eCardSpan.setAttribute("class", "fa fa-mars");
+    } else if (persoon.sexe == "v") {
+        eCardSpan.setAttribute("class", "fa fa-venus");
+    } else if (persoon.sexe == "x") {
+        eCardSpan.setAttribute("class", "fa fa-genderless");
+    } else {
+        eCardSpan.innerHTML = persoon.sexe;
+    }
+
+    //Plaats
+    eCardBody.appendChild(eCardTitle)
+    eCardBody.appendChild(eCardSpan)
+
+    eA.appendChild(eImg)
+    eA.appendChild(eCardBody)
+
+    eDiv.appendChild(eA)
+    eContainer.appendChild(eDiv)
 }
 
 function Paginator(items, page, per_page) {
