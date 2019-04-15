@@ -372,7 +372,7 @@ function getButtonBericht() {
 	//event button "stuur bericht"
 	document.querySelector(".profiel button.bericht").addEventListener("click", function () {
 		console.log('bericht')
-		location.href = "berichten.html?profiel="+profiel.id; 
+		location.href = "berichten.html?profiel=" + profiel.id;
 	});
 }
 
@@ -405,68 +405,53 @@ function getFavorieten(titel, profiel, favorieten) {
 	let eFavTitel = document.getElementById("fav-titel");
 
 
+	if (favorieten.length == 0) {
+		eFavTitel.innerHTML = profiel.nickname + " heeft nog geen favorieten :(";
+	} else {
+		eFavTitel.innerHTML = profiel.nickname + "'s favorieten:";
 
-	eFavTitel.innerHTML = profiel.nickname + "'s favorieten:";
+		for (const favoriet of favorieten) {
+			haalGebruikersInfoOp(favoriet.anderId, false, favoriet)
 
-	for (const favoriet of favorieten) {
-		plaatsFavoriet(favoriet)
-
+		}
 	}
+
 }
 
-function plaatsFavoriet(favoriet) {
+function plaatsFavoriet(favoriet, infoVanFavoriet) {
+	//Waar
 	let eContainer = document.getElementById("fav-row");
 
+	//Maak
 	let eDiv = document.createElement('div');
-	eDiv.setAttribute('class', 'col-sm-4');
-
+	eDiv.setAttribute('class', 'card');
 
 	eA = document.createElement('a');
 	eA.setAttribute('href', '/profiel.html?gebruiker=' + favoriet.anderId);
 
-	// eDiv.appendChild(eA);
-
-	let eCard = document.createElement('div');
-	eCard.setAttribute('class', "card");
+	var eImg = document.createElement('img');
+	eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + infoVanFavoriet.foto);
+	eImg.setAttribute('class', 'card-img-top')
 
 	let eCardBody = document.createElement('div');
 	eCardBody.setAttribute("class", "card-body");
 
 	let eCardTitle = document.createElement("h5");
 	eCardTitle.setAttribute("class", "card-title");
-	eCardTitle.innerText = favoriet.anderId;
+	eCardTitle.innerText = infoVanFavoriet.nickname;
 
 	let eCardSpan = document.createElement("span");
 	eCardSpan.innerHTML = "Status: " + favoriet.status;
 
-
+	//Plaats
 	eCardBody.appendChild(eCardTitle)
 	eCardBody.appendChild(eCardSpan)
-	eCard.appendChild(eCardBody)
-	eA.appendChild(eCard)
+
+	eA.appendChild(eImg)
+	eA.appendChild(eCardBody)
+
 	eDiv.appendChild(eA)
 	eContainer.appendChild(eDiv)
-
-	// placeId = document.getElementById('prof' + i);
-	// eA = document.createElement('a');
-	// eA.setAttribute('href', '/profiel.html?gebruiker=' + persoon.id);
-	// eA.setAttribute('id', 'a' + i);
-	// placeId.appendChild(eA);
-	// placeId = document.getElementById('a' + i);
-	// var eImg = document.createElement('img');
-	// eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + persoon.foto);
-	// eImg.setAttribute('class', 'img-thumbnail')
-	// placeId.appendChild(eImg);
-	// eDiv = document.createElement('div');
-	// eDiv.setAttribute('class', 'card-body');
-	// eDiv.setAttribute('id', 'bodyprof' + i)
-	// placeId.appendChild(eDiv);
-	// placeId = document.getElementById('bodyprof' + i);
-	// var eP = document.createElement('p');
-	// eP.innerHTML = persoon.nickname;
-	// placeId.appendChild(eP);
-	// // console.log(persoon.nickname + " is geplaatst");
-
 
 }
 

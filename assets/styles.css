@@ -37,18 +37,18 @@ header.masthead.small {
     font-style: normal;
 }
 
-.card-wrap {
+/* .card-wrap {
     display: -webkit-flex;
     -webkit-flex-wrap: wrap;
     display: flex;
     flex-wrap: wrap;
     margin: 20px 0;
 
-}
+} */
 
-.card-wrap>* {
+/* .card-wrap>* {
     margin: 15px;
-}
+} */
 
 h2.card-title {
     margin: 20px 15px;
@@ -57,9 +57,9 @@ h2.card-title {
     color: #333;
 }
 
-.card {
+/* .card {
     width: 245px;
-}
+} */
 
 
 .card-zoek {
@@ -98,9 +98,23 @@ div.profiel div.profielfoto {
     cursor: pointer;
 }
 
-@media (min-width: 576px) {}
+@media (max-width: 575px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
 
-@media (min-width: 768px) {}
+@media (min-width: 576px) {
+    .card-columns.small {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 768px) {
+    .card-columns.small {
+        column-count: 2;
+    }
+}
 
 @media (min-width: 992px) {
 
@@ -111,6 +125,22 @@ div.profiel div.profielfoto {
         opacity: 0.9;
     }
 
+    .card-columns.small {
+        column-count: 4;
+    }
+
+    .card-columns {
+        column-count: 4;
+    }
+
 }
 
-@media (min-width: 1200px) {}
+@media (min-width: 1200px) {
+    .card-columns {
+        column-count: 5;
+    }
+
+    .card-columns.small {
+        column-count: 4;
+    }
+}

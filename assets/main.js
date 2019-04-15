@@ -202,7 +202,7 @@ function logout() {
  * @param {*} profielId haalt alle info op dmv id
  * @param {*} inStoragePlaatsen indien true plaatst dit de de response in storage
  */
-function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
+function haalGebruikersInfoOp(profielId, inStoragePlaatsen, favoriet) {
 
     let url = rooturl + '/profiel/read_one.php?id=' + profielId;
 
@@ -212,21 +212,29 @@ function haalGebruikersInfoOp(profielId, inStoragePlaatsen) {
         })
         .then(function (data) {
             console.log(data);
+
             if (inStoragePlaatsen) {
                 plaatsInStorage("gebruiker", data);
                 gebruiker = data;
             }
-            isIngelogd();
 
-            // Verwelkom gebruiker:
-            toonsuccesMsg("Dag " + gebruiker.nickname + ", je bent succesvol ingelogd. :) ");
+            if (favoriet) {
+                plaatsFavoriet(favoriet, data)
+
+            } else {
+                isIngelogd();
+
+                // Verwelkom gebruiker:
+                toonsuccesMsg("Dag " + gebruiker.nickname + ", je bent succesvol ingelogd. :) ");
+            }
+
 
         })
         .catch(function (error) {
             console.log(error);
         });
 
-    return data;
+    // return data;
 
 }
 
