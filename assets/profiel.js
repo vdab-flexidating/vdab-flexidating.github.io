@@ -314,16 +314,41 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 		}
 	} else if (mijnFavorieten) {
 		var favoriet = false;
+		var wederzijds = false;
 		for (const element of mijnFavorieten) {
 			console.log(element.anderId);
 			if (element.anderId == profielId) {
-				favoriet = true;
+
+				switch (parseInt(element.statusCode)) {
+					case 1:
+						// Wederzijds
+						favoriet = true;
+						wederzijds = true;
+						break;
+					case 2:
+						// gebruiker heeft profiel als fav
+						favoriet = true;
+						break;
+					case 3:
+						// profiel heeft gebruiker als fav
+
+						break;
+
+					default:
+						break;
+				}
+
 			}
 		}
 		let eButtonFavoriet = document.querySelector(".btn.btn-dark.float-right.mt-2.favoriet");
 
 		if (favoriet) {
-			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+			if (wederzijds) {
+				eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+				eButtonFavoriet.classList.add("fa-beat", "heart");
+			} else {
+				eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+			}
 		} else {
 			eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
 		}
@@ -347,6 +372,10 @@ function getIconFavoriet(gebruikersId, profielId, isFavoriet) {
 					console.log(favorietenGebruiker);
 					for (var i = 0; i < favorietenGebruiker.length; i++) {
 						if (favorietenGebruiker[i].anderId == profielId && !(favorietenGebruiker[i].statusCode == 3)) {
+							eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
+							if (favorietenGebruiker[i].statusCode == 1) {
+								eButtonFavoriet.classList.add("fa-beat", "heart");
+							}
 							eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart mt-2 favoriet";
 						} else {
 							eButtonFavoriet.className = "btn btn-dark float-sm-right fa fa-heart-o mt-2 favoriet";
@@ -427,7 +456,6 @@ function plaatsFavoriet(favoriet, infoVanFavoriet) {
 	eDiv.setAttribute('class', 'card');
 
 	eA = document.createElement('a');
-	eA.setAttribute('href', '/profiel.html?gebruiker=' + favoriet.anderId);
 
 	var eImg = document.createElement('img');
 	eImg.setAttribute('src', 'https://scrumserver.tenobe.org/scrum/img/' + infoVanFavoriet.foto);
@@ -443,9 +471,31 @@ function plaatsFavoriet(favoriet, infoVanFavoriet) {
 	let eCardSpan = document.createElement("span");
 	eCardSpan.innerHTML = "Status: " + favoriet.status;
 
+
+
 	//Plaats
 	eCardBody.appendChild(eCardTitle)
 	eCardBody.appendChild(eCardSpan)
+
+	if (favoriet.statusCode == "3") {
+		// Profiel heeft gebruiker als favoriet: dan is alles blurry 
+		eCardSpan.classList.add("blur-text");
+		eCardTitle.classList.add("blur-text");
+		eImg.classList.add("blur-image");
+
+		// Koop info? 
+		// let eBtn = document.createElement("button");
+		// eBtn.classList = "btn btn-primary mt-4";
+		// eBtn.setAttribute("id", "toonFavoriet");
+		// eBtn.setAttribute("data-favid", favoriet.anderId);
+		// eBtn.innerHTML = "Wie vindt je leuk?";
+
+
+		// eCardBody.appendChild(eBtn);
+	} else {
+		eA.setAttribute('href', '/profiel.html?gebruiker=' + favoriet.anderId);
+	}
+
 
 	eA.appendChild(eImg)
 	eA.appendChild(eCardBody)
@@ -453,6 +503,18 @@ function plaatsFavoriet(favoriet, infoVanFavoriet) {
 	eDiv.appendChild(eA)
 	eContainer.appendChild(eDiv)
 
+
+	// if (document.getElementById("toonFavoriet")) {
+	// 	document.getElementById("toonFavoriet").addEventListener("click", function () {
+	// 		// 	popup: kost 1 lovecoin: ok? nog voldoende lovecoins?
+
+	// 		//  Vraag bevestiging
+	// 		let infoActie = "Wil je weten wie je leuk vindt?<br>";
+	// 		infoActie += "Misschien is het wel werderzijds.</br>";
+	// 		infoActie += "Voor 1 lovecoin kan u dit achterhalen.</br>";
+	// 		openLoveModel("Weet wie je leuk vindt", infoActie, 1, "-", true, "toonFavoriet");
+	// 	});
+	// }
 }
 
 /**
@@ -491,7 +553,7 @@ function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeA
 		eModal2.classList.remove('d-block');
 		console.log("Actie werd bevestigd.");
 
-		if (welkeActie == "toonVerborgen") {
+		if (welkeActie == "toonVerborgen" || welkeActie == "toonFavoriet") {
 			//  Accepteer betaling
 			let valid = pasLovecoinsAan(aantalLovecoins, bewerking, transfer);
 
@@ -514,15 +576,22 @@ function openLoveModel(titel, body, aantalLovecoins, bewerking, transfer, welkeA
 
 				plaatsInStorage("loveActies", lovecoinActies);
 
-				//	toon alle velden behalve lovecoins + verberg button
-				for (var i = 0; i < eProfielVelden.length; i++) {
-					if (eProfielVelden[i].classList) {
-						eProfielVelden[i].classList.remove('blur-text');
+				if (welkeActie == "toonFavoriet") {
+					// WIP
+					console.log("Toon info op basis van meegegeven id");
+				}
+				if (welkeActie == "toonVerborgen") {
+					//	toon alle velden behalve lovecoins + verberg button
+					for (var i = 0; i < eProfielVelden.length; i++) {
+						if (eProfielVelden[i].classList) {
+							eProfielVelden[i].classList.remove('blur-text');
+						}
 					}
+
+					let eButtonVolledig = document.querySelector(".profiel button.volledig")
+					eButtonVolledig.classList.add('d-none');
 				}
 
-				let eButtonVolledig = document.querySelector(".profiel button.volledig")
-				eButtonVolledig.classList.add('d-none');
 			}
 
 		} else {
